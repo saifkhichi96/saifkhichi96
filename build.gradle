@@ -1,6 +1,8 @@
 buildscript {
     ext.kotlin_version = "1.4.30"
+    ext.hilt_version = '2.31.2-alpha'
     repositories {
+        mavenCentral()
         google()
         jcenter()
     }
@@ -8,11 +10,13 @@ buildscript {
         classpath "com.android.tools.build:gradle:4.0.2"
         classpath 'com.google.gms:google-services:4.3.5'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
     }
 }
 
 allprojects {
     repositories {
+        mavenCentral()
         google()
         jcenter()
     }
