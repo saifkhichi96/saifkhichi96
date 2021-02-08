@@ -1,5 +1,8 @@
 package com.saifkhichi.app.data.repo
 
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import com.orhanobut.hawk.Hawk
 import com.saifkhichi.app.data.source.LoginDataSource
 import com.saifkhichi.app.model.Result
 import com.saifkhichi.app.model.User
@@ -24,11 +27,11 @@ class LoginRepository @Inject constructor(var dataSource: LoginDataSource) {
      * Checks if a user is logged in or not
      */
     val isLoggedIn: Boolean
-        get() = currentUser != null
+        get() = currentUser != null && Firebase.auth.currentUser != null
 
     init {
-        // TODO: Read logged-in user data from persistent storage
-        currentUser = null
+        // Read logged-in user data from persistent storage (if exists)
+        currentUser = Hawk.get(KEY)
     }
 
     suspend fun login(email: String, password: String): Result<User> {
@@ -47,9 +50,12 @@ class LoginRepository @Inject constructor(var dataSource: LoginDataSource) {
 
     private fun setLoggedInUser(user: User) {
         this.currentUser = user
-        // If user credentials will be cached in local storage, it is recommended it be encrypted
-        // @see https://developer.android.com/training/articles/keystore
-        // TODO: Persist logged-in user to stay signed in
+        // Persist logged-in user to stay signed in
+        Hawk.put(KEY, user)
+    }
+
+    companion object {
+        private const val KEY = "user"
     }
 
 }

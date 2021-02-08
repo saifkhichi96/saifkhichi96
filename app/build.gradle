@@ -61,6 +61,9 @@ dependencies {
     // Dependency injection with Hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+
+    // SharedPreferences management with Hawk
+    implementation 'com.orhanobut:hawk:2.0.1'
 }
 
 kapt {
