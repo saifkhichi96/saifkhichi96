@@ -1,5 +1,6 @@
 package com.saifkhichi.app.ui.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -124,8 +125,13 @@ class LoginActivity : AppCompatActivity() {
      * @param user The currently logged-in user.
      */
     private fun onLoginSuccess(user: User) {
+        val i = Intent(this, MainActivity::class.java).apply {
+            putExtra("user", user)
+        }
+
+        startActivity(i)
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         finish()
-        // TODO: Open the main app activity
     }
 
     /**

@@ -1,6 +1,9 @@
 <resources>
   <string name="app_name">Saif\'s Portfolio (Admin)</string>
 
+  <string name="name">Muhammad Saif Ullah Khan</string>
+  <string name="tagline">Mobile Developer and ML Engineer</string>
+
   <string name="prompt_email">Email</string>
   <string name="invalid_email">Not a valid email address</string>
 
@@ -9,4 +12,18 @@
 
   <string name="action_sign_in">Sign in</string>
   <string name="login_failed">"Login failed"</string>
+
+  <string name="action_inbox">Inbox</string>
+
+  <string-array name="main_options">
+    <item>Achievements</item>
+    <item>Art</item>
+    <item>Books</item>
+    <item>Certificates</item>
+    <item>Education</item>
+    <item>Projects</item>
+    <item>Research</item>
+    <item>Skills</item>
+    <item>Work</item>
+  </string-array>
 </resources>
