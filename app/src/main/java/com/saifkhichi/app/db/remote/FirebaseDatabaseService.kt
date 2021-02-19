@@ -2,6 +2,8 @@ package com.saifkhichi.app.db.remote
 
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.saifkhichi.app.model.Inbox
+import com.saifkhichi.app.model.Message
 import com.saifkhichi.app.model.Result
 import com.saifkhichi.app.model.User
 import kotlinx.coroutines.tasks.await
@@ -30,6 +32,24 @@ class FirebaseDatabaseService @Inject constructor() : WebService {
                 .getValue(User::class.java) ?: throw IOException("Error logging in")
 
             Result.Success(user)
+        } catch (ex: Exception) {
+            Result.Error(ex)
+        }
+    }
+
+    override suspend fun getMessages(): Result<Inbox> {
+        return try {
+            val messages = Inbox()
+            db.getReference("messages/")
+                .get()
+                .await()
+                .children.forEach { snapshot ->
+                    snapshot.getValue(Message::class.java)?.let { message ->
+                        messages.add(message)
+                    }
+                }
+
+            Result.Success(messages)
         } catch (ex: Exception) {
             Result.Error(ex)
         }

@@ -1,5 +1,6 @@
 package com.saifkhichi.app.db.remote
 
+import com.saifkhichi.app.model.Inbox
 import com.saifkhichi.app.model.Result
 import com.saifkhichi.app.model.User
 
@@ -18,5 +19,12 @@ interface WebService {
      * @return The Result of the task containing User data, or an error message.
      */
     suspend fun getUser(uid: String): Result<User>
+
+    /**
+     * Retrieves a list of all Messages in the remote database.
+     *
+     * @return The Result of the task containing Message list, or an error message.
+     */
+    suspend fun getMessages(): Result<Inbox>
 
 }

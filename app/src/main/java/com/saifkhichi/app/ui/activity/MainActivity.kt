@@ -1,5 +1,6 @@
 package com.saifkhichi.app.ui.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.TextView
@@ -16,6 +17,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        setSupportActionBar(binding.toolbar)
 
         val options = resources.getStringArray(R.array.main_options);
         val optionsAdapter = OptionsAdapter(options)
@@ -38,8 +41,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Opens the inbox activity.
+     */
     private fun openInbox() {
-        // TODO: Open inbox activity
+        startActivity(Intent(this, InboxActivity::class.java))
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     }
 
     class OptionsAdapter(private val dataSet: Array<String>) :

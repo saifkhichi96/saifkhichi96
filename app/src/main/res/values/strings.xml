@@ -1,6 +1,8 @@
 <resources>
   <string name="app_name">Saif\'s Portfolio (Admin)</string>
 
+  <string name="title_activity_inbox">Inbox</string>
+
   <string name="name">Muhammad Saif Ullah Khan</string>
   <string name="tagline">Mobile Developer and ML Engineer</string>
 
