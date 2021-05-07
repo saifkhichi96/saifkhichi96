@@ -184,3 +184,6 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+
+# API Secrets
+secret.properties

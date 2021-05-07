@@ -4,14 +4,22 @@ apply plugin: 'com.google.gms.google-services'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'dagger.hilt.android.plugin'
 
+def secretPropertiesFile = rootProject.file("secret.properties")
+def secretProperties = new Properties()
+secretProperties.load(new FileInputStream(secretPropertiesFile))
+
 android {
     compileSdkVersion 29
     defaultConfig {
         applicationId "com.saifkhichi.app"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
         versionName "1.0.0"
+
+        // Read API secrets
+        buildConfigField("String", "STRIPE_PUBLIC_KEY", secretProperties['STRIPE_PUBLIC_KEY'])
+        buildConfigField("String", "STRIPE_SECRET_KEY", secretProperties['STRIPE_SECRET_KEY'])
     }
 
     // Enable view binding
@@ -65,6 +73,10 @@ dependencies {
 
     // SharedPreferences management with Hawk
     implementation 'com.orhanobut:hawk:2.0.1'
+
+    // Stripe Android SDK for Payments
+    implementation "com.stripe:stripe-java:20.50.0"
+    implementation 'com.stripe:stripe-android:16.8.0'
 }
 
 kapt {

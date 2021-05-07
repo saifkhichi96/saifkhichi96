@@ -2,6 +2,8 @@ package com.saifkhichi.app
 
 import android.app.Application
 import com.orhanobut.hawk.Hawk
+import com.stripe.Stripe
+import com.stripe.android.PaymentConfiguration
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
@@ -12,6 +14,10 @@ class MyApplication : Application() {
 
         // Init dependencies
         Hawk.init(this).build()
+
+        // Configure Stripe SDK
+        PaymentConfiguration.init(applicationContext, BuildConfig.STRIPE_PUBLIC_KEY)
+        Stripe.apiKey = BuildConfig.STRIPE_SECRET_KEY
     }
 
 }
