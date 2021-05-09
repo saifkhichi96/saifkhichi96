@@ -16,31 +16,16 @@
       android:orientation="vertical">
 
     <com.google.android.material.textview.MaterialTextView
+        style="@style/TextAppearance.MaterialComponents.Body1"
+        android:id="@+id/text1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.google.android.material.textview.MaterialTextView
         style="@style/TextAppearance.MaterialComponents.Caption"
-        android:id="@+id/message_timestamp"
+        android:id="@+id/text2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
-
-    <com.google.android.material.textview.MaterialTextView
-        style="@style/TextAppearance.MaterialComponents.Subtitle2"
-        android:id="@+id/message_subject"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <com.google.android.material.textview.MaterialTextView
-        style="@style/TextAppearance.MaterialComponents.Body2"
-        android:id="@+id/message_content"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <com.google.android.material.button.MaterialButton
-        style="@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush"
-        android:id="@+id/reply_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:text="@string/label_reply"
-        android:textColor="?attr/colorAccent"/>
 
   </LinearLayout>
 

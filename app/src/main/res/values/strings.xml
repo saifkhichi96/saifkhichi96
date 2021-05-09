@@ -16,16 +16,11 @@
   <string name="login_failed">"Login failed"</string>
 
   <string name="action_inbox">Inbox</string>
-
-  <string-array name="main_options">
-    <item>Achievements</item>
-    <item>Art</item>
-    <item>Books</item>
-    <item>Certificates</item>
-    <item>Education</item>
-    <item>Projects</item>
-    <item>Research</item>
-    <item>Skills</item>
-    <item>Work</item>
-  </string-array>
+  <string name="label_art">Art</string>
+  <string name="label_books">Books</string>
+  <string name="label_clients">Clients</string>
+  <string name="label_projects">Projects</string>
+  <string name="label_research">Research</string>
+  <string name="label_work">Work</string>
+  <string name="label_reply">Reply</string>
 </resources>

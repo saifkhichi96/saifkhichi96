@@ -3,6 +3,7 @@ package com.saifkhichi.app.ui.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.saifkhichi.app.databinding.ViewListitemTwolineBinding
 import com.saifkhichi.app.model.Thread
 import com.saifkhichi.app.ui.holder.ThreadHolder
 
@@ -24,8 +25,8 @@ class InboxAdapter(private val threads: List<Thread>) :
      * @return A new ViewHolder that holds a View of the given view type.
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ThreadHolder {
-        val view = LayoutInflater.from(parent.context).inflate(
-            android.R.layout.simple_list_item_2,
+        val view = ViewListitemTwolineBinding.inflate(
+            LayoutInflater.from(parent.context),
             parent,
             false
         )
