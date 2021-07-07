@@ -74,6 +74,9 @@ dependencies {
     // SharedPreferences management with Hawk
     implementation 'com.orhanobut:hawk:2.0.1'
 
+    // Library module
+    implementation project(path: ':books')
+
     // Database module
     implementation project(path: ':database')
 

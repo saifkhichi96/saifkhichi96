@@ -1,0 +1,24 @@
+<resources>
+  <string name="app_name">Personal Library</string>
+
+  <!-- Activity titles -->
+  <string name="title_activity_library">Library</string>
+
+  <!-- Formatting strings -->
+  <string name="book_isbn">ISBN: %s</string>
+  <string name="book_category"><![CDATA[%s > %s]]></string>
+  <string name="book_category_none">Uncategorized</string>
+  <string name="book_publish_year">. Published in %s.</string>
+  <string name="book_publisher">%s%s</string>
+
+  <!-- Default values -->
+  <string name="book_publisher_none">Unknown Publisher</string>
+  <string name="book_description_none">No description available.</string>
+  <string name="value_none">N/A</string>
+
+  <!-- UI labels (buttons, section headings, etc.) -->
+  <string name="label_book_language">Language</string>
+  <string name="label_book_format">Format</string>
+  <string name="label_book_pages">Pages</string>
+  <string name="label_book_description">Description</string>
+</resources>

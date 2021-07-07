@@ -7,6 +7,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.saifkhichi.app.R
 import com.saifkhichi.app.databinding.ActivityMainBinding
+import com.saifkhichi.books.ui.activity.BooksListActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -18,6 +19,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setSupportActionBar(binding.toolbar)
+        binding.libraryButton.setOnClickListener { openLibrary() }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -40,6 +42,14 @@ class MainActivity : AppCompatActivity() {
      */
     private fun openInbox() {
         startActivity(Intent(this, InboxActivity::class.java))
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+    }
+
+    /**
+     * Opens the books activity.
+     */
+    private fun openLibrary() {
+        startActivity(Intent(this, BooksListActivity::class.java))
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     }
 

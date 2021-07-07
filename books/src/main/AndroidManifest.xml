@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
+          package="com.saifkhichi.books">
+
+  <uses-sdk tools:overrideLibrary="com.google.zxing.client.android"/>
+
+  <application
+      android:allowBackup="true"
+      android:label="@string/app_name"
+      android:supportsRtl="true">
+
+    <activity android:name="com.saifkhichi.books.ui.activity.BooksListActivity"/>
+
+    <activity android:name="com.saifkhichi.books.ui.activity.BookDetailsActivity"
+              android:parentActivityName="com.saifkhichi.books.ui.activity.BooksListActivity"
+              android:hardwareAccelerated="true"/>
+
+  </application>
+
+</manifest>

@@ -86,6 +86,7 @@
             app:icon="@drawable/ic_art"/>
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/library_button"
             style="@style/App.Widget.MenuItem"
             android:text="@string/label_books"
             app:icon="@drawable/ic_books"/>
