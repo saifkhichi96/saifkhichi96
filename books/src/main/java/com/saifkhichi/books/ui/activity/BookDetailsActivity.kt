@@ -2,11 +2,13 @@ package com.saifkhichi.books.ui.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeEncoder
 import com.saifkhichi.books.R
 import com.saifkhichi.books.databinding.ActivityBookDetailsBinding
 import com.saifkhichi.books.model.Book
+import com.saifkhichi.storage.CloudFileStorage
 
 
 class BookDetailsActivity : AppCompatActivity() {
@@ -23,6 +25,16 @@ class BookDetailsActivity : AppCompatActivity() {
     }
 
     private fun updateUI(book: Book) {
+        val storage = CloudFileStorage(this, "library")
+        storage.download(book.id + ".jpg") { result ->
+            Glide.with(this@BookDetailsActivity)
+                .load(result.getOrNull())
+                .thumbnail()
+                .placeholder(R.drawable.placeholder_book_cover)
+                .error(R.drawable.placeholder_book_cover)
+                .into(binding.bookCover)
+        }
+
         binding.bookTitle.text = book.title
         binding.bookAuthors.text = book.authors
 

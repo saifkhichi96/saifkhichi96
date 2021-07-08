@@ -237,13 +237,14 @@
         android:layout_centerHorizontal="true"
         app:strokeColor="?attr/colorPrimary"
         app:strokeWidth="1dp"
-        app:cardCornerRadius="8dp">
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp">
 
       <com.google.android.material.imageview.ShapeableImageView
           android:id="@+id/book_cover"
           android:layout_width="112dp"
           android:layout_height="164dp"
-          android:scaleType="centerCrop"
+          android:scaleType="fitXY"
           app:srcCompat="@drawable/placeholder_book_cover"/>
 
     </com.google.android.material.card.MaterialCardView>
