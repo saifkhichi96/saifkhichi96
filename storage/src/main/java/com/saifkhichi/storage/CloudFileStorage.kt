@@ -3,11 +3,13 @@ package com.saifkhichi.storage
 import android.content.Context
 import android.net.Uri
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FileDownloadTask
 import com.google.firebase.storage.StorageMetadata
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.tasks.await
 import java.io.File
+import kotlin.coroutines.cancellation.CancellationException
 
 /**
  * Manages files stored remotely on the cloud.
@@ -39,19 +41,45 @@ class CloudFileStorage(context: Context, scope: String) {
      * @param invalidate If true, fresh copy of file is downloaded from [remote]. Default is false.
      * @return A [Result] containing the requested file if it exists, or an error message.
      */
-    suspend fun download(fn: String, invalidate: Boolean = false): Result<File> {
-        return when (val cachedFile = cache.download(fn).getOrNull()) {
+    fun download(fn: String, invalidate: Boolean = false, onComplete: ((Result<File>) -> Unit)) {
+        when (val cachedFile = cache.download(fn)) {
             null -> {
-                val result = cache.createEmptyFile(fn)
-                val tempFile = result.getOrNull()
-
-                if (tempFile == null) result
-                else downloadFromRemote(fn, tempFile)
+                val tempFile = cache.createEmptyFile(fn)
+                try {
+                    downloadFromRemote(fn, tempFile)
+                        .addOnSuccessListener {
+                            onComplete(Result.success(tempFile))
+                        }
+                        .addOnFailureListener { ex ->
+                            tempFile.delete()
+                            onComplete(Result.failure(ex))
+                        }
+                        .addOnCanceledListener {
+                            onComplete(Result.failure(CancellationException()))
+                        }
+                } catch (ex: Exception) {
+                    onComplete(Result.failure(ex))
+                }
             }
             else -> {
                 // Invalidate cache if flag set or more than a week since last update
-                if (cachedFile.requiresInvalidation() || invalidate) downloadFromRemote(fn, cachedFile)
-                else Result.success(cachedFile)
+                if (cachedFile.requiresInvalidation() || invalidate) {
+                    try {
+                        downloadFromRemote(fn, cachedFile)
+                            .addOnSuccessListener {
+                                onComplete(Result.success(cachedFile))
+                            }
+                            .addOnFailureListener { ex ->
+                                cachedFile.delete()
+                                onComplete(Result.failure(ex))
+                            }
+                            .addOnCanceledListener {
+                                onComplete(Result.failure(CancellationException()))
+                            }
+                    } catch (ex: Exception) {
+                        onComplete(Result.failure(ex))
+                    }
+                } else onComplete(Result.success(cachedFile))
             }
         }
     }
@@ -113,14 +141,8 @@ class CloudFileStorage(context: Context, scope: String) {
      * @param outfile The [File] where downloaded file contents will be saved.
      * @return A [Result] containing the requested file if it exists, or an error message.
      */
-    private suspend fun downloadFromRemote(fn: String, outfile: File): Result<File> {
-        return try {
-            remote.child(fn).getFile(outfile).await()
-            Result.success(outfile)
-        } catch (ex: Exception) {
-            outfile.delete()
-            Result.failure(ex)
-        }
+    private fun downloadFromRemote(fn: String, outfile: File): FileDownloadTask {
+        return remote.child(fn).getFile(outfile)
     }
 
     private fun File.requiresInvalidation(): Boolean {
