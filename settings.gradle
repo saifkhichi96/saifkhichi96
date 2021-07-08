@@ -1,2 +1,2 @@
-include ':app', ':database', ':books'
+include ':app', ':database', ':books', ':storage'
 rootProject.name = "Saif's Portfolio (Admin)"

@@ -74,11 +74,9 @@ dependencies {
     // SharedPreferences management with Hawk
     implementation 'com.orhanobut:hawk:2.0.1'
 
-    // Library module
     implementation project(path: ':books')
-
-    // Database module
     implementation project(path: ':database')
+    implementation project(path: ':storage')
 
     // Stripe Android SDK for Payments
     implementation "com.stripe:stripe-java:20.50.0"
