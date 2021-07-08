@@ -21,7 +21,10 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.toolbar)
         binding.clientsButton.setOnClickListener { openClientsPage() }
-        binding.libraryButton.setOnClickListener { openLibrary() }
+        binding.fictionButton.setOnClickListener { openLibrary("Fiction") }
+        binding.nonfictionButton.setOnClickListener { openLibrary("Non-Fiction") }
+
+        binding.projectsList.emptyView = binding.projectsEmpty
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -58,8 +61,10 @@ class MainActivity : AppCompatActivity() {
     /**
      * Opens the books activity.
      */
-    private fun openLibrary() {
-        startActivity(Intent(this, BooksListActivity::class.java))
+    private fun openLibrary(category: String) {
+        startActivity(Intent(this, BooksListActivity::class.java).apply {
+            putExtra("category", category)
+        })
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     }
 

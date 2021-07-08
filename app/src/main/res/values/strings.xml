@@ -5,8 +5,10 @@
   <string name="title_activity_clients">Clients</string>
   <string name="title_invoices">Invoices</string>
 
-  <string name="name">Muhammad Saif Ullah Khan</string>
-  <string name="tagline">Mobile Developer and ML Engineer</string>
+  <string name="name">I AM SAIF KHAN</string>
+  <string name="tagline">Versatile software engineer skilled in mobile development, machine learning and computer
+    vision.
+  </string>
 
   <string name="prompt_email">Email</string>
   <string name="invalid_email">Not a valid email address</string>
@@ -25,4 +27,9 @@
   <string name="label_research">Research</string>
   <string name="label_work">Work</string>
   <string name="label_reply">Reply</string>
+  <string name="label_projects_none">No Projects Found</string>
+  <string name="greeting">HELL0</string>
+
+  <string name="book_category_fiction">Fiction</string>
+  <string name="book_category_nonfiction">Non-Fiction</string>
 </resources>
