@@ -21,4 +21,6 @@
   <string name="label_book_format">Format</string>
   <string name="label_book_pages">Pages</string>
   <string name="label_book_description">Description</string>
+  <string name="book_cover_error">Failed to upload book cover.</string>
+  <string name="book_cover_select">Select Book Cover</string>
 </resources>

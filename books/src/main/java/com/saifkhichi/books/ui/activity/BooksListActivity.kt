@@ -6,7 +6,6 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.saifkhichi.books.R
 import com.saifkhichi.books.databinding.ActivityBooksListBinding
@@ -21,6 +20,8 @@ class BooksListActivity : AppCompatActivity() {
 
     private lateinit var booksAdapter: BooksAdapter
     private val library = ArrayList<BooksAdapter.LibraryListItem<out Any>>()
+
+    private var filter: String? = null
 
     /**
      * View bindings for the activity.
@@ -60,24 +61,22 @@ class BooksListActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        booksAdapter = BooksAdapter(library)
+        filter = intent.getStringExtra("category")
+        supportActionBar?.title = filter ?: getString(R.string.title_activity_library)
+
+        booksAdapter = BooksAdapter(this, library)
         booksAdapter.setOnItemClickListener { openBookDetails(it) }
 
         binding.booksList.adapter = booksAdapter
-        (binding.booksList.layoutManager as GridLayoutManager?)?.spanSizeLookup =
-            object : GridLayoutManager.SpanSizeLookup() {
-                override fun getSpanSize(position: Int): Int {
-                    return when (library[position]) {
-                        is BooksAdapter.LibraryBook -> 1
-                        is BooksAdapter.CategoryName -> 3
-                        is BooksAdapter.SubCategoryName -> 3
-                    }
-                }
-            }
         viewModel.books.observe(this, refreshResultObserver)
 
         binding.swipeRefresh.setOnRefreshListener(onRefreshListener)
         refreshManually()
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 
     private fun openBookDetails(book: Book) {
@@ -105,18 +104,20 @@ class BooksListActivity : AppCompatActivity() {
         val categories = data.groupBy { it.category }.toSortedMap()
         categories.forEach { group ->
             val category = group.key
-            library += BooksAdapter.CategoryName(category)
+            if (filter == null || category == filter) {
+                if (category != filter) library += BooksAdapter.CategoryName(category)
 
-            val subCategories = group.value.groupBy { it.subCategory }.toSortedMap()
-            subCategories.forEach { item ->
-                var subCategory = item.key
-                if (subCategory.isBlank()) subCategory = getString(R.string.book_category_none)
-                library += BooksAdapter.SubCategoryName(getString(R.string.book_category).format(
-                    category, subCategory.ifBlank { getString(R.string.book_category_none) }
-                ))
+                val subCategories = group.value.groupBy { it.subCategory }.toSortedMap()
+                subCategories.forEach { item ->
+                    val subCategory = item.key.ifBlank { getString(R.string.book_category_none) }
+                    library += BooksAdapter.SubCategoryName(
+                        if (category == filter) subCategory
+                        else getString(R.string.book_category).format(category, subCategory)
+                    )
 
-                val subCategoryBooks = item.value.sortedBy { it.sortTitle }
-                subCategoryBooks.forEach { library += BooksAdapter.LibraryBook(it) }
+                    val subCategoryBooks = item.value.sortedBy { it.sortTitle }
+                    library += BooksAdapter.LibraryBook(subCategoryBooks)
+                }
             }
         }
         booksAdapter.notifyDataSetChanged()

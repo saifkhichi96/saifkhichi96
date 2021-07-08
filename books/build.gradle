@@ -41,6 +41,9 @@ dependencies {
     // Kotlin language
     implementation "androidx.core:core-ktx:$kotlin_version"
 
+    // Accessing the Google Books API with Volley
+    implementation 'com.android.volley:volley:1.2.0'
+
     // Dependency injection with Hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
@@ -48,11 +51,11 @@ dependencies {
     // SharedPreferences management with Hawk
     implementation 'com.orhanobut:hawk:2.0.1'
 
-    // Barcodes for Books
+    // Barcode generation with ZXing
     implementation('com.journeyapps:zxing-android-embedded:4.2.0') { transitive = false }
     implementation 'com.google.zxing:core:3.4.1'
 
-    // Glide for book covers
+    // Showing book covers with Glide
     implementation 'com.github.bumptech.glide:glide:4.12.0'
     kapt 'com.github.bumptech.glide:compiler:4.12.0'
 

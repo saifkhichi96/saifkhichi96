@@ -1,15 +1,29 @@
 package com.saifkhichi.books.ui.adapter
 
+import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
+import com.android.volley.Request
+import com.android.volley.toolbox.ImageRequest
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
+import com.bumptech.glide.Glide
 import com.google.android.material.textview.MaterialTextView
 import com.saifkhichi.books.R
 import com.saifkhichi.books.databinding.ViewBookBinding
+import com.saifkhichi.books.databinding.ViewBookListBinding
 import com.saifkhichi.books.model.Book
 import com.saifkhichi.books.ui.holder.BookHolder
+import com.saifkhichi.books.ui.holder.BookListHolder
+import com.saifkhichi.storage.CloudFileStorage
+import kotlinx.coroutines.launch
+import java.io.ByteArrayOutputStream
 
-class BooksAdapter(private val dataset: ArrayList<LibraryListItem<out Any>>) :
+class BooksAdapter(private val context: AppCompatActivity, private val dataset: ArrayList<LibraryListItem<out Any>>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var onItemClicked: ((Book) -> Unit)? = null
@@ -30,21 +44,33 @@ class BooksAdapter(private val dataset: ArrayList<LibraryListItem<out Any>>) :
         return when (viewType) {
             TYPE_CATEGORY -> {
                 val view = MaterialTextView(parent.context)
-                view.setTextAppearance(R.style.TextAppearance_MaterialComponents_Subtitle1)
+                view.setPadding(
+                    parent.context.resources.getDimension(R.dimen.activity_horizontal_margin).toInt(),
+                    0,
+                    0,
+                    0
+                )
+                view.setTextAppearance(R.style.TextAppearance_MaterialComponents_Headline6)
                 object : RecyclerView.ViewHolder(view) {}
             }
             TYPE_SUB_CATEGORY -> {
                 val view = MaterialTextView(parent.context)
-                view.setTextAppearance(R.style.TextAppearance_MaterialComponents_Subtitle2)
+                view.setPadding(
+                    parent.context.resources.getDimension(R.dimen.activity_horizontal_margin).toInt(),
+                    0,
+                    0,
+                    0
+                )
+                view.setTextAppearance(R.style.TextAppearance_MaterialComponents_Headline6)
                 object : RecyclerView.ViewHolder(view) {}
             }
             else -> {
-                val view = ViewBookBinding.inflate(
+                val view = ViewBookListBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false
                 )
-                BookHolder(view)
+                BookListHolder(view)
             }
         }
     }
@@ -61,13 +87,25 @@ class BooksAdapter(private val dataset: ArrayList<LibraryListItem<out Any>>) :
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (val item = dataset[position]) {
             is LibraryBook -> {
-                if (holder is BookHolder) {
-                    val book = item.value
-                    holder.bookTitle.text = book.title
-                    holder.bookAuthors.text = book.authors
+                if (holder is BookListHolder) {
+                    val books = item.value
+                    holder.bookList.removeAllViews()
+                    books.forEach { book ->
+                        val view = ViewBookBinding.inflate(
+                            LayoutInflater.from(holder.bookList.context),
+                            holder.bookList,
+                            false
+                        )
+                        holder.bookList.addView(view.root)
 
-                    holder.book = book
-                    holder.onItemClicked = onItemClicked
+                        val bookHolder = BookHolder(view)
+                        book.getBookCover(context, bookHolder.bookCover)
+                        bookHolder.bookTitle.text = book.title
+                        bookHolder.bookAuthors.text = book.authors
+
+                        bookHolder.book = book
+                        bookHolder.onItemClicked = onItemClicked
+                    }
                 }
             }
             is CategoryName -> {
@@ -97,13 +135,69 @@ class BooksAdapter(private val dataset: ArrayList<LibraryListItem<out Any>>) :
      */
     override fun getItemViewType(position: Int) = dataset[position].type
 
+    private fun showBookCover(book: Book, imageView: ImageView, invalidate: Boolean = false) {
+        val bookStorage = CloudFileStorage(imageView.context, "library")
+        bookStorage.download(book.cover(), invalidate) { result ->
+            try {
+                Glide.with(imageView)
+                    .load(result.getOrNull()!!)
+                    .thumbnail()
+                    .placeholder(R.drawable.placeholder_book_cover)
+                    .error(R.drawable.placeholder_book_cover)
+                    .into(imageView)
+            } catch (ex: Exception) {
+                if (book.isbn13().isNotBlank()) {
+                    val queue = Volley.newRequestQueue(imageView.context)
+                    val url = "https://www.googleapis.com/books/v1/volumes?q=isbn:${book.isbn13()}"
+                    val jsonObjectRequest = JsonObjectRequest(
+                        Request.Method.GET, url, null,
+                        { response ->
+                            kotlin.runCatching {
+                                val coverUrl = response
+                                    .getJSONArray("items")
+                                    .getJSONObject(0)
+                                    .getJSONObject("volumeInfo")
+                                    .getJSONObject("imageLinks")
+                                    .getString("thumbnail")
+                                    .replace("http://", "https://")
+
+                                val imageRequest = ImageRequest(
+                                    coverUrl,
+                                    { response: Bitmap ->
+                                        val stream = ByteArrayOutputStream()
+                                        response.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+                                        val byteArray: ByteArray = stream.toByteArray()
+                                        response.recycle()
+                                        context.lifecycleScope.launch {
+                                            val error = bookStorage.upload(book.cover(), byteArray).exceptionOrNull()
+                                            if (error == null) showBookCover(book, imageView, invalidate = true)
+                                        }
+                                    },
+                                    128,
+                                    256,
+                                    ImageView.ScaleType.CENTER_CROP,
+                                    Bitmap.Config.ARGB_8888,
+                                    {
+
+                                    }
+                                )
+
+                                queue.add(imageRequest)
+                            }
+                        }, {})
+                    queue.add(jsonObjectRequest)
+                }
+            }
+        }
+    }
+
     sealed class LibraryListItem<T : Any>(val value: T, val type: Int)
-    class LibraryBook(book: Book) : LibraryListItem<Book>(book, TYPE_BOOK)
+    class LibraryBook(books: List<Book>) : LibraryListItem<List<Book>>(books, TYPE_BOOKS)
     class CategoryName(title: String) : LibraryListItem<String>(title, TYPE_CATEGORY)
     class SubCategoryName(title: String) : LibraryListItem<String>(title, TYPE_SUB_CATEGORY)
 
     companion object {
-        private const val TYPE_BOOK = 0
+        private const val TYPE_BOOKS = 0
         private const val TYPE_CATEGORY = 1
         private const val TYPE_SUB_CATEGORY = 2
     }

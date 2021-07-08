@@ -5,6 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#1f888888"
     tools:context="com.saifkhichi.books.ui.activity.BooksListActivity">
 
   <com.google.android.material.appbar.AppBarLayout
@@ -16,7 +17,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimaryDark"
+        android:background="?attr/colorPrimaryDark"
         app:title="@string/title_activity_library"
         app:layout_scrollFlags="scroll"/>
 
@@ -32,10 +33,9 @@
         android:id="@+id/books_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingHorizontal="@dimen/activity_horizontal_margin"
         android:paddingVertical="@dimen/activity_vertical_margin"
-        app:spanCount="3"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"/>
+        android:overScrollMode="never"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
   </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

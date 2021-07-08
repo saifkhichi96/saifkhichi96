@@ -1,40 +1,71 @@
 package com.saifkhichi.books.ui.activity
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.bumptech.glide.Glide
+import androidx.lifecycle.lifecycleScope
+import com.google.android.material.snackbar.Snackbar
 import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeEncoder
 import com.saifkhichi.books.R
 import com.saifkhichi.books.databinding.ActivityBookDetailsBinding
 import com.saifkhichi.books.model.Book
 import com.saifkhichi.storage.CloudFileStorage
+import kotlinx.coroutines.launch
 
 
 class BookDetailsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityBookDetailsBinding
 
+    private lateinit var bookStorage: CloudFileStorage
+    private lateinit var book: Book
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityBookDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val book = intent.getSerializableExtra(BOOK_KEY) as Book? ?: return finish()
-        updateUI(book)
+        bookStorage = CloudFileStorage(this, "library")
+        book = intent.getSerializableExtra(BOOK_KEY) as Book? ?: return finish()
+        updateUI()
+
+        binding.bookCover.setOnClickListener { pickImage() }
     }
 
-    private fun updateUI(book: Book) {
-        val storage = CloudFileStorage(this, "library")
-        storage.download(book.id + ".jpg") { result ->
-            Glide.with(this@BookDetailsActivity)
-                .load(result.getOrNull())
-                .thumbnail()
-                .placeholder(R.drawable.placeholder_book_cover)
-                .error(R.drawable.placeholder_book_cover)
-                .into(binding.bookCover)
-        }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == RESULT_OK && data != null && data.data != null) {
+            try {
+                when (requestCode) {
+                    PICK_COVER_REQUEST -> data.data?.apply { updateBookCover(this) }
+                }
+            } catch (ignored: Exception) {
 
+            }
+        }
+    }
+
+    private fun updateBookCover(coverImage: Uri) {
+        lifecycleScope.launch {
+            try {
+                val error = bookStorage.upload(book.cover(), coverImage).exceptionOrNull()
+                if (error != null) throw error
+
+                book.getBookCover(this@BookDetailsActivity, binding.bookCover, true)
+            } catch (ex: Exception) {
+                Snackbar.make(
+                    binding.root,
+                    getString(R.string.book_cover_error),
+                    Snackbar.LENGTH_LONG
+                ).show()
+            }
+        }
+    }
+
+    private fun updateUI() {
+        book.getBookCover(this@BookDetailsActivity, binding.bookCover)
         binding.bookTitle.text = book.title
         binding.bookAuthors.text = book.authors
 
@@ -66,8 +97,16 @@ class BookDetailsActivity : AppCompatActivity() {
         }
     }
 
+    private fun pickImage() {
+        val intent = Intent()
+        intent.type = "image/*"
+        intent.action = Intent.ACTION_GET_CONTENT
+        startActivityForResult(Intent.createChooser(intent, getString(R.string.book_cover_select)), PICK_COVER_REQUEST)
+    }
+
     companion object {
         const val BOOK_KEY = "book"
+        const val PICK_COVER_REQUEST = 100
     }
 
 }
