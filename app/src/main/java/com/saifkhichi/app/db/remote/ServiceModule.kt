@@ -27,7 +27,7 @@ object ServiceModule {
 
     @Provides
     fun provideRemoteDatabase(@ApplicationContext context: Context): RemoteDatabase {
-        return FirebaseDatabase(context, persistent = true)
+        return FirebaseDatabase(context, persistent = null)
     }
 
 }
