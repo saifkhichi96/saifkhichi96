@@ -29,6 +29,14 @@
     <activity android:name=".ui.activity.ThreadActivity"
               android:parentActivityName=".ui.activity.InboxActivity"/>
 
+    <activity
+        android:name=".payments.ui.activity.ClientsActivity"
+        android:parentActivityName=".ui.activity.MainActivity"/>
+
+    <activity
+        android:name=".payments.ui.activity.ClientDetailsActivity"
+        android:parentActivityName=".payments.ui.activity.ClientsActivity"/>
+
   </application>
 
 </manifest>

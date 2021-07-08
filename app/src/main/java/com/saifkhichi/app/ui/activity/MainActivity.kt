@@ -7,6 +7,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.saifkhichi.app.R
 import com.saifkhichi.app.databinding.ActivityMainBinding
+import com.saifkhichi.app.payments.ui.activity.ClientsActivity
 import com.saifkhichi.books.ui.activity.BooksListActivity
 
 class MainActivity : AppCompatActivity() {
@@ -19,6 +20,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setSupportActionBar(binding.toolbar)
+        binding.clientsButton.setOnClickListener { openClientsPage() }
         binding.libraryButton.setOnClickListener { openLibrary() }
     }
 
@@ -35,6 +37,14 @@ class MainActivity : AppCompatActivity() {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    /**
+     * Opens the clients activity.
+     */
+    private fun openClientsPage() {
+        startActivity(Intent(this, ClientsActivity::class.java))
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     }
 
     /**

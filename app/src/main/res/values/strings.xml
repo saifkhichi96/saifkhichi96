@@ -2,6 +2,8 @@
   <string name="app_name">Saif\'s Portfolio (Admin)</string>
 
   <string name="title_activity_inbox">Inbox</string>
+  <string name="title_activity_clients">Clients</string>
+  <string name="title_invoices">Invoices</string>
 
   <string name="name">Muhammad Saif Ullah Khan</string>
   <string name="tagline">Mobile Developer and ML Engineer</string>

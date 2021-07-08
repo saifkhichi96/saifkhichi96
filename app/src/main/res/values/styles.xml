@@ -6,6 +6,13 @@
     <item name="colorAccent">@color/colorAccent</item>
   </style>
 
+  <style name="App.Widget.CurrencyItem" parent="Widget.MaterialComponents.Chip.Entry">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="textAllCaps">true</item>
+    <item name="chipCornerRadius">8dp</item>
+  </style>
+
   <style name="AppTheme.Launcher" parent="AppTheme">
     <item name="android:windowBackground">@drawable/splash</item>
   </style>
