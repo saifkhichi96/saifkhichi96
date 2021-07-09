@@ -19,6 +19,7 @@
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimaryDark"
         app:title="@string/title_activity_library"
+        app:titleCentered="true"
         app:layout_scrollFlags="scroll"/>
 
   </com.google.android.material.appbar.AppBarLayout>

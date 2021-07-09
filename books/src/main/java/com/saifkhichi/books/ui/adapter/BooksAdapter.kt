@@ -1,17 +1,11 @@
 package com.saifkhichi.books.ui.adapter
 
-import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ImageView
+import android.widget.Filter
+import android.widget.Filterable
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
-import com.android.volley.Request
-import com.android.volley.toolbox.ImageRequest
-import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.Volley
-import com.bumptech.glide.Glide
 import com.google.android.material.textview.MaterialTextView
 import com.saifkhichi.books.R
 import com.saifkhichi.books.databinding.ViewBookBinding
@@ -19,12 +13,17 @@ import com.saifkhichi.books.databinding.ViewBookListBinding
 import com.saifkhichi.books.model.Book
 import com.saifkhichi.books.ui.holder.BookHolder
 import com.saifkhichi.books.ui.holder.BookListHolder
-import com.saifkhichi.storage.CloudFileStorage
-import kotlinx.coroutines.launch
-import java.io.ByteArrayOutputStream
 
-class BooksAdapter(private val context: AppCompatActivity, private val dataset: ArrayList<LibraryListItem<out Any>>) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class BooksAdapter(
+    private val context: AppCompatActivity,
+    private val dataset: ArrayList<LibraryListItem<out Any>>
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Filterable {
+
+    private var filteredDataset = ArrayList<LibraryListItem<out Any>>()
+
+    init {
+        filteredDataset = dataset
+    }
 
     private var onItemClicked: ((Book) -> Unit)? = null
 
@@ -85,7 +84,7 @@ class BooksAdapter(private val context: AppCompatActivity, private val dataset: 
      * @param position The position of new content in the dataset
      */
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when (val item = dataset[position]) {
+        when (val item = filteredDataset[position]) {
             is LibraryBook -> {
                 if (holder is BookListHolder) {
                     val books = item.value
@@ -128,65 +127,51 @@ class BooksAdapter(private val context: AppCompatActivity, private val dataset: 
     /**
      * Return the size of the item
      */
-    override fun getItemCount() = dataset.size
+    override fun getItemCount() = filteredDataset.size
 
     /**
      * Return the type of the item
      */
-    override fun getItemViewType(position: Int) = dataset[position].type
+    override fun getItemViewType(position: Int) = filteredDataset[position].type
 
-    private fun showBookCover(book: Book, imageView: ImageView, invalidate: Boolean = false) {
-        val bookStorage = CloudFileStorage(imageView.context, "library")
-        bookStorage.download(book.cover(), invalidate) { result ->
-            try {
-                Glide.with(imageView)
-                    .load(result.getOrNull()!!)
-                    .thumbnail()
-                    .placeholder(R.drawable.placeholder_book_cover)
-                    .error(R.drawable.placeholder_book_cover)
-                    .into(imageView)
-            } catch (ex: Exception) {
-                if (book.isbn13().isNotBlank()) {
-                    val queue = Volley.newRequestQueue(imageView.context)
-                    val url = "https://www.googleapis.com/books/v1/volumes?q=isbn:${book.isbn13()}"
-                    val jsonObjectRequest = JsonObjectRequest(
-                        Request.Method.GET, url, null,
-                        { response ->
-                            kotlin.runCatching {
-                                val coverUrl = response
-                                    .getJSONArray("items")
-                                    .getJSONObject(0)
-                                    .getJSONObject("volumeInfo")
-                                    .getJSONObject("imageLinks")
-                                    .getString("thumbnail")
-                                    .replace("http://", "https://")
-
-                                val imageRequest = ImageRequest(
-                                    coverUrl,
-                                    { response: Bitmap ->
-                                        val stream = ByteArrayOutputStream()
-                                        response.compress(Bitmap.CompressFormat.JPEG, 100, stream)
-                                        val byteArray: ByteArray = stream.toByteArray()
-                                        response.recycle()
-                                        context.lifecycleScope.launch {
-                                            val error = bookStorage.upload(book.cover(), byteArray).exceptionOrNull()
-                                            if (error == null) showBookCover(book, imageView, invalidate = true)
-                                        }
-                                    },
-                                    128,
-                                    256,
-                                    ImageView.ScaleType.CENTER_CROP,
-                                    Bitmap.Config.ARGB_8888,
-                                    {
-
-                                    }
-                                )
-
-                                queue.add(imageRequest)
+    override fun getFilter(): Filter {
+        return object : Filter() {
+            override fun performFiltering(constraint: CharSequence): FilterResults {
+                val results = FilterResults()
+                if (constraint.isNotEmpty()) {
+                    val filteredDataset = ArrayList<LibraryListItem<out Any>>()
+                    var lastCategory: SubCategoryName? = null
+                    for (item in dataset) {
+                        if (item is SubCategoryName) lastCategory = item
+                        else if (item is LibraryBook) {
+                            val books = item.value
+                            val filteredBooks = books.filter {
+                                it.isbn.equals(constraint.toString(), true) ||
+                                        it.isbn13().equals(constraint.toString(), true) ||
+                                        it.title.contains(constraint, true) ||
+                                        it.authors.contains(constraint, true)
                             }
-                        }, {})
-                    queue.add(jsonObjectRequest)
+
+                            if (filteredBooks.isNotEmpty()) {
+                                lastCategory?.let { filteredDataset.add(it) }
+
+                                val filteredItem = LibraryBook(filteredBooks)
+                                filteredDataset.add(filteredItem)
+                            }
+                        }
+                    }
+                    results.count = filteredDataset.size
+                    results.values = filteredDataset
+                } else {
+                    results.count = dataset.size
+                    results.values = dataset
                 }
+                return results
+            }
+
+            override fun publishResults(constraint: CharSequence, results: FilterResults) {
+                filteredDataset = results.values as ArrayList<LibraryListItem<out Any>>
+                notifyDataSetChanged()
             }
         }
     }

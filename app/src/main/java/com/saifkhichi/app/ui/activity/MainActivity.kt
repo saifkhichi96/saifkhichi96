@@ -9,6 +9,7 @@ import com.saifkhichi.app.R
 import com.saifkhichi.app.databinding.ActivityMainBinding
 import com.saifkhichi.app.payments.ui.activity.ClientsActivity
 import com.saifkhichi.books.ui.activity.BooksListActivity
+import com.saifkhichi.books.ui.activity.BooksListActivity.Companion.EXTRA_CATEGORY
 
 class MainActivity : AppCompatActivity() {
 
@@ -62,9 +63,10 @@ class MainActivity : AppCompatActivity() {
      * Opens the books activity.
      */
     private fun openLibrary(category: String) {
-        startActivity(Intent(this, BooksListActivity::class.java).apply {
-            putExtra("category", category)
-        })
+        val i = Intent(this, BooksListActivity::class.java)
+        i.putExtra(EXTRA_CATEGORY, category)
+
+        startActivity(i)
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     }
 
