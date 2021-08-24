@@ -24,6 +24,7 @@ class ThreadActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = ""
 
         val messageList = intent.getSerializableExtra(THREAD_KEY) as ArrayList<Message>? ?: return finish()
         val thread = Thread.fromList(messageList) ?: return finish()
@@ -31,7 +32,7 @@ class ThreadActivity : AppCompatActivity() {
         threadAdapter.setOnItemClickListener { replyTo(it) }
 
         binding.messagesList.adapter = threadAdapter
-
+        binding.threadSubject.text = thread.subject
     }
 
     private fun replyTo(message: Message) {
@@ -39,26 +40,34 @@ class ThreadActivity : AppCompatActivity() {
             data = Uri.parse("mailto:") // only email apps should handle this
             putExtra(Intent.EXTRA_EMAIL, arrayOf(message.email))
             putExtra(Intent.EXTRA_SUBJECT, "Your message on Saif's Portfolio: ${message.subject}")
-            putExtra(Intent.EXTRA_TEXT, "Hello ${message.name},\n" +
-                    "\n" +
-                    "Thank you for your message.\n" +
-                    "\n\n" +
-                    "Best Regards,\n" +
-                    "Saif Khan\n" +
-                    "\n\n\n" +
-                    "---\n" +
-                    "\n" +
-                    "On ${
-                        SimpleDateFormat("dd MMM, yyyy",
-                            Locale.getDefault()).format(message.timestamp)
-                    }, at ${
-                        SimpleDateFormat("HH:mm",
-                            Locale.getDefault()).format(message.timestamp)
-                    }, ${message.name} <${message.email}> wrote:\n\n" +
-                    message.message)
+            putExtra(
+                Intent.EXTRA_TEXT, "Hello ${message.name},\n" +
+                        "\n" +
+                        "Thank you for your message.\n" +
+                        "\n\n" +
+                        "Best Regards,\n" +
+                        "Saif Khan\n" +
+                        "\n\n\n" +
+                        "---\n" +
+                        "\n" +
+                        "On ${
+                            SimpleDateFormat(
+                                "dd MMM, yyyy",
+                                Locale.getDefault()
+                            ).format(message.timestamp)
+                        }, at ${
+                            SimpleDateFormat(
+                                "HH:mm",
+                                Locale.getDefault()
+                            ).format(message.timestamp)
+                        }, ${message.name} <${message.email}> wrote:\n\n" +
+                        message.message
+            )
         }
-        if (intent.resolveActivity(packageManager) != null) {
+        try {
             startActivity(intent)
+        } catch (ex: Exception) {
+            /* no-op */
         }
     }
 

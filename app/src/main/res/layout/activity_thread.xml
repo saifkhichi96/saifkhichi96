@@ -5,30 +5,46 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activity.InboxActivity">
+    tools:context=".ui.activity.ThreadActivity">
 
   <com.google.android.material.appbar.AppBarLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:background="?android:attr/colorBackground"
       app:elevation="0dp">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimaryDark"
         app:title="Conversation"
         app:layout_scrollFlags="scroll"/>
 
   </com.google.android.material.appbar.AppBarLayout>
 
-  <androidx.recyclerview.widget.RecyclerView
-      android:id="@+id/messages_list"
+  <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:paddingHorizontal="@dimen/activity_horizontal_margin"
-      android:paddingVertical="@dimen/activity_vertical_margin"
-      app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-      app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+      android:orientation="vertical"
+      app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <com.google.android.material.textview.MaterialTextView
+        style="@style/TextAppearance.MaterialComponents.Headline6"
+        android:id="@+id/thread_subject"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+        tools:text="@tools:sample/lorem"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/messages_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingHorizontal="@dimen/activity_horizontal_margin"
+        android:paddingVertical="@dimen/activity_vertical_margin"
+        android:overScrollMode="never"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+  </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

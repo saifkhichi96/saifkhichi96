@@ -9,9 +9,19 @@ package com.saifkhichi.app.model
 class Inbox : ArrayList<Message>() {
 
     fun toThreads(): List<Thread> {
-        return this.groupBy { it.email }.map { map ->
-            Thread(map.key).apply { addAll(map.value) }
-        }
+        val threads = ArrayList<Thread>()
+        this.groupBy { it.email }
+            .forEach { (email, list) ->
+                list.groupBy { it.subject.lowercase() }.values.forEach { messages ->
+                    messages.firstOrNull()?.let {
+                        val thread = Thread(it.name, email, it.subject)
+                        thread.addAll(messages)
+                        threads.add(thread)
+                    }
+                }
+            }
+
+        return threads
     }
 
 }

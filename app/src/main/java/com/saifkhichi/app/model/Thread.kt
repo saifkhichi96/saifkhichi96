@@ -6,14 +6,16 @@ package com.saifkhichi.app.model
  * @author saifkhichi96
  * @since 1.0.0
  */
-data class Thread(
+data class Thread constructor(
+    var senderName: String = "",
     var senderEmail: String = "",
+    var subject: String = "",
 ) : ArrayList<Message>() {
 
     companion object {
         fun fromList(list: List<Message>): Thread? {
-            return list.firstOrNull()?.email?.let {
-                Thread(it).apply { addAll(list) }
+            return list.firstOrNull()?.let {
+                Thread(it.name, it.email, it.subject).apply { addAll(list) }
             }
         }
     }

@@ -6,8 +6,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.saifkhichi.app.databinding.ViewMessageBinding
 import com.saifkhichi.app.model.Message
 import com.saifkhichi.app.model.Thread
+import com.saifkhichi.app.ui.adapter.InboxAdapter.Companion.convertToColor
 import com.saifkhichi.app.ui.holder.MessageHolder
-import java.text.SimpleDateFormat
+import java.text.DateFormat
 import java.util.*
 
 
@@ -28,7 +29,8 @@ class ThreadAdapter(private val thread: Thread) : RecyclerView.Adapter<MessageHo
      * @return A new ViewHolder that holds a View of the given view type.
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageHolder {
-        val view = ViewMessageBinding.inflate(LayoutInflater.from(parent.context),
+        val view = ViewMessageBinding.inflate(
+            LayoutInflater.from(parent.context),
             parent,
             false
         )
@@ -45,12 +47,20 @@ class ThreadAdapter(private val thread: Thread) : RecyclerView.Adapter<MessageHo
      * @param position The position of new content in the dataset
      */
     override fun onBindViewHolder(holder: MessageHolder, position: Int) {
-        holder.messageContent.text = thread[position].message
-        holder.messageSubject.text = thread[position].subject
-        holder.messageTimestamp.text =
-            SimpleDateFormat("dd/MM/yyyy hh:mm", Locale.getDefault()).format(thread[position].timestamp)
+        val message = thread[position]
+        holder.senderName.text = message.email
+        holder.senderIcon.text = message.email.firstOrNull().toString().uppercase()
+        holder.senderIcon.setBackgroundColor(convertToColor(holder.itemView.context, message.email))
 
-        holder.message = thread[position]
+        holder.messageContents.text = message.message
+        holder.messageRecipient.text = "to me"
+        holder.messageTimestamp.text = DateFormat.getDateTimeInstance(
+            DateFormat.SHORT,
+            DateFormat.SHORT,
+            Locale.getDefault()
+        ).format(message.timestamp)
+
+        holder.message = message
         holder.onItemClicked = onItemClicked
     }
 
