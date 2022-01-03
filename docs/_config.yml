@@ -1,0 +1,56 @@
+remote_theme:                saifkhichi96/simple-material
+title:                       API Documentation | Saif Khan
+url:                         https://docs.saifkhichi.com/
+
+favicon:                     https://www.saifkhichi.com/favicon.ico
+logo:                        https://www.saifkhichi.com/assets/images/logo.png
+
+google_site_verification:    a756de613e3e91e14743d6a24b29a35c
+google_adsense:              ca-pub-4333877529904422
+
+
+# -----------------------------------------------------------------------------
+# Site Navigation
+# -----------------------------------------------------------------------------
+menu_main:
+  - title:                   Home
+    icon:                    roofing
+    url:                     /
+  - title:                   About Me
+    icon:                    contact_page
+    url:                     /resume/
+  - title:                   My Services
+    icon:                    design_services
+    url:                     /services/
+  - title:                   Coding Projects
+    icon:                    cases
+    url:                     /projects/
+  - title:                   Research Work
+    icon:                    science
+    url:                     /research/
+  - title:
+  - title:                   Contact
+    url:                     /contact/
+
+menu_social:
+  email:                     saifkhichi96@gmail.com
+  github:                    saifkhichi96
+  linkedin:                  saifkhichi96
+  stackoverflow:             4690466
+  youtube:                   /channel/UCj4yPuKHi9pZ9WbKbfh5MEQ
+  playconsole:               7722501168179136426
+
+navigation_footer:           true
+breadcrubms:                 true
+
+defaults:
+  - scope:
+      path: ''
+    values:
+      license:
+        content:
+          name: Creative Commons Attribution 4.0 International License
+          url: https://creativecommons.org/licenses/by/4.0/
+        code:
+          name: MIT License
+          url: /LICENSE/
