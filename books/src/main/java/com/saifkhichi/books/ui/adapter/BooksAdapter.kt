@@ -5,18 +5,22 @@ import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.textview.MaterialTextView
 import com.saifkhichi.books.R
-import com.saifkhichi.books.databinding.ViewBookBinding
+import com.saifkhichi.books.databinding.ViewBookCategoryBinding
 import com.saifkhichi.books.databinding.ViewBookListBinding
 import com.saifkhichi.books.model.Book
-import com.saifkhichi.books.ui.holder.BookHolder
+import com.saifkhichi.books.ui.holder.BookCategoryHolder
 import com.saifkhichi.books.ui.holder.BookListHolder
+import kotlin.math.roundToInt
+
 
 class BooksAdapter(
     private val context: AppCompatActivity,
-    private val dataset: ArrayList<LibraryListItem<out Any>>
+    private val dataset: ArrayList<LibraryListItem<out Any>>,
+    private val grid: Boolean = false
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Filterable {
 
     private var filteredDataset = ArrayList<LibraryListItem<out Any>>()
@@ -26,9 +30,14 @@ class BooksAdapter(
     }
 
     private var onItemClicked: ((Book) -> Unit)? = null
+    private var onCategoryClicked: ((String) -> Unit)? = null
 
     fun setOnItemClickListener(listener: ((Book) -> Unit)) {
         onItemClicked = listener
+    }
+
+    fun setOnCategoryClickListener(listener: (String) -> Unit) {
+        onCategoryClicked = listener
     }
 
     /**
@@ -42,26 +51,20 @@ class BooksAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             TYPE_CATEGORY -> {
-                val view = MaterialTextView(parent.context)
-                view.setPadding(
-                    parent.context.resources.getDimension(R.dimen.activity_horizontal_margin).toInt(),
-                    0,
-                    0,
-                    0
+                val view = ViewBookCategoryBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
                 )
-                view.setTextAppearance(R.style.TextAppearance_MaterialComponents_Headline6)
-                object : RecyclerView.ViewHolder(view) {}
+                BookCategoryHolder(view)
             }
             TYPE_SUB_CATEGORY -> {
-                val view = MaterialTextView(parent.context)
-                view.setPadding(
-                    parent.context.resources.getDimension(R.dimen.activity_horizontal_margin).toInt(),
-                    0,
-                    0,
-                    0
+                val view = ViewBookCategoryBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
                 )
-                view.setTextAppearance(R.style.TextAppearance_MaterialComponents_Headline6)
-                object : RecyclerView.ViewHolder(view) {}
+                BookCategoryHolder(view)
             }
             else -> {
                 val view = ViewBookListBinding.inflate(
@@ -87,38 +90,51 @@ class BooksAdapter(
         when (val item = filteredDataset[position]) {
             is LibraryBook -> {
                 if (holder is BookListHolder) {
-                    val books = item.value
-                    holder.bookList.removeAllViews()
-                    books.forEach { book ->
-                        val view = ViewBookBinding.inflate(
-                            LayoutInflater.from(holder.bookList.context),
-                            holder.bookList,
-                            false
-                        )
-                        holder.bookList.addView(view.root)
+                    val colWidthCalc = when {
+                        grid -> {
+                            val metrics = context.resources.displayMetrics
+                            val padding = context.resources.getDimension(R.dimen.book_spacing)
+                            val screenWidth = metrics.widthPixels - 2 * padding
+                            val colWidthPref = context.resources.getDimension(R.dimen.book_width) + 2 * padding
+                            val columnsCount = (screenWidth / colWidthPref).roundToInt()
+                            holder.bookList.layoutManager = GridLayoutManager(context, columnsCount)
 
-                        val bookHolder = BookHolder(view)
-                        book.getBookCover(context, bookHolder.bookCover)
-                        bookHolder.bookTitle.text = book.title
-                        bookHolder.bookAuthors.text = book.authors
-
-                        bookHolder.book = book
-                        bookHolder.onItemClicked = onItemClicked
+                            (screenWidth / columnsCount - 2 * padding).roundToInt()
+                        }
+                        else -> {
+                            holder.bookList.layoutManager =
+                                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                            0
+                        }
                     }
+
+                    val adapter = BookAdapter(
+                        context,
+                        item.value
+                            .sortedBy { it.title }
+                            .sortedBy { it.publishedOn }
+                            .sortedBy { it.authors },
+                        colWidthCalc
+                    )
+                    adapter.setOnItemClickListener { onItemClicked?.invoke(it) }
+                    holder.bookList.adapter = adapter
+                    adapter.notifyDataSetChanged()
                 }
             }
             is CategoryName -> {
-                val textView = holder.itemView
-                if (textView is MaterialTextView) {
+                if (holder is BookCategoryHolder) {
                     val category = item.value
-                    textView.text = category
+                    holder.category = category
+                    holder.bookCategory.text = category
+                    holder.onItemClicked = onCategoryClicked
                 }
             }
             is SubCategoryName -> {
-                val textView = holder.itemView
-                if (textView is MaterialTextView) {
+                if (holder is BookCategoryHolder) {
                     val subCategory = item.value
-                    textView.text = subCategory
+                    holder.category = subCategory
+                    holder.bookCategory.text = subCategory
+                    holder.onItemClicked = onCategoryClicked
                 }
             }
         }

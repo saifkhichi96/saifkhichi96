@@ -1,56 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="128dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+    android:layout_marginHorizontal="@dimen/book_spacing"
+    android:layout_marginVertical="@dimen/book_spacing"
     android:orientation="vertical">
 
-  <com.google.android.material.card.MaterialCardView
-      android:layout_width="128dp"
-      android:layout_height="196dp"
-      app:cardCornerRadius="8dp"
-      app:cardElevation="0dp">
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="0dp">
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/book_cover"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        app:srcCompat="@drawable/placeholder_book_cover"/>
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/book_cover"
+            android:layout_width="@dimen/book_width"
+            android:layout_height="@dimen/book_height"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/placeholder_book_cover" />
 
-  </com.google.android.material.card.MaterialCardView>
+    </com.google.android.material.card.MaterialCardView>
 
-  <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:gravity="center_horizontal"
-      android:layout_marginTop="8dp"
-      android:orientation="vertical">
-
-    <com.google.android.material.textview.MaterialTextView
-        style="@style/TextAppearance.MaterialComponents.Caption"
-        android:id="@+id/authors"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:maxLines="1"
-        android:textSize="12sp"
-        tools:ignore="SmallSp"/>
-
-    <com.google.android.material.textview.MaterialTextView
-        style="@style/TextAppearance.MaterialComponents.Body2"
-        android:id="@+id/title"
-        android:layout_width="match_parent"
-        android:layout_height="32sp"
+        android:layout_marginTop="4dp"
         android:gravity="center_horizontal"
-        android:breakStrategy="high_quality"
-        android:maxLines="2"
-        android:textColor="@android:color/black"
-        android:textSize="13sp"
-        android:textStyle="bold"/>
+        android:orientation="vertical">
 
-  </LinearLayout>
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/authors"
+            style="@style/TextAppearance.MaterialComponents.Caption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:maxLines="1"
+            android:textSize="12sp"
+            tools:ignore="SmallSp"
+            tools:text="@tools:sample/lorem" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/title"
+            style="@style/TextAppearance.MaterialComponents.Body2"
+            android:layout_width="match_parent"
+            android:layout_height="34dp"
+            android:breakStrategy="high_quality"
+            android:gravity="center_horizontal"
+            android:maxLines="2"
+            android:textColor="@android:color/black"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            tools:text="@tools:sample/lorem/random" />
+
+    </LinearLayout>
 
 </LinearLayout>

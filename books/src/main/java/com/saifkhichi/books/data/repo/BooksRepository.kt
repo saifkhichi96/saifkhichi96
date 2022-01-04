@@ -1,8 +1,8 @@
 package com.saifkhichi.books.data.repo
 
 import com.orhanobut.hawk.Hawk
-import com.saifkhichi.books.model.Book
 import com.saifkhichi.books.data.source.BooksDataSource
+import com.saifkhichi.books.model.Book
 import javax.inject.Inject
 
 /**
@@ -17,7 +17,7 @@ class BooksRepository @Inject constructor(var dataSource: BooksDataSource) {
     /**
      * In-memory cache of messages
      */
-    var books: List<Book>? = null
+    var books: ArrayList<Book>? = null
         private set
 
     init {
@@ -27,13 +27,49 @@ class BooksRepository @Inject constructor(var dataSource: BooksDataSource) {
     suspend fun listAll(): Result<List<Book>> {
         val result = dataSource.listAll()
         result.getOrNull()?.let {
-            setLibraryData(it)
+            setLibraryData(it as ArrayList<Book>)
         }
 
         return result
     }
 
-    private fun setLibraryData(books: List<Book>) {
+    fun create() = dataSource.create()
+
+    /**
+     * Updates an existing book.
+     */
+    suspend fun update(book: Book): Boolean {
+        val oldBook = this.books?.find { it.id == book.id }
+        this.books?.remove(oldBook)
+        this.books?.add(book)
+        return dataSource.update(book)
+    }
+
+    fun getCategories(): List<String> {
+        return this.books.orEmpty()
+            .map { it.category }
+            .distinct()
+            .sorted()
+    }
+
+    fun getGenres(category: String): List<String> {
+        return this.books.orEmpty()
+            .filter { it.category.equals(category, ignoreCase = true) }
+            .map { it.subCategory }
+            .distinct()
+            .sorted()
+    }
+
+    suspend fun renameGenre(category: String, oldGenre: String, newGenre: String) {
+        this.books.orEmpty()
+            .filter { it.category == category && it.subCategory == oldGenre }
+            .forEach {
+                it.subCategory = newGenre
+                update(it)
+            }
+    }
+
+    private fun setLibraryData(books: ArrayList<Book>) {
         this.books = books
         Hawk.put(KEY, books)
     }

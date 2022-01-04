@@ -23,6 +23,22 @@ class BooksDataSource @Inject constructor(var db: RemoteDatabase) {
         db.createChild(root, childKey, book)
     }
 
+    fun create() = db.createEmptyChild(root)
+
+    suspend fun get(bookId: String): Book? {
+        return db.getOrNull("$root/${bookId}")
+    }
+
+    /**
+     * Updates an existing book.
+     */
+    suspend fun update(book: Book): Boolean {
+        if (book.id.isBlank()) return false
+
+        db.update("$root/${book.id}", book)
+        return true
+    }
+
     /**
      * Gets a list of all clients.
      */

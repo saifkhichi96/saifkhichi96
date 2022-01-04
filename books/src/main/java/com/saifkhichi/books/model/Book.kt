@@ -29,7 +29,7 @@ data class Book(
     var publishedBy: String = "",
     var publishedOn: Int = 0,
     var pageCount: Int = 0,
-    var format: String = "",
+    var format: Format = Format.Other,
     var lang: String = "",
     var excerpt: String = "",
 ) : Serializable {
@@ -162,12 +162,14 @@ data class Book(
         queue.add(imageRequest)
     }
 
-    private fun Bitmap.toByteArray(): ByteArray {
-        val stream = ByteArrayOutputStream()
-        this.compress(Bitmap.CompressFormat.JPEG, 100, stream)
-        val byteArray: ByteArray = stream.toByteArray()
-        this.recycle()
-        return byteArray
+    companion object {
+        fun Bitmap.toByteArray(): ByteArray {
+            val stream = ByteArrayOutputStream()
+            this.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+            val byteArray: ByteArray = stream.toByteArray()
+            this.recycle()
+            return byteArray
+        }
     }
 
 }

@@ -1,18 +1,20 @@
 package com.saifkhichi.books.ui.activity
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.google.android.material.snackbar.Snackbar
 import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeEncoder
 import com.saifkhichi.books.R
+import com.saifkhichi.books.data.source.BooksDataSource
 import com.saifkhichi.books.databinding.ActivityBookDetailsBinding
 import com.saifkhichi.books.model.Book
 import com.saifkhichi.storage.CloudFileStorage
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
 class BookDetailsActivity : AppCompatActivity() {
@@ -22,50 +24,65 @@ class BookDetailsActivity : AppCompatActivity() {
     private lateinit var bookStorage: CloudFileStorage
     private lateinit var book: Book
 
+    @Inject
+    lateinit var repo: BooksDataSource
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityBookDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        bookStorage = CloudFileStorage(this, "library")
-        book = intent.getSerializableExtra(BOOK_KEY) as Book? ?: return finish()
-        updateUI()
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.title = ""
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_action_close)
 
-        binding.bookCover.setOnClickListener { pickImage() }
+        bookStorage = CloudFileStorage(this, "library")
+        book = intent.getSerializableExtra(EXTRA_BOOK) as Book? ?: return finish()
+        updateUI()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == RESULT_OK && data != null && data.data != null) {
-            try {
-                when (requestCode) {
-                    PICK_COVER_REQUEST -> data.data?.apply { updateBookCover(this) }
+        when (requestCode) {
+            RC_EDIT_BOOK -> if (resultCode == RESULT_OK) {
+                lifecycleScope.launch {
+                    book = repo.get(book.id) ?: book
+                    updateUI()
                 }
-            } catch (ignored: Exception) {
-
             }
         }
     }
 
-    private fun updateBookCover(coverImage: Uri) {
-        lifecycleScope.launch {
-            try {
-                val error = bookStorage.upload(book.cover(), coverImage).exceptionOrNull()
-                if (error != null) throw error
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_book_details, menu)
+        return true
+    }
 
-                book.getBookCover(this@BookDetailsActivity, binding.bookCover, true)
-            } catch (ex: Exception) {
-                Snackbar.make(
-                    binding.root,
-                    getString(R.string.book_cover_error),
-                    Snackbar.LENGTH_LONG
-                ).show()
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_edit -> {
+                editBook()
+                true
             }
+            else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
+
+    private fun editBook() {
+        val i = Intent(this, EditBookActivity::class.java)
+        i.putExtra(EXTRA_BOOK, book)
+
+        startActivityForResult(i, RC_EDIT_BOOK)
     }
 
     private fun updateUI() {
-        book.getBookCover(this@BookDetailsActivity, binding.bookCover)
+        book.getBookCover(this, binding.bookCover)
         binding.bookTitle.text = book.title
         binding.bookAuthors.text = book.authors
 
@@ -74,39 +91,29 @@ class BookDetailsActivity : AppCompatActivity() {
         )
 
         binding.bookPages.text = book.pageCount.takeIf { it > 0 }?.toString() ?: getString(R.string.value_none)
-        binding.bookFormat.text = book.format.ifBlank { getString(R.string.value_none) }
+        binding.bookFormat.text = book.format.toString().ifBlank { getString(R.string.value_none) }
         binding.bookLanguage.text = book.lang.ifBlank { getString(R.string.value_none) }
 
         binding.bookPublisher.text = getString(R.string.book_publisher).format(
-            book.publishedBy.ifBlank { getString(R.string.book_publisher_none) },
+            book.publishedBy,
             if (book.publishedOn > 0) getString(R.string.book_publish_year).format(book.publishedOn) else ""
         )
 
-        binding.bookIsbn.text = getString(R.string.book_isbn).format(
-            book.isbn.ifBlank { getString(R.string.value_none) }
-        )
-
+        binding.bookIsbn.text = book.isbn
         binding.bookDescription.text = book.excerpt.ifBlank { getString(R.string.book_description_none) }
 
         try {
             val barcodeEncoder = BarcodeEncoder()
-            val bitmap = barcodeEncoder.encodeBitmap(book.isbn13(), BarcodeFormat.EAN_13, 512, 256)
+            val bitmap = barcodeEncoder.encodeBitmap(book.isbn13(), BarcodeFormat.EAN_13, 512, 128)
             binding.bookBarcode.setImageBitmap(bitmap)
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
 
-    private fun pickImage() {
-        val intent = Intent()
-        intent.type = "image/*"
-        intent.action = Intent.ACTION_GET_CONTENT
-        startActivityForResult(Intent.createChooser(intent, getString(R.string.book_cover_select)), PICK_COVER_REQUEST)
-    }
-
     companion object {
-        const val BOOK_KEY = "book"
-        const val PICK_COVER_REQUEST = 100
+        const val EXTRA_BOOK = "book"
+        const val RC_EDIT_BOOK = 100
     }
 
 }

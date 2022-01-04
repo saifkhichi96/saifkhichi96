@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools"
-          package="com.saifkhichi.books">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.saifkhichi.books">
 
-  <uses-permission android:name="android.permission.INTERNET"/>
-  <uses-sdk tools:overrideLibrary="com.google.zxing.client.android"/>
+    <uses-sdk tools:overrideLibrary="com.google.zxing.client.android" />
 
-  <application
-      android:allowBackup="true"
-      android:label="@string/app_name"
-      android:supportsRtl="true">
+    <uses-permission android:name="android.permission.INTERNET" />
 
-    <activity android:name="com.saifkhichi.books.ui.activity.BooksListActivity"/>
+    <application
+        android:allowBackup="true"
+        android:label="@string/app_name"
+        android:supportsRtl="true">
 
-    <activity android:name="com.saifkhichi.books.ui.activity.BookDetailsActivity"
-              android:parentActivityName="com.saifkhichi.books.ui.activity.BooksListActivity"
-              android:hardwareAccelerated="true"/>
+        <activity android:name=".ui.activity.BooksListActivity" />
+
+        <activity android:name=".ui.activity.EditBookActivity" />
+
+        <activity
+            android:name=".ui.activity.BookDetailsActivity"
+            android:hardwareAccelerated="true" />
 
   </application>
 

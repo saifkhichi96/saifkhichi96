@@ -3,6 +3,7 @@ package com.saifkhichi.books.ui.activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -65,11 +66,13 @@ class BooksListActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         categoryFilter = intent.getStringExtra(EXTRA_CATEGORY)
-        subCategoryFilter = intent.getStringExtra(EXTRA_CATEGORY)
+        subCategoryFilter = intent.getStringExtra(EXTRA_SUBCATEGORY)
         supportActionBar?.title = subCategoryFilter ?: categoryFilter ?: getString(R.string.title_activity_library)
+        if (subCategoryFilter == "Uncategorized") subCategoryFilter = ""
 
-        booksAdapter = BooksAdapter(this, library)
+        booksAdapter = BooksAdapter(this, library, grid = subCategoryFilter != null)
         booksAdapter.setOnItemClickListener { openBookDetails(it) }
+        booksAdapter.setOnCategoryClickListener { openLibrary(it) }
 
         binding.booksList.adapter = booksAdapter
         viewModel.books.observe(this, refreshResultObserver)
@@ -102,6 +105,18 @@ class BooksListActivity : AppCompatActivity() {
         return true
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_add -> {
+                val i = Intent(this, EditBookActivity::class.java)
+                startActivity(i)
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
     private fun onSearchRequested(query: String): Boolean {
         booksAdapter.filter.filter(query)
         return true
@@ -112,6 +127,18 @@ class BooksListActivity : AppCompatActivity() {
         i.putExtra(EXTRA_BOOK, book)
 
         startActivity(i)
+    }
+
+    /**
+     * Opens books activity.
+     */
+    private fun openLibrary(subCategory: String) {
+        val i = Intent(this, BooksListActivity::class.java)
+        i.putExtra(EXTRA_CATEGORY, categoryFilter)
+        i.putExtra(EXTRA_SUBCATEGORY, subCategory)
+
+        startActivity(i)
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     }
 
     /**
@@ -130,21 +157,32 @@ class BooksListActivity : AppCompatActivity() {
     private fun onRefreshed(data: List<Book>) {
         library.clear()
         val categories = data.groupBy { it.category }.toSortedMap()
-        categories.forEach { group ->
-            val category = group.key
-            if (categoryFilter == null || category == categoryFilter) {
-                if (category != categoryFilter) library += BooksAdapter.CategoryName(category)
+        if (categoryFilter != null && subCategoryFilter != null) {
+            categories[categoryFilter]
+                ?.filter { it.subCategory == subCategoryFilter }
+                ?.let { books ->
+                    library += BooksAdapter.LibraryBook(books)
+                }
+        } else {
+            categories.forEach { group ->
+                val category = group.key
+                if (categoryFilter == null || category == categoryFilter) {
+                    if (category != categoryFilter) library += BooksAdapter.CategoryName(category)
 
-                val subCategories = group.value.groupBy { it.subCategory }.toSortedMap()
-                subCategories.forEach { item ->
-                    val subCategory = item.key.ifBlank { getString(R.string.book_category_none) }
-                    library += BooksAdapter.SubCategoryName(
-                        if (category == categoryFilter) subCategory
-                        else getString(R.string.book_category).format(category, subCategory)
-                    )
+                    val subCategories = group.value.groupBy { it.subCategory }.toSortedMap()
+                    subCategories.forEach { item ->
+                        val subCategory = item.key.ifBlank { getString(R.string.book_category_none) }
+                        library += BooksAdapter.SubCategoryName(
+                            if (category == categoryFilter) subCategory
+                            else getString(R.string.book_category).format(category, subCategory)
+                        )
 
-                    val subCategoryBooks = item.value.sortedBy { it.sortTitle }
-                    library += BooksAdapter.LibraryBook(subCategoryBooks)
+                        val subCategoryBooks = item.value
+                            .sortedBy { it.title }
+                            .sortedBy { it.publishedOn }
+                            .sortedBy { it.authors }
+                        library += BooksAdapter.LibraryBook(subCategoryBooks)
+                    }
                 }
             }
         }
