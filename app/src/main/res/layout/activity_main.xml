@@ -1,188 +1,187 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.activity.MainActivity">
 
-  <com.google.android.material.appbar.AppBarLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:background="@android:color/transparent"
-      app:elevation="0dp">
-
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar"
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:title="@string/greeting"
-        app:subtitle="@string/name"
-        app:layout_scrollFlags="noScroll"/>
+        android:background="@android:color/transparent"
+        app:elevation="0dp">
 
-  </com.google.android.material.appbar.AppBarLayout>
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_scrollFlags="noScroll"
+            app:subtitle="@string/name"
+            app:title="@string/greeting" />
 
-  <com.google.android.material.imageview.ShapeableImageView
-      android:layout_width="128dp"
-      android:layout_height="128dp"
-      android:layout_marginTop="?actionBarSize"
-      android:layout_marginEnd="@dimen/activity_horizontal_margin"
-      android:layout_gravity="top|end"
-      app:srcCompat="@drawable/product_logo_144dp"/>
+    </com.google.android.material.appbar.AppBarLayout>
 
-  <androidx.core.widget.NestedScrollView
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    <com.google.android.material.imageview.ShapeableImageView
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:layout_gravity="top|end"
+        android:layout_marginTop="?actionBarSize"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        app:srcCompat="@drawable/product_logo_144dp" />
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingHorizontal="@dimen/activity_horizontal_margin"
-        android:orientation="vertical">
-
-      <com.google.android.material.textview.MaterialTextView
-          style="@style/TextAppearance.MaterialComponents.Subtitle2"
-          android:id="@+id/tagline"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginEnd="128dp"
-          android:text="@string/tagline"/>
-
-      <com.google.android.material.textview.MaterialTextView
-          style="@style/TextAppearance.MaterialComponents.Headline6"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="@dimen/activity_vertical_margin"
-          android:text="@string/label_books"/>
-
-      <HorizontalScrollView
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/activity_horizontal_margin">
 
-          <com.google.android.material.button.MaterialButton
-              android:id="@+id/fiction_button"
-              style="@style/App.Widget.MenuItem.HorizontalScrolling"
-              android:text="@string/book_category_fiction"
-              android:textColor="#ED634C"
-              app:icon="@drawable/ic_fiction"/>
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tagline"
+                style="@style/TextAppearance.Material3.TitleSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="128dp"
+                android:text="@string/tagline" />
 
-          <com.google.android.material.button.MaterialButton
-              android:id="@+id/nonfiction_button"
-              style="@style/App.Widget.MenuItem.HorizontalScrolling"
-              android:text="@string/book_category_nonfiction"
-              android:textColor="#ED634C"
-              app:icon="@drawable/ic_nonfiction"/>
+            <com.google.android.material.textview.MaterialTextView
+                style="@style/TextAppearance.Material3.HeadlineSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:text="@string/label_books" />
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/fiction_button"
+                        style="@style/App.Widget.MenuItem.HorizontalScrolling"
+                        android:text="@string/book_category_fiction"
+                        android:textColor="#ED634C"
+                        app:icon="@drawable/ic_fiction" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/nonfiction_button"
+                        style="@style/App.Widget.MenuItem.HorizontalScrolling"
+                        android:text="@string/book_category_nonfiction"
+                        android:textColor="#ED634C"
+                        app:icon="@drawable/ic_nonfiction" />
+
+                </LinearLayout>
+
+            </HorizontalScrollView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="@style/TextAppearance.Material3.HeadlineSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_projects" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/projects_button"
+                    style="@style/Widget.Material3.Button.TextButton"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="-32dp"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:padding="4dp"
+                    app:cornerRadius="16dp"
+                    app:icon="@drawable/ic_more"
+                    app:iconSize="24dp" />
+
+            </LinearLayout>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:cardBackgroundColor="?attr/colorSecondaryContainer"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:contentPadding="16dp"
+                app:strokeColor="@android:color/transparent">
+
+                <ListView
+                    android:id="@+id/projects_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:id="@+id/projects_empty"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="128dp"
+                        android:scaleType="centerInside"
+                        app:srcCompat="@drawable/ic_projects_empty" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        style="@style/TextAppearance.Material3.LabelSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/label_projects_none"
+                        android:textColor="?attr/colorOnSecondaryContainer"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginStart="-8dp"
+                android:layout_marginEnd="-8dp"
+                android:columnCount="3"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/activity_vertical_margin">
+
+                <com.google.android.material.button.MaterialButton
+                    style="@style/App.Widget.MenuItem"
+                    android:text="@string/label_art"
+                    app:icon="@drawable/ic_art" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/clients_button"
+                    style="@style/App.Widget.MenuItem"
+                    android:text="@string/label_clients"
+                    app:icon="@drawable/ic_clients" />
+
+                <com.google.android.material.button.MaterialButton
+                    style="@style/App.Widget.MenuItem"
+                    android:text="@string/label_work"
+                    app:icon="@drawable/ic_work" />
+
+            </GridLayout>
 
         </LinearLayout>
 
-      </HorizontalScrollView>
-
-      <LinearLayout
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="@dimen/activity_vertical_margin"
-          android:gravity="center_vertical"
-          android:orientation="horizontal">
-
-        <com.google.android.material.textview.MaterialTextView
-            style="@style/TextAppearance.MaterialComponents.Headline6"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/label_projects"/>
-
-        <com.google.android.material.button.MaterialButton
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:id="@+id/projects_button"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginStart="-32dp"
-            android:minWidth="0dp"
-            android:minHeight="0dp"
-            android:padding="4dp"
-            app:cornerRadius="16dp"
-            app:icon="@drawable/ic_more"
-            app:iconSize="24dp"
-            app:iconTint="@android:color/black"
-            app:rippleColor="?attr/colorPrimary"/>
-
-      </LinearLayout>
-
-      <com.google.android.material.card.MaterialCardView
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="8dp"
-          app:cardBackgroundColor="?attr/colorPrimary"
-          app:cardElevation="0dp"
-          app:cardCornerRadius="16dp"
-          app:contentPadding="16dp">
-
-        <ListView
-            android:id="@+id/projects_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <LinearLayout
-            android:id="@+id/projects_empty"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="vertical">
-
-          <androidx.appcompat.widget.AppCompatImageView
-              android:layout_width="match_parent"
-              android:layout_height="128dp"
-              android:scaleType="centerInside"
-              app:srcCompat="@drawable/ic_projects_empty"/>
-
-          <com.google.android.material.textview.MaterialTextView
-              style="@style/TextAppearance.MaterialComponents.Caption"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_marginTop="4dp"
-              android:text="@string/label_projects_none"
-              android:textSize="12sp"/>
-
-        </LinearLayout>
-
-      </com.google.android.material.card.MaterialCardView>
-
-      <GridLayout
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:columnCount="3"
-          android:layout_gravity="start"
-          android:layout_marginStart="-8dp"
-          android:layout_marginEnd="-8dp"
-          android:paddingTop="@dimen/activity_vertical_margin"
-          android:orientation="horizontal">
-
-        <com.google.android.material.button.MaterialButton
-            style="@style/App.Widget.MenuItem"
-            android:text="@string/label_art"
-            app:icon="@drawable/ic_art"/>
-
-        <com.google.android.material.button.MaterialButton
-            style="@style/App.Widget.MenuItem"
-            android:id="@+id/clients_button"
-            android:text="@string/label_clients"
-            app:icon="@drawable/ic_clients"/>
-
-        <com.google.android.material.button.MaterialButton
-            style="@style/App.Widget.MenuItem"
-            android:text="@string/label_work"
-            app:icon="@drawable/ic_work"/>
-
-      </GridLayout>
-
-    </LinearLayout>
-
-  </androidx.core.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

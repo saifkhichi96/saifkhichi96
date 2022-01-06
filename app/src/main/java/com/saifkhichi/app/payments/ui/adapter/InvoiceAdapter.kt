@@ -48,6 +48,7 @@ class InvoiceAdapter(private val dataSet: List<Invoice>) :
         holder.item = item
         holder.text1.text = "[${item.status.uppercase()}] #${item.number}"
         holder.text2.text = "${item.currency.uppercase()} ${item.amountDue/100} · ${item.description}"
+        holder.icon.visibility = ViewGroup.GONE
 
         holder.onItemClicked = onItemClicked
     }

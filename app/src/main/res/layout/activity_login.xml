@@ -1,80 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingVertical="@dimen/activity_vertical_margin"
     android:paddingHorizontal="@dimen/activity_horizontal_margin"
+    android:paddingVertical="@dimen/activity_vertical_margin"
     tools:context=".ui.activity.LoginActivity">
 
-  <androidx.appcompat.widget.AppCompatImageView
-      android:layout_width="144dp"
-      android:layout_height="144dp"
-      android:layout_gravity="center"
-      app:srcCompat="@drawable/product_logo_144dp"/>
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="144dp"
+        android:layout_height="144dp"
+        android:layout_gravity="center"
+        app:srcCompat="@drawable/product_logo_144dp" />
 
-  <com.google.android.material.textview.MaterialTextView
-      style="@style/TextAppearance.MaterialComponents.Headline6"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_gravity="center"
-      android:text="@string/app_name"/>
+    <com.google.android.material.textview.MaterialTextView
+        style="@style/TextAppearance.Material3.HeadlineSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/app_name" />
 
-  <com.google.android.material.textfield.TextInputLayout
-      style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="@dimen/activity_vertical_margin"
-      android:hint="@string/prompt_email">
-
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/emailField"
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
-        android:selectAllOnFocus="true"/>
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:hint="@string/prompt_email">
 
-  </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/emailField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:selectAllOnFocus="true" />
 
-  <com.google.android.material.textfield.TextInputLayout
-      style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="8dp"
-      android:hint="@string/prompt_password">
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/passwordField"
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:imeActionLabel="@string/action_sign_in"
-        android:imeOptions="actionDone"
-        android:inputType="textPassword"/>
+        android:layout_marginTop="8dp"
+        android:hint="@string/prompt_password">
 
-  </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/passwordField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeActionLabel="@string/action_sign_in"
+            android:imeOptions="actionDone"
+            android:inputType="textPassword" />
 
-  <com.google.android.material.button.MaterialButton
-      style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
-      android:id="@+id/signInButton"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="8dp"
-      android:layout_gravity="end"
-      android:text="@string/action_sign_in"
-      android:textColor="?attr/colorPrimary"
-      app:backgroundTint="?attr/colorAccent"
-      app:cornerRadius="16dp"/>
+    </com.google.android.material.textfield.TextInputLayout>
 
-  <ProgressBar
-      android:id="@+id/loading"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="8dp"
-      android:layout_gravity="end"
-      android:visibility="gone"/>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/signInButton"
+        style="@style/Widget.Material3.Button.UnelevatedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginTop="8dp"
+        android:text="@string/action_sign_in"
+        app:cornerRadius="16dp" />
+
+    <ProgressBar
+        android:id="@+id/loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginTop="8dp"
+        android:visibility="gone" />
 
 </LinearLayout>

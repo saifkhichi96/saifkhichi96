@@ -10,7 +10,7 @@
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/book_category"
-        style="@style/TextAppearance.MaterialComponents.Headline6"
+        style="@style/TextAppearance.Material3.HeadlineSmall"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingStart="0dp"
@@ -19,7 +19,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/more_button"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
+        style="@style/Widget.Material3.Button.TextButton"
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_marginStart="-32dp"
@@ -28,8 +28,6 @@
         android:padding="4dp"
         app:cornerRadius="16dp"
         app:icon="@drawable/ic_more"
-        app:iconSize="24dp"
-        app:iconTint="@android:color/black"
-        app:rippleColor="?attr/colorPrimary" />
+        app:iconSize="24dp" />
 
 </LinearLayout>

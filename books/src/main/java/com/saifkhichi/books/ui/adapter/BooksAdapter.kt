@@ -1,6 +1,7 @@
 package com.saifkhichi.books.ui.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
@@ -29,10 +30,10 @@ class BooksAdapter(
         filteredDataset = dataset
     }
 
-    private var onItemClicked: ((Book) -> Unit)? = null
+    private var onItemClicked: ((Book, View) -> Unit)? = null
     private var onCategoryClicked: ((String) -> Unit)? = null
 
-    fun setOnItemClickListener(listener: ((Book) -> Unit)) {
+    fun setOnItemClickListener(listener: ((Book, View) -> Unit)) {
         onItemClicked = listener
     }
 
@@ -116,7 +117,7 @@ class BooksAdapter(
                             .sortedBy { it.authors },
                         colWidthCalc
                     )
-                    adapter.setOnItemClickListener { onItemClicked?.invoke(it) }
+                    adapter.setOnItemClickListener { book, view -> onItemClicked?.invoke(book, view) }
                     holder.bookList.adapter = adapter
                     adapter.notifyDataSetChanged()
                 }

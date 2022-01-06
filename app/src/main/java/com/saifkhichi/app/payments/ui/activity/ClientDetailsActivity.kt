@@ -51,8 +51,6 @@ class ClientDetailsActivity : AppCompatActivity() {
         binding.clientCurrencies.apply {
             client.currencies.data.forEach {
                 val item = Chip(ContextThemeWrapper(context, R.style.App_Widget_CurrencyItem))
-                item.chipBackgroundColor = ColorStateList.valueOf(getColor(R.color.colorPrimary))
-                item.setTextColor(R.color.colorAccent)
                 item.text = it.currency
                 addView(item)
             }

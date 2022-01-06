@@ -1,17 +1,22 @@
 package com.saifkhichi.books.ui.activity
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.transition.platform.MaterialContainerTransform
+import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback
 import com.google.zxing.BarcodeFormat
-import com.journeyapps.barcodescanner.BarcodeEncoder
 import com.saifkhichi.books.R
 import com.saifkhichi.books.data.source.BooksDataSource
 import com.saifkhichi.books.databinding.ActivityBookDetailsBinding
 import com.saifkhichi.books.model.Book
+import com.saifkhichi.books.util.BarcodeEncoder
 import com.saifkhichi.storage.CloudFileStorage
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -28,6 +33,16 @@ class BookDetailsActivity : AppCompatActivity() {
     lateinit var repo: BooksDataSource
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        findViewById<View>(android.R.id.content).transitionName = "open_book_details"
+        setEnterSharedElementCallback(MaterialContainerTransformSharedElementCallback())
+        window.sharedElementEnterTransition = MaterialContainerTransform().apply {
+            addTarget(android.R.id.content)
+            duration = 300L
+        }
+        window.sharedElementReturnTransition = MaterialContainerTransform().apply {
+            addTarget(android.R.id.content)
+            duration = 250L
+        }
         super.onCreate(savedInstanceState)
         binding = ActivityBookDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -104,6 +119,11 @@ class BookDetailsActivity : AppCompatActivity() {
 
         try {
             val barcodeEncoder = BarcodeEncoder()
+
+            val qrColor = TypedValue()
+            theme.resolveAttribute(R.attr.colorOnSurface, qrColor, true)
+            barcodeEncoder.setForegroundColor(qrColor.data)
+            barcodeEncoder.setBackgroundColor(Color.TRANSPARENT)
             val bitmap = barcodeEncoder.encodeBitmap(book.isbn13(), BarcodeFormat.EAN_13, 512, 128)
             binding.bookBarcode.setImageBitmap(bitmap)
         } catch (e: Exception) {

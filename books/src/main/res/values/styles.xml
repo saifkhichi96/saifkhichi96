@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="App.Widget.Toolbar" parent="Widget.Material3.Toolbar">
+        <item name="android:background">?attr/colorTertiaryContainer</item>
+        <item name="titleTextColor">?attr/colorOnTertiaryContainer</item>
+        <item name="subtitleTextColor">?attr/colorOnTertiaryContainer</item>
+        <item name="navigationIconTint">?attr/colorOnTertiaryContainer</item>
+    </style>
+
+</resources>

@@ -1,114 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/activity_vertical_margin"
-    app:cardElevation="0dp"
+    app:cardBackgroundColor="@android:color/transparent"
     app:cardCornerRadius="0dp"
+    app:cardElevation="0dp"
     app:cardUseCompatPadding="false"
-    app:cardBackgroundColor="@android:color/transparent">
-
-  <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:orientation="vertical">
+    app:strokeColor="@android:color/transparent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-      <com.google.android.material.button.MaterialButton
-          style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
-          android:id="@+id/sender_icon"
-          android:layout_width="30dp"
-          android:layout_height="42dp"
-          android:padding="0dp"
-          android:layout_marginEnd="8dp"
-          android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-          android:maxLength="1"
-          tools:text="@tools:sample/lorem"
-          app:backgroundTint="@color/colorAccent"
-          app:cornerRadius="15dp"/>
-
-      <LinearLayout
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginEnd="48dp"
-          android:orientation="vertical">
-
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-          <com.google.android.material.textview.MaterialTextView
-              style="@style/TextAppearance.MaterialComponents.Body1"
-              android:id="@+id/sender"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_centerVertical="true"
-              android:layout_alignParentStart="true"
-              android:layout_toStartOf="@id/message_timestamp"
-              android:layout_marginEnd="8dp"
-              android:maxLines="1"
-              tools:text="@tools:sample/full_names"/>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/sender_icon"
+                style="@style/Widget.Material3.Button.UnelevatedButton"
+                android:layout_width="30dp"
+                android:layout_height="42dp"
+                android:layout_marginEnd="8dp"
+                android:maxLength="1"
+                android:padding="0dp"
+                android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                app:cornerRadius="15dp"
+                tools:text="@tools:sample/lorem" />
 
-          <com.google.android.material.textview.MaterialTextView
-              style="@style/TextAppearance.MaterialComponents.Caption"
-              android:id="@+id/message_timestamp"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_centerVertical="true"
-              android:layout_alignParentEnd="true"
-              android:maxLines="1"
-              tools:text="@tools:sample/date/ddmmyy"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="48dp"
+                android:orientation="vertical">
 
-        </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/sender"
+                        style="@style/TextAppearance.Material3.BodyLarge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="8dp"
+                        android:layout_toStartOf="@id/message_timestamp"
+                        android:maxLines="1"
+                        tools:text="@tools:sample/full_names" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/message_timestamp"
+                        style="@style/TextAppearance.Material3.LabelSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:maxLines="1"
+                        tools:text="@tools:sample/date/ddmmyy" />
+
+                </RelativeLayout>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/recipient"
+                    style="@style/TextAppearance.Material3.LabelSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    tools:text="@tools:sample/full_names" />
+
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/reply_button"
+                style="@style/Widget.Material3.Button.TextButton.Dialog.Flush"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="-32dp"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:padding="4dp"
+                app:cornerRadius="16dp"
+                app:icon="@drawable/ic_action_reply"
+                app:iconSize="24dp"
+                app:iconTint="?attr/colorPrimaryDark" />
+
+        </LinearLayout>
 
         <com.google.android.material.textview.MaterialTextView
-            style="@style/TextAppearance.MaterialComponents.Caption"
-            android:id="@+id/recipient"
-            android:layout_width="wrap_content"
+            android:id="@+id/message_content"
+            style="@style/TextAppearance.Material3.BodyMedium"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxLines="1"
-            tools:text="@tools:sample/full_names"/>
+            android:autoLink="all"
+            tools:text="@tools:sample/lorem/random" />
 
-      </LinearLayout>
-
-      <com.google.android.material.button.MaterialButton
-          style="@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush"
-          android:id="@+id/reply_button"
-          android:layout_width="32dp"
-          android:layout_height="32dp"
-          android:layout_marginStart="-32dp"
-          android:minHeight="0dp"
-          android:minWidth="0dp"
-          android:padding="4dp"
-          app:cornerRadius="16dp"
-          app:icon="@drawable/ic_action_reply"
-          app:iconSize="24dp"
-          app:iconTint="?attr/colorPrimaryDark"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:background="@color/material_on_surface_stroke" />
 
     </LinearLayout>
-
-    <com.google.android.material.textview.MaterialTextView
-        style="@style/TextAppearance.MaterialComponents.Body2"
-        android:id="@+id/message_content"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:autoLink="all"
-        tools:text="@tools:sample/lorem/random"/>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:background="@color/material_on_surface_stroke"/>
-
-  </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>

@@ -3,10 +3,10 @@
     android:height="24dp"
     android:alpha="1.0"
     android:autoMirrored="true"
-    android:tint="#333333"
+    android:tint="?attr/colorOnBackground"
     android:viewportWidth="24"
     android:viewportHeight="24">
     <path
-        android:fillColor="@android:color/white"
+        android:fillColor="?attr/colorOnBackground"
         android:pathData="M16.01,11H4v2h12.01v3L20,12l-3.99,-4z" />
 </vector>

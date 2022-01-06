@@ -1,5 +1,6 @@
 package com.saifkhichi.books.ui.holder
 
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -13,11 +14,11 @@ class BookHolder(binding: ViewBookBinding) : RecyclerView.ViewHolder(binding.roo
     val bookTitle: TextView = binding.title
     val bookAuthors: TextView = binding.authors
 
-    var onItemClicked: ((thread: Book) -> Unit)? = null
+    var onItemClicked: ((thread: Book, View) -> Unit)? = null
 
     init {
         binding.root.setOnClickListener {
-            book?.let { onItemClicked?.invoke(it) }
+            book?.let { onItemClicked?.invoke(it, itemView) }
         }
     }
 }

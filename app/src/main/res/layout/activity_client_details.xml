@@ -1,97 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/colorTertiaryContainer"
     tools:context=".ui.activity.InboxActivity">
 
-  <com.google.android.material.appbar.AppBarLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      app:elevation="0dp">
-
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar"
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimaryDark"
-        app:title="@string/title_activity_clients"
-        app:layout_scrollFlags="scroll"/>
+        app:elevation="0dp">
 
-  </com.google.android.material.appbar.AppBarLayout>
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            style="@style/App.Widget.Toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_scrollFlags="scroll"
+            app:title="@string/title_activity_clients" />
 
-  <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-      android:id="@+id/swipe_refresh"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/colorTertiaryContainer"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="-16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp"
+            app:strokeColor="@android:color/transparent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/activity_horizontal_margin"
+                android:paddingVertical="@dimen/activity_vertical_margin">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/client_email"
+                    style="@style/TextAppearance.Material3.BodyMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/client_currencies"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:chipSpacingHorizontal="4dp"
+                    app:chipSpacingVertical="4dp"
+                    app:selectionRequired="false"
+                    app:singleLine="false" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="@style/TextAppearance.Material3.HeadlineSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:text="@string/title_invoices" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/invoice_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingHorizontal="@dimen/activity_horizontal_margin"
-        android:paddingVertical="@dimen/activity_vertical_margin"
-        android:orientation="vertical">
+        android:layout_height="?actionBarSize"
+        android:layout_gravity="bottom"
+        android:background="?attr/colorTertiaryContainer"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/activity_horizontal_margin">
 
-      <com.google.android.material.textview.MaterialTextView
-          style="@style/TextAppearance.MaterialComponents.Body2"
-          android:id="@+id/client_email"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"/>
+        <com.google.android.material.textview.MaterialTextView
+            style="@style/TextAppearance.Material3.TitleMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Gross Total"
+            android:textColor="?attr/colorOnTertiaryContainer" />
 
-      <com.google.android.material.chip.ChipGroup
-          android:id="@+id/client_currencies"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          app:selectionRequired="false"
-          app:chipSpacingHorizontal="4dp"
-          app:chipSpacingVertical="4dp"
-          app:singleLine="false"/>
-
-      <com.google.android.material.textview.MaterialTextView
-          style="@style/TextAppearance.MaterialComponents.Headline6"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="@dimen/activity_vertical_margin"
-          android:text="@string/title_invoices"/>
-
-      <androidx.recyclerview.widget.RecyclerView
-          android:id="@+id/invoice_list"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        <com.google.android.material.textview.MaterialTextView
+            style="@style/TextAppearance.Material3.TitleMedium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:text="0"
+            android:textColor="?attr/colorOnTertiaryContainer"
+            android:textStyle="bold" />
 
     </LinearLayout>
-
-  </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-  <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="?actionBarSize"
-      android:layout_gravity="bottom"
-      android:paddingHorizontal="@dimen/activity_horizontal_margin"
-      android:gravity="center_vertical"
-      android:background="@color/colorAccent"
-      android:orientation="horizontal">
-
-    <com.google.android.material.textview.MaterialTextView
-        style="@style/TextAppearance.MaterialComponents.Subtitle1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="?android:attr/textColorPrimaryInverse"
-        android:text="Gross Total"/>
-
-    <com.google.android.material.textview.MaterialTextView
-        style="@style/TextAppearance.MaterialComponents.Subtitle1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="end"
-        android:textStyle="bold"
-        android:textColor="?android:attr/textColorPrimaryInverse"
-        android:text="0"/>
-
-  </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/colorTertiaryContainer"
     tools:context="com.saifkhichi.books.ui.activity.BooksListActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -13,12 +14,11 @@
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
+            style="@style/App.Widget.Toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimaryDark"
             app:layout_scrollFlags="scroll"
-            app:title="@string/title_activity_library"
-            app:titleCentered="true" />
+            app:title="@string/title_activity_library" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -26,15 +26,27 @@
         android:id="@+id/swipe_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="?attr/colorTertiaryContainer"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/books_list"
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:overScrollMode="never"
-            android:paddingVertical="@dimen/activity_vertical_margin"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            android:layout_marginBottom="-16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp"
+            app:strokeColor="@android:color/transparent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/books_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="16dp"
+                android:overScrollMode="never"
+                android:paddingVertical="@dimen/activity_vertical_margin"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+        </com.google.android.material.card.MaterialCardView>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

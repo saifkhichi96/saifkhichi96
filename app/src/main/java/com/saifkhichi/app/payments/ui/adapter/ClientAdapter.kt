@@ -4,8 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.saifkhichi.app.databinding.ViewListitemTwolineBinding
-import com.saifkhichi.app.payments.ui.holder.TwoLineListItemHolder
 import com.saifkhichi.app.payments.model.Client
+import com.saifkhichi.app.payments.ui.holder.TwoLineListItemHolder
+import com.saifkhichi.app.ui.adapter.InboxAdapter
 
 class ClientAdapter(private val dataSet: List<Client>) :
     RecyclerView.Adapter<TwoLineListItemHolder<Client>>() {
@@ -48,6 +49,9 @@ class ClientAdapter(private val dataSet: List<Client>) :
         holder.text1.text = item.name
         holder.text2.text = item.email
         holder.onItemClicked = onItemClicked
+
+        holder.icon.text = item.name.lastOrNull().toString().uppercase()
+        holder.icon.setBackgroundColor(InboxAdapter.convertToColor(holder.itemView.context, item.email))
     }
 
     /**

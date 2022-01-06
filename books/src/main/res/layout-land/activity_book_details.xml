@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorPrimaryDark"
+    android:background="?attr/colorTertiaryContainer"
     tools:context="com.saifkhichi.books.ui.activity.BookDetailsActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -13,10 +13,10 @@
         app:elevation="0dp">
 
         <com.google.android.material.appbar.MaterialToolbar
+            style="@style/App.Widget.Toolbar"
             android:id="@+id/toolbar"
             android:layout_width="256dp"
             android:layout_height="match_parent"
-            android:background="?attr/colorPrimaryDark"
             app:layout_scrollFlags="scroll" />
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -33,10 +33,9 @@
             android:layout_marginStart="240dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
-            app:cardBackgroundColor="@android:color/white"
             app:cardCornerRadius="16dp"
-            app:strokeColor="?attr/colorPrimary"
-            app:strokeWidth="1dp">
+            app:cardElevation="4dp"
+            app:strokeColor="@android:color/transparent">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -62,17 +61,17 @@
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/book_category"
-                            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                            style="@style/Widget.Material3.Button.UnelevatedButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:maxWidth="224dp"
-                            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
-                            android:textColor="?attr/colorAccent"
-                            android:textSize="12sp" />
+                            android:textAppearance="@style/TextAppearance.Material3.LabelSmall"
+                            android:textColor="?attr/colorOnSurfaceVariant"
+                            app:backgroundTint="?attr/colorSurfaceVariant" />
 
                         <com.google.android.material.textview.MaterialTextView
-                            style="@style/TextAppearance.MaterialComponents.Body1"
+                            style="@style/TextAppearance.Material3.LabelMedium"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/activity_vertical_margin"
@@ -81,7 +80,7 @@
 
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/book_description"
-                            style="@style/TextAppearance.MaterialComponents.Body2"
+                            style="@style/TextAppearance.Material3.BodyMedium"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="start"
@@ -101,10 +100,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        app:cardBackgroundColor="#1f888888"
-                        app:cardCornerRadius="8dp"
+                        app:cardBackgroundColor="?attr/colorSecondaryContainer"
                         app:cardElevation="0dp"
-                        app:contentPadding="8dp">
+                        app:cardCornerRadius="8dp"
+                        app:contentPadding="8dp"
+                        app:strokeColor="@android:color/transparent">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -122,21 +122,23 @@
                                 android:paddingHorizontal="2dp">
 
                                 <com.google.android.material.textview.MaterialTextView
-                                    style="@style/TextAppearance.MaterialComponents.Subtitle2"
+                                    style="@style/TextAppearance.Material3.TitleSmall"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginBottom="8dp"
                                     android:gravity="center"
                                     android:maxLines="1"
-                                    android:text="@string/label_book_pages" />
+                                    android:text="@string/label_book_pages"
+                                    android:textColor="?attr/colorOnSecondaryContainer" />
 
                                 <com.google.android.material.textview.MaterialTextView
                                     android:id="@+id/book_pages"
-                                    style="@style/TextAppearance.MaterialComponents.Body2"
+                                    style="@style/TextAppearance.Material3.BodyMedium"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:gravity="center"
-                                    android:maxLines="1" />
+                                    android:maxLines="1"
+                                    android:textColor="?attr/colorOnSecondaryContainer" />
 
                             </LinearLayout>
 
@@ -149,21 +151,23 @@
                                 android:paddingHorizontal="2dp">
 
                                 <com.google.android.material.textview.MaterialTextView
-                                    style="@style/TextAppearance.MaterialComponents.Subtitle2"
+                                    style="@style/TextAppearance.Material3.TitleSmall"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginBottom="8dp"
                                     android:gravity="center"
                                     android:maxLines="1"
-                                    android:text="@string/label_book_format" />
+                                    android:text="@string/label_book_format"
+                                    android:textColor="?attr/colorOnSecondaryContainer" />
 
                                 <com.google.android.material.textview.MaterialTextView
                                     android:id="@+id/book_format"
-                                    style="@style/TextAppearance.MaterialComponents.Body2"
+                                    style="@style/TextAppearance.Material3.BodyMedium"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:gravity="center"
-                                    android:maxLines="1" />
+                                    android:maxLines="1"
+                                    android:textColor="?attr/colorOnSecondaryContainer" />
 
                             </LinearLayout>
 
@@ -176,21 +180,23 @@
                                 android:paddingHorizontal="2dp">
 
                                 <com.google.android.material.textview.MaterialTextView
-                                    style="@style/TextAppearance.MaterialComponents.Subtitle2"
+                                    style="@style/TextAppearance.Material3.TitleSmall"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginBottom="8dp"
                                     android:gravity="center"
                                     android:maxLines="1"
-                                    android:text="@string/label_book_language" />
+                                    android:text="@string/label_book_language"
+                                    android:textColor="?attr/colorOnSecondaryContainer" />
 
                                 <com.google.android.material.textview.MaterialTextView
                                     android:id="@+id/book_language"
-                                    style="@style/TextAppearance.MaterialComponents.Body2"
+                                    style="@style/TextAppearance.Material3.BodyMedium"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:gravity="center"
-                                    android:maxLines="1" />
+                                    android:maxLines="1"
+                                    android:textColor="?attr/colorOnSecondaryContainer" />
 
                             </LinearLayout>
 
@@ -200,7 +206,7 @@
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/book_authors"
-                        style="@style/TextAppearance.MaterialComponents.Caption"
+                        style="@style/TextAppearance.Material3.LabelSmall"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
@@ -208,7 +214,7 @@
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/book_publisher"
-                        style="@style/TextAppearance.MaterialComponents.Caption"
+                        style="@style/TextAppearance.Material3.LabelSmall"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="start"
@@ -229,7 +235,7 @@
 
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/book_isbn"
-                            style="@style/TextAppearance.MaterialComponents.Body1"
+                            style="@style/TextAppearance.Material3.BodyLarge"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textStyle="bold"
@@ -254,9 +260,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="8dp"
-                app:cardElevation="4dp"
-                app:strokeColor="?attr/colorPrimary"
-                app:strokeWidth="1dp">
+                app:cardElevation="6dp"
+                app:strokeColor="@android:color/transparent">
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/book_cover"
@@ -269,12 +274,13 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/book_title"
-                style="@style/TextAppearance.MaterialComponents.Headline6"
+                style="@style/TextAppearance.Material3.HeadlineSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
                 android:gravity="center"
-                android:maxWidth="224dp" />
+                android:maxWidth="224dp"
+                android:textColor="?attr/colorPrimary" />
 
 
         </LinearLayout>

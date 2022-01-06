@@ -1,15 +1,18 @@
 package com.saifkhichi.books.ui.activity
 
+import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback
 import com.saifkhichi.books.R
 import com.saifkhichi.books.databinding.ActivityBooksListBinding
 import com.saifkhichi.books.model.Book
@@ -58,6 +61,8 @@ class BooksListActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setExitSharedElementCallback(MaterialContainerTransformSharedElementCallback())
+        window.sharedElementsUseOverlay = false
         super.onCreate(savedInstanceState)
         binding = ActivityBooksListBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -71,7 +76,7 @@ class BooksListActivity : AppCompatActivity() {
         if (subCategoryFilter == "Uncategorized") subCategoryFilter = ""
 
         booksAdapter = BooksAdapter(this, library, grid = subCategoryFilter != null)
-        booksAdapter.setOnItemClickListener { openBookDetails(it) }
+        booksAdapter.setOnItemClickListener { book, view -> openBookDetails(book, view) }
         booksAdapter.setOnCategoryClickListener { openLibrary(it) }
 
         binding.booksList.adapter = booksAdapter
@@ -122,11 +127,16 @@ class BooksListActivity : AppCompatActivity() {
         return true
     }
 
-    private fun openBookDetails(book: Book) {
+    private fun openBookDetails(book: Book, view: View) {
         val i = Intent(this, BookDetailsActivity::class.java)
+        val options = ActivityOptions.makeSceneTransitionAnimation(
+            this,
+            view,
+            "open_book_details" // The transition name to be matched in Activity B.
+        )
         i.putExtra(EXTRA_BOOK, book)
 
-        startActivity(i)
+        startActivity(i, options.toBundle())
     }
 
     /**
