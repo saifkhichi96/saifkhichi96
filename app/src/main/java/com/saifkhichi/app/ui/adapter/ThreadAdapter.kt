@@ -6,8 +6,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.saifkhichi.app.databinding.ViewMessageBinding
 import com.saifkhichi.app.model.Message
 import com.saifkhichi.app.model.Thread
-import com.saifkhichi.app.ui.adapter.InboxAdapter.Companion.convertToColor
 import com.saifkhichi.app.ui.holder.MessageHolder
+import com.saifkhichi.app.util.ColorUtils
 import java.text.DateFormat
 import java.util.*
 
@@ -50,7 +50,7 @@ class ThreadAdapter(private val thread: Thread) : RecyclerView.Adapter<MessageHo
         val message = thread[position]
         holder.senderName.text = message.email
         holder.senderIcon.text = message.email.firstOrNull().toString().uppercase()
-        holder.senderIcon.setBackgroundColor(convertToColor(holder.itemView.context, message.email))
+        ColorUtils.recolorButton(holder.senderIcon, thread.senderEmail)
 
         holder.messageContents.text = message.message
         holder.messageRecipient.text = "to me"

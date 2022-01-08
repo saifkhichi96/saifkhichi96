@@ -1,15 +1,12 @@
 package com.saifkhichi.app.ui.adapter
 
-import android.content.Context
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.annotation.ColorInt
 import androidx.recyclerview.widget.RecyclerView
-import com.saifkhichi.app.R
 import com.saifkhichi.app.databinding.ViewThreadBinding
 import com.saifkhichi.app.model.Thread
 import com.saifkhichi.app.ui.holder.ThreadHolder
+import com.saifkhichi.app.util.ColorUtils
 import java.text.DateFormat
 import java.util.*
 
@@ -52,7 +49,7 @@ class InboxAdapter(private val threads: List<Thread>) :
         val thread = threads[position]
         holder.senderName.text = thread.senderName.split('@')[0]
         holder.senderIcon.text = thread.senderEmail.firstOrNull().toString().uppercase()
-        holder.senderIcon.setBackgroundColor(convertToColor(holder.itemView.context, thread.senderEmail))
+        ColorUtils.recolorButton(holder.senderIcon, thread.senderEmail)
         if (thread.size > 1) {
             holder.messageCount.text = thread.size.toString()
         }
@@ -74,21 +71,5 @@ class InboxAdapter(private val threads: List<Thread>) :
      * Return the size of the dataset
      */
     override fun getItemCount() = threads.size
-
-    companion object {
-        @ColorInt
-        fun convertToColor(context: Context, o: Any): Int {
-            return try {
-                val i = o.hashCode()
-                Color.parseColor(
-                    "#FF" + Integer.toHexString(i shr 16 and 0xFF) +
-                            Integer.toHexString(i shr 8 and 0xFF) +
-                            Integer.toHexString(i and 0xFF)
-                )
-            } catch (ignored: Exception) {
-                context.getColor(R.color.colorPrimary)
-            }
-        }
-    }
 
 }
