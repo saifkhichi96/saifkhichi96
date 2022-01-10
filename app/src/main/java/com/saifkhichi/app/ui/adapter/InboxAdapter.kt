@@ -1,6 +1,7 @@
 package com.saifkhichi.app.ui.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.saifkhichi.app.databinding.ViewThreadBinding
@@ -13,9 +14,9 @@ import java.util.*
 class InboxAdapter(private val threads: List<Thread>) :
     RecyclerView.Adapter<ThreadHolder>() {
 
-    private var onItemClicked: ((Thread) -> Unit)? = null
+    private var onItemClicked: ((Thread, View) -> Unit)? = null
 
-    fun setOnItemClickListener(listener: ((Thread) -> Unit)) {
+    fun setOnItemClickListener(listener: ((Thread, View) -> Unit)) {
         onItemClicked = listener
     }
 
@@ -49,7 +50,7 @@ class InboxAdapter(private val threads: List<Thread>) :
         val thread = threads[position]
         holder.senderName.text = thread.senderName.split('@')[0]
         holder.senderIcon.text = thread.senderEmail.firstOrNull().toString().uppercase()
-        ColorUtils.recolorButton(holder.senderIcon, thread.senderEmail)
+        ColorUtils.recolor(holder.senderIcon, thread.senderEmail)
         if (thread.size > 1) {
             holder.messageCount.text = thread.size.toString()
         }

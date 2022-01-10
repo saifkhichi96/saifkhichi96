@@ -91,6 +91,7 @@
                 android:orientation="horizontal">
 
                 <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/projects_label"
                     style="@style/TextAppearance.Material3.HeadlineSmall"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -112,6 +113,7 @@
             </LinearLayout>
 
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/projects_section"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -140,6 +142,7 @@
                         app:srcCompat="@drawable/ic_projects_empty" />
 
                     <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/projects_empty_text"
                         style="@style/TextAppearance.Material3.LabelSmall"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -163,6 +166,7 @@
                 android:paddingTop="@dimen/activity_vertical_margin">
 
                 <com.google.android.material.button.MaterialButton
+                    android:id="@+id/art_button"
                     style="@style/App.Widget.MenuItem"
                     android:text="@string/label_art"
                     app:icon="@drawable/ic_art" />
@@ -174,6 +178,7 @@
                     app:icon="@drawable/ic_clients" />
 
                 <com.google.android.material.button.MaterialButton
+                    android:id="@+id/work_button"
                     style="@style/App.Widget.MenuItem"
                     android:text="@string/label_work"
                     app:icon="@drawable/ic_work" />

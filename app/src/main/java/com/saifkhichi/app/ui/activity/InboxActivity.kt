@@ -2,11 +2,14 @@ package com.saifkhichi.app.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.android.material.transition.platform.MaterialContainerTransform
+import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback
 import com.saifkhichi.app.databinding.ActivityInboxBinding
 import com.saifkhichi.app.model.Result
 import com.saifkhichi.app.model.Thread
@@ -49,8 +52,18 @@ class InboxActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setExitSharedElementCallback(MaterialContainerTransformSharedElementCallback())
+        window.sharedElementsUseOverlay = false
         super.onCreate(savedInstanceState)
         binding = ActivityInboxBinding.inflate(layoutInflater)
+        window.sharedElementEnterTransition = MaterialContainerTransform().apply {
+            addTarget(binding.mainContent)
+            duration = 300L
+        }
+        window.sharedElementReturnTransition = MaterialContainerTransform().apply {
+            addTarget(binding.mainContent)
+            duration = 250L
+        }
         setContentView(binding.root)
 
         setSupportActionBar(binding.toolbar)
@@ -58,7 +71,7 @@ class InboxActivity : AppCompatActivity() {
 
         inbox = mutableListOf()
         inboxAdapter = InboxAdapter(inbox)
-        inboxAdapter.setOnItemClickListener { openMessage(it) }
+        inboxAdapter.setOnItemClickListener { thread, view -> openMessage(thread, view) }
 
         binding.messagesList.adapter = inboxAdapter
         viewModel.threads.observe(this, refreshResultObserver)
@@ -67,12 +80,11 @@ class InboxActivity : AppCompatActivity() {
         refreshManually()
     }
 
-    private fun openMessage(thread: Thread) {
+    private fun openMessage(thread: Thread, view: View) {
         val i = Intent(this, ThreadActivity::class.java)
         i.putExtra(THREAD_KEY, thread)
 
         startActivity(i)
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
     }
 
     /**

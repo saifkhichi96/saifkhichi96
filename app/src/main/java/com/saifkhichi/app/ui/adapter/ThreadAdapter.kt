@@ -50,7 +50,7 @@ class ThreadAdapter(private val thread: Thread) : RecyclerView.Adapter<MessageHo
         val message = thread[position]
         holder.senderName.text = message.email
         holder.senderIcon.text = message.email.firstOrNull().toString().uppercase()
-        ColorUtils.recolorButton(holder.senderIcon, thread.senderEmail)
+        ColorUtils.recolor(holder.senderIcon, thread.senderEmail)
 
         holder.messageContents.text = message.message
         holder.messageRecipient.text = "to me"

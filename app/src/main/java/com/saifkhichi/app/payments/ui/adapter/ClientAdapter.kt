@@ -51,7 +51,7 @@ class ClientAdapter(private val dataSet: List<Client>) :
         holder.onItemClicked = onItemClicked
 
         holder.icon.text = item.name.lastOrNull().toString().uppercase()
-        ColorUtils.recolorButtonAsContainer(holder.icon, item.email)
+        ColorUtils.recolor(holder.icon, item.email)
     }
 
     /**
