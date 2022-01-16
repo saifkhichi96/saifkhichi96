@@ -1,6 +1,7 @@
 package com.saifkhichi.books.ui.activity
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import android.os.LocaleList
@@ -52,9 +53,16 @@ class EditBookActivity : AppCompatActivity() {
         var book = intent.getSerializableExtra(EXTRA_BOOK) as Book?
         if (book == null) {
             creatingBook = true
+            supportActionBar?.title = getString(R.string.title_activity_add_book)
             book = Book()
         }
         this.book = book
+
+        // Don't show title in landscape mode
+        if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            supportActionBar?.title = ""
+        }
+
         updateUI()
 
         binding.bookCover.setOnClickListener { chooseBookCover() }
