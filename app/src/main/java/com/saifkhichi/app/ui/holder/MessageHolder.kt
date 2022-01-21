@@ -14,6 +14,7 @@ class MessageHolder(binding: ViewMessageBinding) : RecyclerView.ViewHolder(bindi
     val messageRecipient: TextView = binding.recipient
     val messageTimestamp: TextView = binding.messageTimestamp
     val messageContents: TextView = binding.messageContent
+    val replyButton: MaterialButton = binding.replyButton
 
     var onItemClicked: ((message: Message) -> Unit)? = null
 

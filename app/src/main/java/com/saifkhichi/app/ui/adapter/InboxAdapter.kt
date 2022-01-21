@@ -59,7 +59,7 @@ class InboxAdapter(private val threads: List<Thread>) :
 
         thread.lastOrNull()?.let { lastMessage ->
             holder.messageSubject.text = lastMessage.subject
-            holder.messageContents.text = lastMessage.message.replace('\n', ' ').replace("\\s+".toRegex(), " ")
+            holder.messageContents.text = lastMessage.body.replace('\n', ' ').replace("\\s+".toRegex(), " ")
             holder.messageTimestamp.text = DateFormat.getDateInstance(
                 DateFormat.SHORT,
                 Locale.getDefault()

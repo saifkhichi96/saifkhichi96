@@ -48,11 +48,11 @@ class ThreadAdapter(private val thread: Thread) : RecyclerView.Adapter<MessageHo
      */
     override fun onBindViewHolder(holder: MessageHolder, position: Int) {
         val message = thread[position]
-        holder.senderName.text = message.email
-        holder.senderIcon.text = message.email.firstOrNull().toString().uppercase()
-        holder.senderIcon.setBackgroundColor(convertToColor(holder.itemView.context, message.email))
+        holder.senderName.text = message.from
+        holder.senderIcon.text = message.from.firstOrNull().toString().uppercase()
+        holder.senderIcon.setBackgroundColor(convertToColor(holder.itemView.context, message.from))
 
-        holder.messageContents.text = message.message
+        holder.messageContents.text = message.body
         holder.messageRecipient.text = "to me"
         holder.messageTimestamp.text = DateFormat.getDateTimeInstance(
             DateFormat.SHORT,
@@ -61,6 +61,8 @@ class ThreadAdapter(private val thread: Thread) : RecyclerView.Adapter<MessageHo
         ).format(message.timestamp)
 
         holder.message = message
+        holder.replyButton.isEnabled = !message.read
+        holder.replyButton.text = if (message.read) "Read" else "Mark as Read"
         holder.onItemClicked = onItemClicked
     }
 

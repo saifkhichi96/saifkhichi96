@@ -2,6 +2,7 @@ package com.saifkhichi.app.data.source
 
 import com.saifkhichi.app.db.remote.WebService
 import com.saifkhichi.app.model.Inbox
+import com.saifkhichi.app.model.Message
 import com.saifkhichi.app.model.Result
 import javax.inject.Inject
 
@@ -18,6 +19,10 @@ class InboxDataSource @Inject constructor(var webService: WebService) {
     @Throws(Exception::class)
     suspend fun listAll(): Result<Inbox> {
         return webService.getMessages()
+    }
+
+    suspend fun markAsRead(message: Message) {
+        webService.readMessage(message)
     }
 
 }

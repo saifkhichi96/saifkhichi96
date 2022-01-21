@@ -22,6 +22,11 @@ android {
         // Read API secrets
         buildConfigField("String", "STRIPE_PUBLIC_KEY", secretProperties['STRIPE_PUBLIC_KEY'])
         buildConfigField("String", "STRIPE_SECRET_KEY", secretProperties['STRIPE_SECRET_KEY'])
+
+        // Read Email credentials
+        buildConfigField("String", "GMAIL_USERNAME", secretProperties['GMAIL_USERNAME'])
+        buildConfigField("String", "GMAIL_PASSWORD", secretProperties['GMAIL_PASSWORD'])
+        buildConfigField("String", "ADMIN_EMAIL", secretProperties['ADMIN_EMAIL'])
     }
 
     // Enable view binding
@@ -33,13 +38,26 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    packagingOptions {
+        exclude 'META-INF/LICENSE.md'
+        exclude 'META-INF/NOTICE.md'
+        exclude 'LICENSE-2.0.txt'
+    }
+}
+
+configurations {
+    cleanedAnnotations
+    implementation.exclude group: 'org.jetbrains', module:'annotations'
 }
 
 dependencies {
@@ -79,6 +97,9 @@ dependencies {
     // Stripe Android SDK for Payments
     implementation 'com.stripe:stripe-java:20.98.0'
     implementation 'com.stripe:stripe-android:19.1.0'
+
+    // Simple JavaMail API
+    implementation "org.simplejavamail:simple-java-mail:7.1.0"
 
     implementation project(path: ':books')
     implementation project(path: ':database')

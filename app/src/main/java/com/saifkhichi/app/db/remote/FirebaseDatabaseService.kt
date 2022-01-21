@@ -55,4 +55,12 @@ class FirebaseDatabaseService @Inject constructor() : WebService {
         }
     }
 
+    override suspend fun readMessage(message: Message) {
+        db.getReference("messages/")
+            .child(message.id)
+            .child("read")
+            .setValue(true)
+            .await()
+    }
+
 }

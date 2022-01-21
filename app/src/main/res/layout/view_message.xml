@@ -37,7 +37,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="48dp"
                 android:orientation="vertical">
 
                 <RelativeLayout
@@ -78,20 +77,6 @@
 
             </LinearLayout>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/reply_button"
-                style="@style/Widget.Material3.Button.TextButton.Dialog.Flush"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_marginStart="-32dp"
-                android:minWidth="0dp"
-                android:minHeight="0dp"
-                android:padding="4dp"
-                app:cornerRadius="16dp"
-                app:icon="@drawable/ic_action_reply"
-                app:iconSize="24dp"
-                app:iconTint="?attr/colorPrimaryDark" />
-
         </LinearLayout>
 
         <com.google.android.material.textview.MaterialTextView
@@ -102,11 +87,21 @@
             android:autoLink="all"
             tools:text="@tools:sample/lorem/random" />
 
-        <View
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/reply_button"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_gravity="end"
+            android:text="Mark as Read"
+            app:cornerRadius="16dp" />
+
+        <com.google.android.material.divider.MaterialDivider
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:background="@color/material_on_surface_stroke" />
+            android:layout_marginVertical="8dp"
+            android:background="?attr/colorSurfaceVariant" />
 
     </LinearLayout>
 

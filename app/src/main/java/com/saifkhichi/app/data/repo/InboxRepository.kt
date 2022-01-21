@@ -22,7 +22,7 @@ class InboxRepository @Inject constructor(var dataSource: InboxDataSource) {
         private set
 
     init {
-        kotlin.runCatching { messages = Hawk.get(KEY) }
+        kotlin.runCatching { messages = Inbox.fromList(Hawk.get(KEY)) }
     }
 
     suspend fun listAll(): Result<Inbox> {
@@ -32,6 +32,15 @@ class InboxRepository @Inject constructor(var dataSource: InboxDataSource) {
         }
 
         return result
+    }
+
+    suspend fun markAsRead(messageId: String){
+        // Mark as read in local cache
+        messages?.find { it.id == messageId }?.read = true
+        messages?.let { setInboxData(it) }
+
+        // Mark as read in remote data source
+        messages?.find { it.id == messageId }?.let { dataSource.markAsRead(it) }
     }
 
     private fun setInboxData(messages: Inbox) {
