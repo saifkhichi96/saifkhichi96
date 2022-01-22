@@ -21,7 +21,7 @@ class MyApplication : Application() {
         Stripe.apiKey = BuildConfig.STRIPE_SECRET_KEY
 
         // Enable dynamic colors with Material 3
-        DynamicColors.applyToActivitiesIfAvailable(this);
+        DynamicColors.applyToActivitiesIfAvailable(this)
     }
 
 }

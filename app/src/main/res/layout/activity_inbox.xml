@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorTertiaryContainer"
-    tools:context=".ui.activity.InboxActivity">
+    tools:context=".mail.ui.activity.InboxActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"

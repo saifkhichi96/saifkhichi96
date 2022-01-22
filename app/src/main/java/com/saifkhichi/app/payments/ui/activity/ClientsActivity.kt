@@ -8,9 +8,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.saifkhichi.app.databinding.ActivityClientsBinding
-import com.saifkhichi.app.payments.ui.viewmodel.ClientsViewModel
 import com.saifkhichi.app.payments.model.Client
 import com.saifkhichi.app.payments.ui.adapter.ClientAdapter
+import com.saifkhichi.app.payments.ui.viewmodel.ClientsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

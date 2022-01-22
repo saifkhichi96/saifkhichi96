@@ -32,11 +32,11 @@ class ClientsDataSource @Inject constructor() {
 
                 clients.add(
                     Client(
-                    email = email,
-                    name = name,
-                    address = address,
-                    currencies = currencies
-                )
+                        email = email,
+                        name = name,
+                        address = address,
+                        currencies = currencies
+                    )
                 )
             }
         }

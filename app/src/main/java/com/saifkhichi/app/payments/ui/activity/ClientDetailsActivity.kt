@@ -1,6 +1,5 @@
 package com.saifkhichi.app.payments.ui.activity
 
-import android.content.res.ColorStateList
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -8,9 +7,9 @@ import androidx.appcompat.view.ContextThemeWrapper
 import com.google.android.material.chip.Chip
 import com.saifkhichi.app.R
 import com.saifkhichi.app.databinding.ActivityClientDetailsBinding
-import com.saifkhichi.app.payments.ui.viewmodel.ClientsViewModel
 import com.saifkhichi.app.payments.model.Client
 import com.saifkhichi.app.payments.ui.adapter.InvoiceAdapter
+import com.saifkhichi.app.payments.ui.viewmodel.ClientsViewModel
 import com.stripe.model.Invoice
 import dagger.hilt.android.AndroidEntryPoint
 

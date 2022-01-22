@@ -12,7 +12,7 @@
       android:theme="@style/AppTheme">
 
     <activity
-        android:name=".ui.activity.LoginActivity"
+        android:name=".auth.ui.activity.LoginActivity"
         android:theme="@style/AppTheme.Launcher"
         android:exported="true">
       <intent-filter>
@@ -21,18 +21,18 @@
       </intent-filter>
     </activity>
 
-    <activity android:name=".ui.activity.MainActivity"/>
+    <activity android:name=".core.ui.activity.MainActivity"/>
 
     <activity
-        android:name=".ui.activity.InboxActivity"
-        android:parentActivityName=".ui.activity.MainActivity"/>
+        android:name=".mail.ui.activity.InboxActivity"
+        android:parentActivityName=".core.ui.activity.MainActivity"/>
 
-    <activity android:name=".ui.activity.ThreadActivity"
-              android:parentActivityName=".ui.activity.InboxActivity"/>
+    <activity android:name=".mail.ui.activity.ThreadActivity"
+              android:parentActivityName=".mail.ui.activity.InboxActivity"/>
 
     <activity
         android:name=".payments.ui.activity.ClientsActivity"
-        android:parentActivityName=".ui.activity.MainActivity"/>
+        android:parentActivityName=".core.ui.activity.MainActivity"/>
 
     <activity
         android:name=".payments.ui.activity.ClientDetailsActivity"

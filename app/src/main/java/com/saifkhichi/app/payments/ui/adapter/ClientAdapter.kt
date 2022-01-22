@@ -3,10 +3,10 @@ package com.saifkhichi.app.payments.ui.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.saifkhichi.app.core.util.ColorUtils
 import com.saifkhichi.app.databinding.ViewListitemTwolineBinding
 import com.saifkhichi.app.payments.model.Client
 import com.saifkhichi.app.payments.ui.holder.TwoLineListItemHolder
-import com.saifkhichi.app.util.ColorUtils
 
 class ClientAdapter(private val dataSet: List<Client>) :
     RecyclerView.Adapter<TwoLineListItemHolder<Client>>() {

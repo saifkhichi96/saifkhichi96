@@ -1,7 +1,7 @@
 package com.saifkhichi.app.mail.util
 
 import com.saifkhichi.app.mail.model.EmailConfig
-import com.saifkhichi.app.model.Message
+import com.saifkhichi.app.mail.model.Message
 import org.simplejavamail.api.email.Email
 import org.simplejavamail.api.mailer.Mailer
 import org.simplejavamail.api.mailer.config.TransportStrategy
