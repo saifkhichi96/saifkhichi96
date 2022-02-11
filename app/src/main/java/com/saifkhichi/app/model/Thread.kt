@@ -12,10 +12,13 @@ data class Thread constructor(
     var subject: String = "",
 ) : ArrayList<Message>() {
 
+    val latestMessage: Message?
+        get() = kotlin.runCatching { this[this.size - 1] }.getOrNull()
+
     companion object {
         fun fromList(list: List<Message>): Thread? {
             return list.firstOrNull()?.let {
-                Thread(it.name, it.email, it.subject).apply { addAll(list) }
+                Thread(it.sender, it.from, it.subject).apply { addAll(list) }
             }
         }
     }

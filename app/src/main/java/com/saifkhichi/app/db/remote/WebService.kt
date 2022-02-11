@@ -1,6 +1,7 @@
 package com.saifkhichi.app.db.remote
 
 import com.saifkhichi.app.model.Inbox
+import com.saifkhichi.app.model.Message
 import com.saifkhichi.app.model.Result
 import com.saifkhichi.app.model.User
 
@@ -26,5 +27,10 @@ interface WebService {
      * @return The Result of the task containing Message list, or an error message.
      */
     suspend fun getMessages(): Result<Inbox>
+
+    /**
+     * Update the read status of a Message in the remote database.
+     */
+    suspend fun readMessage(message: Message)
 
 }
