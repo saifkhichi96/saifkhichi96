@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorTertiaryContainer"
-    tools:context="com.saifkhichi.books.ui.activity.BookDetailsActivity">
+    tools:context=".ui.activity.BookDetailsActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -24,8 +24,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="?actionBarSize"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <!-- Book details -->
         <com.google.android.material.card.MaterialCardView
@@ -38,7 +38,7 @@
             app:cardElevation="4dp"
             app:strokeColor="@android:color/transparent">
 
-            <ScrollView
+            <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:overScrollMode="never"
@@ -238,7 +238,7 @@
 
                 </LinearLayout>
 
-            </ScrollView>
+            </androidx.core.widget.NestedScrollView>
 
         </com.google.android.material.card.MaterialCardView>
 

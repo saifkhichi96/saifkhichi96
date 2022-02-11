@@ -4,6 +4,7 @@
     <!-- Activity titles -->
     <string name="title_activity_library">Library</string>
     <string name="title_activity_edit_book">Edit Book</string>
+    <string name="title_activity_add_book">Add Book</string>
 
     <!-- Formatting strings -->
     <string name="book_isbn">ISBN: %s</string>
@@ -40,7 +41,7 @@
     <string name="hint_book_format">Format</string>
     <string name="hint_book_lang">Language</string>
     <string name="hint_book_publisher">Publisher</string>
-    <string name="hint_book_publish_year">Publishing Year</string>
+    <string name="hint_book_publish_year">YYYY</string>
     <string name="hint_book_isbn">ISBN</string>
     <string name="hint_book_description">Description</string>
     <string name="action_add">Add Book</string>

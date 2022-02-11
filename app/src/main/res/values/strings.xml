@@ -32,4 +32,7 @@
 
   <string name="book_category_fiction">Fiction</string>
   <string name="book_category_nonfiction">Non-Fiction</string>
+
+  <!-- Transitions -->
+  <string name="transition_inbox">inbox_transition</string>
 </resources>

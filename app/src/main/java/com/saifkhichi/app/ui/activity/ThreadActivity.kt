@@ -35,12 +35,13 @@ class ThreadActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = ""
 
         val messageList = intent.getSerializableExtra(THREAD_KEY) as ArrayList<Message>? ?: return finish()
         val thread = Thread.fromList(messageList) ?: return finish()
+
         threadAdapter = ThreadAdapter(thread)
         threadAdapter.setOnItemClickListener { acknowledgeReceipt(it) }
+        supportActionBar?.title = thread.senderName
 
         binding.messagesList.adapter = threadAdapter
         binding.threadSubject.text = thread.subject

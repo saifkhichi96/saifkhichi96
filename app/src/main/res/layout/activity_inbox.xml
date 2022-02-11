@@ -30,9 +30,11 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/main_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="-16dp"
+            android:transitionName="@string/transition_inbox"
             app:cardCornerRadius="16dp"
             app:cardElevation="4dp"
             app:strokeColor="@android:color/transparent">

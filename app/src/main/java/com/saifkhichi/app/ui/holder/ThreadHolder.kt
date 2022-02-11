@@ -1,5 +1,6 @@
 package com.saifkhichi.app.ui.holder
 
+import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
@@ -16,11 +17,11 @@ class ThreadHolder(binding: ViewThreadBinding) : RecyclerView.ViewHolder(binding
     val messageSubject: TextView = binding.subject
     val messageContents: TextView = binding.message
 
-    var onItemClicked: ((thread: Thread) -> Unit)? = null
+    var onItemClicked: ((thread: Thread, View) -> Unit)? = null
 
     init {
-        binding.root.setOnClickListener {
-            thread?.let { onItemClicked?.invoke(it) }
+        binding.root.setOnClickListener { view ->
+            thread?.let { onItemClicked?.invoke(it, view) }
         }
     }
 }
