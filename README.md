@@ -1,6 +1,9 @@
 ### HELLO
 I AM __SAIF KHAN__ 
 
+[![Saif Khan StackOverflow](https://github-readme-stackoverflow.vercel.app/?userID=4690466&theme=dark)](https://stackoverflow.com/users/4690466/سیف-خان)
+
+
 Android Developer and AI Researcher
 
 [![GitHub Streak](https://github-readme-streak-stats.herokuapp.com?user=saifkhichi96&theme=github-dark&hide_border=true)](https://git.io/streak-stats)
