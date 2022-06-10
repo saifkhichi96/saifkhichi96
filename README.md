@@ -8,6 +8,8 @@ Versatile software engineer skilled in mobile development, machine learning, and
 </a>
 <hr>
 
+[![GitHub Streak](https://github-readme-streak-stats.herokuapp.com?user=saifkhichi96&theme=github-dark&hide_border=true)](https://git.io/streak-stats)
+
 - 🔭 I’m currently working on:
   - a [_collaborative tool for managing and documenting software requirements_](https://www.saifkhichi.com/projects/recatalyst/),
   - and a series of _document segmentation projects_.
