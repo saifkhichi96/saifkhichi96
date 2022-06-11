@@ -1,32 +1,13 @@
-### HELLO
-I AM __SAIF KHAN__ 
+[![built with omas rezept](https://img.shields.io/badge/Built%20with-Omas%20Rezept-c63f17?style=flat&labelColor=ff7043)](#) [![certified by cousin terio](https://img.shields.io/badge/Certified%20by-Cousin%20Terio-00838f?style=flat&labelColor=4dd0e1)](#) [![powered by black magic](https://img.shields.io/badge/Powered%20by-Black%20Magic-560027?style=flat&labelColor=000000)](#)
 
-[![Saif Khan StackOverflow](https://github-readme-stackoverflow.vercel.app/?userID=4690466&theme=dark)](https://stackoverflow.com/users/4690466/سیف-خان)
+![Hello, I am Saif Khan](./header.png)
 
+[![GitHub followers](https://img.shields.io/github/followers/saifkhichi96.svg?style=social&label=Follow&maxAge=2592000)](https://github.com/saifkhichi96?tab=followers)
 
-Android Developer and AI Researcher
+![Android Developer and AI Researcher](https://readme-typing-svg.herokuapp.com/?lines=Android+Developer+and+AI+Researcher+...&color=212c58)
 
-[![GitHub Streak](https://github-readme-streak-stats.herokuapp.com?user=saifkhichi96&theme=github-dark&hide_border=true)](https://git.io/streak-stats)
+[![Visit Homepage](https://img.shields.io/badge/-Visit%20Homepage-212c58?style=for-the-badge)](https://www.saifkhichi.com/) [![Contact Me](https://img.shields.io/badge/-Contact%20Me-7e8eb8?style=for-the-badge)](https://www.saifkhichi.com/contact/)
 
-<a href="https://www.saifkhichi.com/">
-  <button class="mdc-button mdc-button--unelevated">Visit Homepage</button>
-</a>
-<hr>
+---
 
-- 🔭 I’m currently working on:
-  - a [_collaborative tool for managing and documenting software requirements_](https://www.saifkhichi.com/projects/recatalyst/),
-  - and a series of _document segmentation projects_.
-- 🌱 I’m currently learning _cross-platform development with Flutter_.
-- 👯 I’m looking to collaborate on _machine learning based Android apps_.
-- 😄 Pronouns: He/Him
-
-You can reach through the [contact page](https://www.saifkhichi.com/contact/) on my website.
-
-[![trophy](https://github-profile-trophy.vercel.app/?username=saifkhichi96&theme=onedark)](https://github.com/ryo-ma/github-profile-trophy)
-
-<!-- 
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- ⚡ Fun fact: ...
--->
-
+[![GitHub Streak](https://github-readme-streak-stats.herokuapp.com?user=saifkhichi96&hide_border=true)](https://skyline.github.com/saifkhichi96/)
