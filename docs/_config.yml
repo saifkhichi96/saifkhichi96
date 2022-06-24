@@ -54,3 +54,17 @@ defaults:
         code:
           name: MIT License
           url: /LICENSE/
+
+collections:
+  docs:
+    output:                true
+    permalink:             /docs/:path/
+  pages:
+    output:                true
+    permalink:             /:title/
+  projects:
+    output:                true
+    permalink:             /projects/:path/
+  services:
+    output:                true
+    permalink:             /services/:path/
