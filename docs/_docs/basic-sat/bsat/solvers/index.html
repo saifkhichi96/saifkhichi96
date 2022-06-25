@@ -1,0 +1,41 @@
+---
+layout: doc
+title: solvers
+permalink: /basic-sat/bsat/solvers/
+---
+
+<div class="pdoc">
+  <div class="docstring">
+    <p>Provides a collection of SAT solvers.</p>
+    <p>This package implements different SAT solving algorithms and exposes a common API for using these solvers to find satisfiability of CNF-SAT problems. Available solvers include DPLLSolver.</p>
+    <pre><code>Typical usage example:
+
+solver = DPLLSolver()
+solution = solver.solve('some propositional logic formula')
+solution.formula     # returns the CNF representation of the input formula
+solution.assignments # returns assignments satisfying the formula (if any)
+</code></pre>
+  </div>
+</div>
+<aside class="col-md-4">
+  <!-- Table of Contents -->
+  <section>
+    <h2>Submodules</h2>
+    <ul>
+      <li><a href="_solvers/">bsat.solvers._solvers</a></li>
+      <li><a href="dpll/">bsat.solvers.dpll</a></li>
+    </ul>
+  </section>
+  <!-- Feedback -->
+  <section class="mdc-card mdc-card--outlined">
+    <div class="mdc-card__content">
+      <p>
+        This page is maintained by <a href="https://github.com/saifkhichi96/">saifkhichi96</a> on GitHub under the GNU General Public License.
+      </p>
+      <p>
+        Is there a problem? You can <a href="https://github.com/saifkhichi96/basic-sat/issues/" target="_blank">submit an issue</a> or help us <a href="https://github.com/saifkhichi96/basic-sat/edit/main/" target="_blank">improve this
+          page</a>.
+      </p>
+    </div>
+  </section>
+</aside>

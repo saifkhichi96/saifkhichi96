@@ -1,0 +1,211 @@
+---
+layout: doc
+title: laws
+permalink: /basic-sat/bsat/logic/laws/
+---
+
+<div class="pdoc">
+  <div class="docstring">
+    <p>Defines the laws of propositional logic.</p>
+  </div>
+
+
+  <section id="distribute_ands">
+    <div class="attr function"><a class="headerlink" href="#distribute_ands">#&nbsp;&nbsp</a>
+
+
+      <span class="def">def</span>
+      <span class="name">distribute_ands</span><span class="signature">(expr: <a href="../_logic/#Expression">bsat.logic._logic.Expression</a>) -&gt; <a href="../_logic/#Expression">bsat.logic._logic.Expression</a></span>:
+    </div>
+
+    <details>
+      <summary>View Source</summary>
+      <div class="codehilite">
+        <pre><span></span><span class="k">def</span> <span class="nf">distribute_ands</span><span class="p">(</span><span class="n">expr</span><span class="p">:</span> <span class="n">Expression</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Expression</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Applies distributive law where an OR occurs over an AND.</span>
+
+<span class="sd">    Recursively applies the following distributive law until it is no longer applicable:</span>
+<span class="sd">    a OR (b AND c) &lt;=&gt; (a OR b) AND (a OR c).</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        expr: The Boolean expression to apply the distributive law on.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        An equivalent Boolean expression with all ORs distributed over ANDs.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expr</span><span class="p">,</span> <span class="n">BinaryOperation</span><span class="p">):</span>
+        <span class="n">pq</span> <span class="o">=</span> <span class="n">distribute_ands</span><span class="p">(</span><span class="n">expr</span><span class="o">.</span><span class="n">operand_1</span><span class="p">)</span>
+        <span class="n">qr</span> <span class="o">=</span> <span class="n">distribute_ands</span><span class="p">(</span><span class="n">expr</span><span class="o">.</span><span class="n">operand_2</span><span class="p">)</span>
+        <span class="n">op</span> <span class="o">=</span> <span class="n">expr</span><span class="o">.</span><span class="n">operator</span>
+
+        <span class="k">if</span> <span class="n">op</span> <span class="o">==</span> <span class="n">Operators</span><span class="o">.</span><span class="n">OR</span> <span class="ow">and</span> <span class="n">qr</span><span class="o">.</span><span class="n">operator</span> <span class="o">==</span> <span class="n">Operators</span><span class="o">.</span><span class="n">AND</span><span class="p">:</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">pq</span><span class="o">.</span><span class="n">parse_tree</span>
+            <span class="n">q</span> <span class="o">=</span> <span class="n">qr</span><span class="o">.</span><span class="n">operand_1</span><span class="o">.</span><span class="n">parse_tree</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">qr</span><span class="o">.</span><span class="n">operand_2</span><span class="o">.</span><span class="n">parse_tree</span>
+
+            <span class="n">expr_n</span> <span class="o">=</span> <span class="n">ExpressionBuilder</span><span class="o">.</span><span class="n">from_parse_tree</span><span class="p">([</span><span class="n">Operators</span><span class="o">.</span><span class="n">AND</span><span class="p">,</span>
+                                                        <span class="p">[</span><span class="n">Operators</span><span class="o">.</span><span class="n">OR</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">],</span>
+                                                        <span class="p">[</span><span class="n">Operators</span><span class="o">.</span><span class="n">OR</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">r</span><span class="p">]])</span>
+            <span class="n">tree_n</span> <span class="o">=</span> <span class="p">[</span><span class="n">Operators</span><span class="o">.</span><span class="n">AND</span><span class="p">,</span>
+                      <span class="n">distribute_ands</span><span class="p">(</span><span class="n">expr_n</span><span class="o">.</span><span class="n">operand_1</span><span class="p">)</span><span class="o">.</span><span class="n">parse_tree</span><span class="p">,</span>
+                      <span class="n">distribute_ands</span><span class="p">(</span><span class="n">expr_n</span><span class="o">.</span><span class="n">operand_2</span><span class="p">)</span><span class="o">.</span><span class="n">parse_tree</span><span class="p">]</span>
+
+        <span class="k">elif</span> <span class="n">op</span> <span class="o">==</span> <span class="n">Operators</span><span class="o">.</span><span class="n">OR</span> <span class="ow">and</span> <span class="n">pq</span><span class="o">.</span><span class="n">operator</span> <span class="o">==</span> <span class="n">Operators</span><span class="o">.</span><span class="n">AND</span><span class="p">:</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">pq</span><span class="o">.</span><span class="n">operand_1</span><span class="o">.</span><span class="n">parse_tree</span>
+            <span class="n">q</span> <span class="o">=</span> <span class="n">pq</span><span class="o">.</span><span class="n">operand_2</span><span class="o">.</span><span class="n">parse_tree</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">qr</span><span class="o">.</span><span class="n">parse_tree</span>
+
+            <span class="n">expr_n</span> <span class="o">=</span> <span class="n">ExpressionBuilder</span><span class="o">.</span><span class="n">from_parse_tree</span><span class="p">([</span><span class="n">Operators</span><span class="o">.</span><span class="n">AND</span><span class="p">,</span>
+                                                        <span class="p">[</span><span class="n">Operators</span><span class="o">.</span><span class="n">OR</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">r</span><span class="p">],</span>
+                                                        <span class="p">[</span><span class="n">Operators</span><span class="o">.</span><span class="n">OR</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">r</span><span class="p">]])</span>
+            <span class="n">tree_n</span> <span class="o">=</span> <span class="p">[</span><span class="n">Operators</span><span class="o">.</span><span class="n">AND</span><span class="p">,</span>
+                      <span class="n">distribute_ands</span><span class="p">(</span><span class="n">expr_n</span><span class="o">.</span><span class="n">operand_1</span><span class="p">)</span><span class="o">.</span><span class="n">parse_tree</span><span class="p">,</span>
+                      <span class="n">distribute_ands</span><span class="p">(</span><span class="n">expr_n</span><span class="o">.</span><span class="n">operand_2</span><span class="p">)</span><span class="o">.</span><span class="n">parse_tree</span><span class="p">]</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">tree_n</span> <span class="o">=</span> <span class="p">[</span><span class="n">op</span><span class="p">,</span> <span class="n">pq</span><span class="o">.</span><span class="n">parse_tree</span><span class="p">,</span> <span class="n">qr</span><span class="o">.</span><span class="n">parse_tree</span><span class="p">]</span>
+
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expr</span><span class="p">,</span> <span class="n">UnaryOperation</span><span class="p">):</span>
+        <span class="n">tree_n</span> <span class="o">=</span> <span class="p">[</span><span class="n">expr</span><span class="o">.</span><span class="n">operator</span><span class="p">,</span> <span class="n">distribute_ands</span><span class="p">(</span><span class="n">expr</span><span class="o">.</span><span class="n">operand_1</span><span class="p">)</span><span class="o">.</span><span class="n">parse_tree</span><span class="p">]</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">tree_n</span> <span class="o">=</span> <span class="n">expr</span><span class="o">.</span><span class="n">parse_tree</span>
+
+    <span class="k">return</span> <span class="n">ExpressionBuilder</span><span class="o">.</span><span class="n">from_parse_tree</span><span class="p">(</span><span class="n">tree_n</span><span class="p">)</span>
+</pre>
+      </div>
+
+    </details>
+
+    <div class="docstring">
+      <p>Applies distributive law where an OR occurs over an AND.</p>
+
+      <p>Recursively applies the following distributive law until it is no longer applicable:
+        a OR (b AND c) &lt;=&gt; (a OR b) AND (a OR c).</p>
+
+      <p>Args:
+        expr: The Boolean expression to apply the distributive law on.</p>
+
+      <p>Returns:
+        An equivalent Boolean expression with all ORs distributed over ANDs.</p>
+    </div>
+
+
+  </section>
+  <section id="de_morgans_law">
+    <div class="attr function"><a class="headerlink" href="#de_morgans_law">#&nbsp;&nbsp</a>
+
+
+      <span class="def">def</span>
+      <span class="name">de_morgans_law</span><span class="signature">(expr: <a href="../_logic/#Expression">bsat.logic._logic.Expression</a>) -&gt; <a href="../_logic/#Expression">bsat.logic._logic.Expression</a></span>:
+    </div>
+
+    <details>
+      <summary>View Source</summary>
+      <div class="codehilite">
+        <pre><span></span><span class="k">def</span> <span class="nf">de_morgans_law</span><span class="p">(</span><span class="n">expr</span><span class="p">:</span> <span class="n">Expression</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Expression</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Moves negations inwards by repeatedly applying De Morgan&#39;s Law and removing double negations.</span>
+
+<span class="sd">    De Morgan&#39;s Law States moves the negation inwards by inverting the truth value of both operands</span>
+<span class="sd">    and switching AND with OR and vice versa. i.e.</span>
+<span class="sd">        1) NOT(a OR b) &lt;=&gt; NOT(a) AND NOT(b)</span>
+<span class="sd">        2) NOT(A AND B) &lt;=&gt; NOT(A)  OR NOT(B)</span>
+
+<span class="sd">    This is a recursive implementation, which also removes double negations which may arise from</span>
+<span class="sd">    application of De Morgan&#39;s law, or otherwise.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        expr: The Boolean expression to apply De Morgan&#39;s law on.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        An equivalent Boolean expression with negations only over literals.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># De Morgan&#39;s is only applicable if current formula has the negation operator and the</span>
+    <span class="c1"># operand itself is a binary formula with a conjunction or disjunction operator.</span>
+    <span class="k">if</span> <span class="n">expr</span><span class="o">.</span><span class="n">operator</span> <span class="o">==</span> <span class="n">Operators</span><span class="o">.</span><span class="n">NOT</span> <span class="ow">and</span> <span class="n">expr</span><span class="o">.</span><span class="n">operand_1</span><span class="o">.</span><span class="n">operator</span> <span class="ow">in</span> <span class="p">[</span><span class="n">Operators</span><span class="o">.</span><span class="n">AND</span><span class="p">,</span> <span class="n">Operators</span><span class="o">.</span><span class="n">OR</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">expr</span><span class="o">.</span><span class="n">operand_1</span><span class="o">.</span><span class="n">operator</span> <span class="o">==</span> <span class="n">Operators</span><span class="o">.</span><span class="n">AND</span><span class="p">:</span>
+            <span class="n">op</span> <span class="o">=</span> <span class="n">Operators</span><span class="o">.</span><span class="n">OR</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">op</span> <span class="o">=</span> <span class="n">Operators</span><span class="o">.</span><span class="n">AND</span>
+
+        <span class="n">op1_neg</span> <span class="o">=</span> <span class="n">ExpressionBuilder</span><span class="o">.</span><span class="n">from_parse_tree</span><span class="p">([</span><span class="n">Operators</span><span class="o">.</span><span class="n">NOT</span><span class="p">,</span> <span class="n">expr</span><span class="o">.</span><span class="n">operand_1</span><span class="o">.</span><span class="n">operand_1</span><span class="o">.</span><span class="n">parse_tree</span><span class="p">])</span>
+        <span class="n">t1</span> <span class="o">=</span> <span class="n">de_morgans_law</span><span class="p">(</span><span class="n">op1_neg</span><span class="p">)</span><span class="o">.</span><span class="n">parse_tree</span>
+
+        <span class="n">op2_neg</span> <span class="o">=</span> <span class="n">ExpressionBuilder</span><span class="o">.</span><span class="n">from_parse_tree</span><span class="p">([</span><span class="n">Operators</span><span class="o">.</span><span class="n">NOT</span><span class="p">,</span> <span class="n">expr</span><span class="o">.</span><span class="n">operand_1</span><span class="o">.</span><span class="n">operand_2</span><span class="o">.</span><span class="n">parse_tree</span><span class="p">])</span>
+        <span class="n">t2</span> <span class="o">=</span> <span class="n">de_morgans_law</span><span class="p">(</span><span class="n">op2_neg</span><span class="p">)</span><span class="o">.</span><span class="n">parse_tree</span>
+
+        <span class="n">tree_n</span> <span class="o">=</span> <span class="p">[</span><span class="n">op</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">]</span>
+
+    <span class="c1"># In case current formula is a negation, and the child is also a negation, we simply</span>
+    <span class="c1"># eliminate the double negation.</span>
+    <span class="k">elif</span> <span class="n">expr</span><span class="o">.</span><span class="n">operator</span> <span class="o">==</span> <span class="n">Operators</span><span class="o">.</span><span class="n">NOT</span> <span class="ow">and</span> <span class="n">expr</span><span class="o">.</span><span class="n">operand_1</span><span class="o">.</span><span class="n">operator</span> <span class="o">==</span> <span class="n">Operators</span><span class="o">.</span><span class="n">NOT</span><span class="p">:</span>
+        <span class="n">tree_n</span> <span class="o">=</span> <span class="n">expr</span><span class="o">.</span><span class="n">operand_1</span><span class="o">.</span><span class="n">parse_tree</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="c1"># In case current formula is itself binary, we check both operands for De Morgan&#39;s applicability.</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expr</span><span class="p">,</span> <span class="n">BinaryOperation</span><span class="p">):</span>
+        <span class="n">tree_n</span> <span class="o">=</span> <span class="p">[</span><span class="n">expr</span><span class="o">.</span><span class="n">operator</span><span class="p">,</span>
+                  <span class="n">de_morgans_law</span><span class="p">(</span><span class="n">expr</span><span class="o">.</span><span class="n">operand_1</span><span class="p">)</span><span class="o">.</span><span class="n">parse_tree</span><span class="p">,</span>
+                  <span class="n">de_morgans_law</span><span class="p">(</span><span class="n">expr</span><span class="o">.</span><span class="n">operand_2</span><span class="p">)</span><span class="o">.</span><span class="n">parse_tree</span><span class="p">]</span>
+
+    <span class="c1"># Otherwise return the current formula as-is.</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">tree_n</span> <span class="o">=</span> <span class="n">expr</span><span class="o">.</span><span class="n">parse_tree</span>
+
+    <span class="k">return</span> <span class="n">ExpressionBuilder</span><span class="o">.</span><span class="n">from_parse_tree</span><span class="p">(</span><span class="n">tree_n</span><span class="p">)</span>
+</pre>
+      </div>
+
+    </details>
+
+    <div class="docstring">
+      <p>Moves negations inwards by repeatedly applying De Morgan's Law and removing double negations.</p>
+
+      <p>De Morgan's Law States moves the negation inwards by inverting the truth value of both operands
+        and switching AND with OR and vice versa. i.e.
+        1) NOT(a OR b) &lt;=&gt; NOT(a) AND NOT(b)
+        2) NOT(A AND B) &lt;=&gt; NOT(A) OR NOT(B)</p>
+
+      <p>This is a recursive implementation, which also removes double negations which may arise from
+        application of De Morgan's law, or otherwise.</p>
+
+      <p>Args:
+        expr: The Boolean expression to apply De Morgan's law on.</p>
+
+      <p>Returns:
+        An equivalent Boolean expression with negations only over literals.</p>
+    </div>
+
+
+  </section>
+</div>
+
+<aside class="col-md-4">
+  <!-- Table of Contents -->
+  <section>
+
+
+    <h2>API Documentation</h2>
+    <ul class="memberlist">
+      <li>
+        <a class="function" href="#distribute_ands">distribute_ands</a>
+      </li>
+      <li>
+        <a class="function" href="#de_morgans_law">de_morgans_law</a>
+      </li>
+    </ul>
+
+  </section>
+
+  <!-- Feedback -->
+  <section class="mdc-card mdc-card--outlined">
+    <div class="mdc-card__content">
+      <p>
+        This page is maintained by <a href="https://github.com/saifkhichi96/">saifkhichi96</a> on GitHub under the GNU General Public License.
+      </p>
+      <p>
+        Is there a problem? You can <a href="https://github.com/saifkhichi96/basic-sat/issues/" target="_blank">submit an issue</a> or help us <a href="https://github.com/saifkhichi96/basic-sat/edit/main/" target="_blank">improve this
+          page</a>.
+      </p>
+    </div>
+  </section>
+</aside>

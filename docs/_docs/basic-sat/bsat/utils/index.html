@@ -1,0 +1,79 @@
+---
+layout: doc
+title: utils
+permalink: /basic-sat/bsat/utils/
+---
+
+<div class="pdoc">
+  <div class="docstring">
+    <p>Defines helper functions to perform common tasks.</p>
+  </div>
+
+
+  <section id="remove_whitespaces">
+    <div class="attr function"><a class="headerlink" href="#remove_whitespaces">#&nbsp;&nbsp</a>
+
+
+      <span class="def">def</span>
+      <span class="name">remove_whitespaces</span><span class="signature">(string: str) -&gt; str</span>:
+    </div>
+
+    <details>
+      <summary>View Source</summary>
+      <div class="codehilite">
+        <pre><span></span><span class="k">def</span> <span class="nf">remove_whitespaces</span><span class="p">(</span><span class="n">string</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Removes all whitespaces from a string.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        string: The string to remove whitespaces from.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A new string with no whitespaces.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+</pre>
+      </div>
+
+    </details>
+
+    <div class="docstring">
+      <p>Removes all whitespaces from a string.</p>
+
+      <p>Args:
+        string: The string to remove whitespaces from.</p>
+
+      <p>Returns:
+        A new string with no whitespaces.</p>
+    </div>
+
+
+  </section>
+</div>
+
+<aside class="col-md-4">
+  <!-- Table of Contents -->
+  <section>
+
+
+    <h2>API Documentation</h2>
+    <ul class="memberlist">
+      <li>
+        <a class="function" href="#remove_whitespaces">remove_whitespaces</a>
+      </li>
+    </ul>
+
+  </section>
+
+  <!-- Feedback -->
+  <section class="mdc-card mdc-card--outlined">
+    <div class="mdc-card__content">
+      <p>
+        This page is maintained by <a href="https://github.com/saifkhichi96/">saifkhichi96</a> on GitHub under the GNU General Public License.
+      </p>
+      <p>
+        Is there a problem? You can <a href="https://github.com/saifkhichi96/basic-sat/issues/" target="_blank">submit an issue</a> or help us <a href="https://github.com/saifkhichi96/basic-sat/edit/main/" target="_blank">improve this
+          page</a>.
+      </p>
+    </div>
+  </section>
+</aside>

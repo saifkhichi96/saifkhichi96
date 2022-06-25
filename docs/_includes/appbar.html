@@ -1,0 +1,79 @@
+<!-- Top App Bar -->
+<header class="mdc-top-app-bar mdc-top-app-bar--fixed">
+  <div class="mdc-top-app-bar__row">
+    <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+      {% unless page.drawer %}
+      <button class="material-icons mdc-icon-button" aria-label="Go to previous page." onclick="back();">arrow_back</button>
+      {% endunless %}
+
+      {% if page.drawer %}
+      <button class="mdc-icon-button" aria-label="Go to home page." onclick="window.location.href='{{ '/' | relative_url }}'"><img loading="lazy" src="https://www.saifkhichi.com/assets/images/logo-small.png" alt="{{ site.data.manifest.name }}"
+          height="32" /></button>
+      {% endif %}
+      {% unless page.cover or page.icon %}
+      <h1 class="mdc-top-app-bar__title" style="margin: 0;">
+        {% else %}
+        <span class="mdc-top-app-bar__title">
+          {% endunless %}
+          {% if page.short_title %}
+          {{ page.short_title }}
+          {% elsif page.title %}
+          {{ page.title }}
+          {% elsif site.logo %}
+          <a href="{{ '/' | relative_url }}">
+            <img loading="lazy" src="{{ site.logo | relative_url }}" alt="{{ site.data.manifest.name }}" height="32" />
+          </a>
+          {% elsif site.data.manifest.short_name %}
+          {{ site.data.manifest.short_name }}
+          {% else %}
+          {{ site.data.manifest.name }}
+          {% endif %}
+          {% if page.cover %}
+        </span>
+        {% else %}
+      </h1>
+      {% endif %}
+    </section>
+    <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
+      {% if page.menuitem %}
+      {% if page.menuaction %}
+      <div class="mdc-touch-target-wrapper">
+        <button class="mdc-top-app-bar__action-item {% if page.menuicon %}mdc-icon-button{% else %}mdc-button mdc-button--outlined{% endif %}" onclick="{{ page.menuaction }}" aria-label="Download Transcript">
+          <span class="mdc-button__ripple"></span>
+          <span class="mdc-button__label">
+            {% if page.menuicon %}
+            <i class="material-icons">{{ page.menuicon }}</i>
+            {% else %}
+            {{ page.menuitem }}
+            {% endif %}
+          </span>
+          <span class="mdc-button__touch"></span>
+        </button>
+      </div>
+      {% endif %}
+      {% endif %}
+
+      <!-- Share Button -->
+      <div class="mdc-touch-target-wrapper" id="share-button" style="display: none;">
+        <button class="mdc-top-app-bar__action-item mdc-icon-button" onclick="share('{{page.title}}', '{{page.description}}', '{{page.url | absolute_url}}')" aria-label="Share">
+          <span class="mdc-button__ripple"></span>
+          <span class="mdc-button__label">
+            <i class="material-icons">share</i>
+          </span>
+          <span class="mdc-button__touch"></span>
+        </button>
+      </div>
+
+      <!-- Contact Button -->
+      <div class="mdc-touch-target-wrapper">
+        <a class="mdc-top-app-bar__action-item mdc-icon-button" href="https://www.saifkhichi.com/contact/" aria-label="Contact">
+          <span class="mdc-button__ripple"></span>
+          <span class="mdc-button__label">
+            <i class="material-icons">question_answer</i>
+          </span>
+          <span class="mdc-button__touch"></span>
+        </a>
+      </div>
+    </section>
+  </div>
+</header>

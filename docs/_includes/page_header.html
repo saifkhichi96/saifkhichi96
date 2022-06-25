@@ -1,0 +1,64 @@
+<header>
+  <!-- Breadcrumbs -->
+  <div class="hide-when-small">
+    {% include breadcrumbs.html %}
+  </div>
+
+  <!-- Cover Image -->
+  {% if page.cover %}
+  {% if page.cover contains '://' %}
+  {% assign cover_url = page.cover %}
+  {% else %}
+  {% assign cover_url = page.cover | relative_url %}
+  {% endif %}
+  <div class="page-cover" style="background-image: url('{{ cover_url }}')">
+    {% endif %}
+
+    <!-- Get page categories (if any) -->
+    {% if post %}
+    {% assign categories = post.categories %}
+    {% else %}
+    {% assign categories = page.categories %}
+    {% endif %}
+    {% assign categories_size = categories | size %}
+
+    <!-- Summary -->
+    <div class="{% if page.cover %}align-bottom{% endif %}">
+      <div class="project-summary">
+        <!-- Icon -->
+        {% include page_icon.html %}
+
+        <div>
+          <!-- Title -->
+          {% if page.cover or page.icon %}
+          {% if page.title %}<h1 class="project-title">{{ page.title }}</h1>{% endif %}
+          {% endif %}
+
+          <!-- Date: _posts/ -->
+          {% if page.collection == 'posts' %}
+          <span class="project-type">{% if page.date %}{{ page.date | date: "%B %e, %Y" }}{% endif %}</span>
+          {% endif %}
+
+          <!-- Tags -->
+          {% if categories_size > 0 %}
+          <div class="project-tags">
+            {% for category in categories %}
+            <span class="project-tag">
+              <i class="material-icons">sell</i>{{ category | replace: ",", "" }}
+            </span>
+            {% endfor %}
+          </div>
+          {% endif %}
+
+          <!-- Devices: _projects -->
+          {% if page.collection == 'projects' and page.device %}
+          <div class="project-type"><span class="material-icons">devices</span>&nbsp; {{ page.device }}</div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    {% if page.cover %}
+  </div>
+  {% endif %}
+</header>

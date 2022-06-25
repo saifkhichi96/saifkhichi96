@@ -1,0 +1,346 @@
+---
+layout: doc
+title: _solvers
+permalink: /basic-sat/bsat/solvers/_solvers/
+---
+
+<div class="pdoc">
+  <div class="docstring">
+    <p>Defines core members of the 'solvers' package.</p>
+    <p>This is the internal definition of the package, with the private classes and other common operations defined here. Specific SAT solving algorithms are defined in their own modules. Only concrete solvers are exported for external use.
+    </p>
+  </div>
+  <section id="Assignment">
+    <div class="attr class">
+      <a class="headerlink" href="#Assignment">#&nbsp;&nbsp</a>
+      <span class="def">class</span>
+      <span class="name">Assignment</span>:
+    </div>
+    <details>
+      <summary>View Source</summary>
+      <div class="codehilite">
+        <pre><span></span><span class="k">class</span> <span class="nc">Assignment</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Exactly one set of truth values which satisfy a Boolean formula.</span>
+
+<span class="sd">    An assignment consists of truth values for all the variables in the Boolean formula</span>
+<span class="sd">    such that the whole formula evaluates to True. If the formula is always satisfiable</span>
+<span class="sd">    (i.e. it is a tautology), then the assignment is given as True. Similarly, if the</span>
+<span class="sd">    formula is unsatisfiable, the assignment is given as False.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        _truth: A dictionary with truth values of the variables, or a boolean.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">truth</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Inits an assignment by saving the truth values.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_truth</span> <span class="o">=</span> <span class="n">truth</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Checks equality of two assignments.</span>
+
+<span class="sd">        Two assignments are equal if both have same truth values for same variables.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">other</span><span class="p">)</span> <span class="o">==</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Returns a printable string listing the truth values.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_truth</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">TRUE</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_truth</span> <span class="k">else</span> <span class="n">FALSE</span>
+
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_truth</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">var</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_truth</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">var</span><span class="si">}</span><span class="s1"> = </span><span class="si">{</span><span class="n">TRUE</span> <span class="k">if</span> <span class="n">value</span> <span class="k">else</span> <span class="n">FALSE</span><span class="si">}</span><span class="s1">, &#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">s</span><span class="p">)[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_truth</span><span class="p">)</span>
+</pre>
+      </div>
+    </details>
+    <div class="docstring">
+      <p>Exactly one set of truth values which satisfy a Boolean formula.</p>
+      <p>An assignment consists of truth values for all the variables in the Boolean formula
+        such that the whole formula evaluates to True. If the formula is always satisfiable
+        (i.e. it is a tautology), then the assignment is given as True. Similarly, if the
+        formula is unsatisfiable, the assignment is given as False.
+      </p>
+      <p>Attributes:
+        _truth: A dictionary with truth values of the variables, or a boolean.
+      </p>
+    </div>
+    <div id="Assignment.__init__" class="classattr">
+      <div class="attr function"><a class="headerlink" href="#Assignment.__init__">#&nbsp;&nbsp</a>
+        <span class="name">Assignment</span><span class="signature">(truth)</span>
+      </div>
+      <details>
+        <summary>View Source</summary>
+        <div class="codehilite">
+          <pre><span></span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">truth</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Inits an assignment by saving the truth values.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_truth</span> <span class="o">=</span> <span class="n">truth</span>
+</pre>
+        </div>
+      </details>
+      <div class="docstring">
+        <p>Inits an assignment by saving the truth values.</p>
+      </div>
+    </div>
+  </section>
+  <section id="SATSolution">
+    <div class="attr class">
+      <a class="headerlink" href="#SATSolution">#&nbsp;&nbsp</a>
+      <span class="def">class</span>
+      <span class="name">SATSolution</span>:
+    </div>
+    <details>
+      <summary>View Source</summary>
+      <div class="codehilite">
+        <pre><span></span><span class="k">class</span> <span class="nc">SATSolution</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Solution of a CNF-SAT problem.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        problem: The CNF formula to check satisfiability.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">problem</span><span class="p">:</span> <span class="n">CNF</span><span class="p">,</span> <span class="n">assignments</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]):</span>
+        <span class="sd">&quot;&quot;&quot;Inits a solution for a CNF-SAT problem.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            problem: The CNF formula to check satisfiability.</span>
+<span class="sd">            assignments: List of all assignments (if any) solving the formula.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">problem</span> <span class="o">=</span> <span class="n">problem</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_assignments</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">assignment</span> <span class="ow">in</span> <span class="n">assignments</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_assignments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Assignment</span><span class="p">(</span><span class="n">assignment</span><span class="p">))</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_false</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Checks if the problem is unsatisfiable.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_assignments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">FALSE</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_true</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Checks if the problem is always satisfiable.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">max_solutions</span><span class="p">)</span> <span class="ow">or</span> \
+               <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_assignments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">TRUE</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">assignments</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;List of assignments satisfying the formula (or empty list).&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_assignments</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Checks equality of two solutions.</span>
+
+<span class="sd">        Two solutions are equal if all their assignments are equal.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_true</span> <span class="k">if</span> <span class="n">other</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_false</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">other</span><span class="p">)</span> <span class="o">==</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Number of assignments satisfying the formula.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_assignments</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Returns a printable representation of the solution.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_true</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;Tautology&#39;</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_false</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;UNSAT&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s1">&#39;</span><span class="se">\t</span><span class="si">{</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="si">}</span><span class="s1">) </span><span class="si">{</span><span class="n">it</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">it</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_assignments</span><span class="p">)])</span>
+</pre>
+      </div>
+    </details>
+    <div class="docstring">
+      <p>Solution of a CNF-SAT problem.</p>
+      <p>Attributes:
+        problem: The CNF formula to check satisfiability.
+      </p>
+    </div>
+    <div id="SATSolution.__init__" class="classattr">
+      <div class="attr function"><a class="headerlink" href="#SATSolution.__init__">#&nbsp;&nbsp</a>
+        <span class="name">SATSolution</span><span class="signature">(problem: <a href="../norm/_norm/#CNF">bsat.norm._norm.CNF</a>, assignments: List[Any])</span>
+      </div>
+      <details>
+        <summary>View Source</summary>
+        <div class="codehilite">
+          <pre><span></span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">problem</span><span class="p">:</span> <span class="n">CNF</span><span class="p">,</span> <span class="n">assignments</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]):</span>
+        <span class="sd">&quot;&quot;&quot;Inits a solution for a CNF-SAT problem.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            problem: The CNF formula to check satisfiability.</span>
+<span class="sd">            assignments: List of all assignments (if any) solving the formula.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">problem</span> <span class="o">=</span> <span class="n">problem</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_assignments</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">assignment</span> <span class="ow">in</span> <span class="n">assignments</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_assignments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Assignment</span><span class="p">(</span><span class="n">assignment</span><span class="p">))</span>
+</pre>
+        </div>
+      </details>
+      <div class="docstring">
+        <p>Inits a solution for a CNF-SAT problem.</p>
+        <p>Args:
+          problem: The CNF formula to check satisfiability.
+          assignments: List of all assignments (if any) solving the formula.
+        </p>
+      </div>
+    </div>
+    <div id="SATSolution.is_false" class="classattr">
+      <div class="attr variable"><a class="headerlink" href="#SATSolution.is_false">#&nbsp;&nbsp</a>
+        <span class="name">is_false</span><span class="annotation">: bool</span>
+      </div>
+      <div class="docstring">
+        <p>Checks if the problem is unsatisfiable.</p>
+      </div>
+    </div>
+    <div id="SATSolution.is_true" class="classattr">
+      <div class="attr variable"><a class="headerlink" href="#SATSolution.is_true">#&nbsp;&nbsp</a>
+        <span class="name">is_true</span><span class="annotation">: bool</span>
+      </div>
+      <div class="docstring">
+        <p>Checks if the problem is always satisfiable.</p>
+      </div>
+    </div>
+    <div id="SATSolution.assignments" class="classattr">
+      <div class="attr variable"><a class="headerlink" href="#SATSolution.assignments">#&nbsp;&nbsp</a>
+        <span class="name">assignments</span><span class="annotation">: list</span>
+      </div>
+      <div class="docstring">
+        <p>List of assignments satisfying the formula (or empty list).</p>
+      </div>
+    </div>
+  </section>
+  <section id="SATSolver">
+    <div class="attr class">
+      <a class="headerlink" href="#SATSolver">#&nbsp;&nbsp</a>
+      <span class="def">class</span>
+      <span class="name">SATSolver</span><wbr>(<span class="base">abc.ABC</span>):
+    </div>
+    <details>
+      <summary>View Source</summary>
+      <div class="codehilite">
+        <pre><span></span><span class="k">class</span> <span class="nc">SATSolver</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Defines an interface for algorithms to solve CNF-SAT problems.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">solve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">proposition</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SATSolution</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Determines satisfiability a Boolean expression.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">             proposition: The Boolean expression to solve.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The input expression formulated as a CNF-SAT problem, including its solutions (if any).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">problem</span> <span class="o">=</span> <span class="n">CNF</span><span class="p">(</span><span class="n">remove_whitespaces</span><span class="p">(</span><span class="n">proposition</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_solve</span><span class="p">(</span><span class="n">problem</span><span class="p">)</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">_solve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">problem</span><span class="p">:</span> <span class="n">CNF</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SATSolution</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Determines satisfiability of a CNF Boolean formula.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            problem: The CNF-SAT problem to solve.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Solution of the formula, including the assignments satisfying it (if any).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</pre>
+      </div>
+    </details>
+    <div class="docstring">
+      <p>Defines an interface for algorithms to solve CNF-SAT problems.</p>
+    </div>
+    <div id="SATSolver.solve" class="classattr">
+      <div class="attr function"><a class="headerlink" href="#SATSolver.solve">#&nbsp;&nbsp</a>
+        <span class="def">def</span>
+        <span class="name">solve</span><span class="signature">(self, proposition: str) -&gt; <a href="#SATSolution">bsat.solvers._solvers.SATSolution</a></span>:
+      </div>
+      <details>
+        <summary>View Source</summary>
+        <div class="codehilite">
+          <pre><span></span>    <span class="k">def</span> <span class="nf">solve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">proposition</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SATSolution</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Determines satisfiability a Boolean expression.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">             proposition: The Boolean expression to solve.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The input expression formulated as a CNF-SAT problem, including its solutions (if any).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">problem</span> <span class="o">=</span> <span class="n">CNF</span><span class="p">(</span><span class="n">remove_whitespaces</span><span class="p">(</span><span class="n">proposition</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_solve</span><span class="p">(</span><span class="n">problem</span><span class="p">)</span>
+</pre>
+        </div>
+      </details>
+      <div class="docstring">
+        <p>Determines satisfiability a Boolean expression.</p>
+        <p>Args:
+          proposition: The Boolean expression to solve.
+        </p>
+        <p>Returns:
+          The input expression formulated as a CNF-SAT problem, including its solutions (if any).
+        </p>
+      </div>
+    </div>
+  </section>
+</div>
+<aside class="col-md-4">
+  <!-- Table of Contents -->
+  <section>
+    <h2>API Documentation</h2>
+    <ul class="memberlist">
+      <li>
+        <a class="class" href="#Assignment">Assignment</a>
+        <ul class="memberlist">
+          <li>
+            <a class="function" href="#Assignment.__init__">Assignment</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a class="class" href="#SATSolution">SATSolution</a>
+        <ul class="memberlist">
+          <li>
+            <a class="function" href="#SATSolution.__init__">SATSolution</a>
+          </li>
+          <li>
+            <a class="variable" href="#SATSolution.is_false">is_false</a>
+          </li>
+          <li>
+            <a class="variable" href="#SATSolution.is_true">is_true</a>
+          </li>
+          <li>
+            <a class="variable" href="#SATSolution.assignments">assignments</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a class="class" href="#SATSolver">SATSolver</a>
+        <ul class="memberlist">
+          <li>
+            <a class="function" href="#SATSolver.solve">solve</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </section>
+  <!-- Feedback -->
+  <section class="mdc-card mdc-card--outlined">
+    <div class="mdc-card__content">
+      <p>
+        This page is maintained by <a href="https://github.com/saifkhichi96/">saifkhichi96</a> on GitHub under the GNU General Public License.
+      </p>
+      <p>
+        Is there a problem? You can <a href="https://github.com/saifkhichi96/basic-sat/issues/" target="_blank">submit an issue</a> or help us <a href="https://github.com/saifkhichi96/basic-sat/edit/main/" target="_blank">improve this
+          page</a>.
+      </p>
+    </div>
+  </section>
+</aside>

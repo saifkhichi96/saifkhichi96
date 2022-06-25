@@ -1,0 +1,280 @@
+---
+layout: doc
+title: identities
+permalink: /basic-sat/bsat/logic/identities/
+---
+
+<div class="pdoc">
+  <div class="docstring">
+    <p>Defines Boolean identities which define equivalence of logic operators.</p>
+  </div>
+
+
+  <section id="xor_equivalence">
+    <div class="attr function"><a class="headerlink" href="#xor_equivalence">#&nbsp;&nbsp</a>
+
+
+      <span class="def">def</span>
+      <span class="name">xor_equivalence</span><span class="signature">(expr: <a href="../_logic/#Expression">bsat.logic._logic.Expression</a>) -&gt; <a href="../_logic/#Expression">bsat.logic._logic.Expression</a></span>:
+    </div>
+
+    <details>
+      <summary>View Source</summary>
+      <div class="codehilite">
+        <pre><span></span><span class="k">def</span> <span class="nf">xor_equivalence</span><span class="p">(</span><span class="n">expr</span><span class="p">:</span> <span class="n">Expression</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Expression</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Removes all XORs from a Boolean formula.</span>
+
+<span class="sd">    All XOR operations are replaced by an equivalent logical operation. By definition, XOR</span>
+<span class="sd">    is same as the negation of logical bi-conditional (IFF), i.e. a XOR b = NOT(a IFF b)</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        expr: The expression to remove the XORs from.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        An equivalent expression without XOR operations.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expr</span><span class="p">,</span> <span class="n">BinaryOperation</span><span class="p">):</span>
+        <span class="n">t1</span> <span class="o">=</span> <span class="n">xor_equivalence</span><span class="p">(</span><span class="n">expr</span><span class="o">.</span><span class="n">operand_1</span><span class="p">)</span><span class="o">.</span><span class="n">parse_tree</span>
+        <span class="n">t2</span> <span class="o">=</span> <span class="n">xor_equivalence</span><span class="p">(</span><span class="n">expr</span><span class="o">.</span><span class="n">operand_2</span><span class="p">)</span><span class="o">.</span><span class="n">parse_tree</span>
+        <span class="n">op</span> <span class="o">=</span> <span class="n">expr</span><span class="o">.</span><span class="n">operator</span>
+
+        <span class="k">if</span> <span class="n">op</span> <span class="o">==</span> <span class="n">Operators</span><span class="o">.</span><span class="n">XOR</span><span class="p">:</span>
+            <span class="n">tree_n</span> <span class="o">=</span> <span class="p">[</span><span class="n">Operators</span><span class="o">.</span><span class="n">NOT</span><span class="p">,</span> <span class="p">[</span><span class="n">Operators</span><span class="o">.</span><span class="n">IFF</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">]]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">tree_n</span> <span class="o">=</span> <span class="p">[</span><span class="n">op</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">]</span>
+
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expr</span><span class="p">,</span> <span class="n">UnaryOperation</span><span class="p">):</span>
+        <span class="n">tree_n</span> <span class="o">=</span> <span class="p">[</span><span class="n">expr</span><span class="o">.</span><span class="n">operator</span><span class="p">,</span> <span class="n">xor_equivalence</span><span class="p">(</span><span class="n">expr</span><span class="o">.</span><span class="n">operand_1</span><span class="p">)</span><span class="o">.</span><span class="n">parse_tree</span><span class="p">]</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">tree_n</span> <span class="o">=</span> <span class="n">expr</span><span class="o">.</span><span class="n">parse_tree</span>
+
+    <span class="k">return</span> <span class="n">ExpressionBuilder</span><span class="o">.</span><span class="n">from_parse_tree</span><span class="p">(</span><span class="n">tree_n</span><span class="p">)</span>
+</pre>
+      </div>
+
+    </details>
+
+    <div class="docstring">
+      <p>Removes all XORs from a Boolean formula.</p>
+
+      <p>All XOR operations are replaced by an equivalent logical operation. By definition, XOR
+        is same as the negation of logical bi-conditional (IFF), i.e. a XOR b = NOT(a IFF b)</p>
+
+      <p>Args:
+        expr: The expression to remove the XORs from.</p>
+
+      <p>Returns:
+        An equivalent expression without XOR operations.</p>
+    </div>
+
+
+  </section>
+  <section id="iff_equivalence">
+    <div class="attr function"><a class="headerlink" href="#iff_equivalence">#&nbsp;&nbsp</a>
+
+
+      <span class="def">def</span>
+      <span class="name">iff_equivalence</span><span class="signature">(expr: <a href="../_logic/#Expression">bsat.logic._logic.Expression</a>) -&gt; <a href="../_logic/#Expression">bsat.logic._logic.Expression</a></span>:
+    </div>
+
+    <details>
+      <summary>View Source</summary>
+      <div class="codehilite">
+        <pre><span></span><span class="k">def</span> <span class="nf">iff_equivalence</span><span class="p">(</span><span class="n">expr</span><span class="p">:</span> <span class="n">Expression</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Expression</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Removes all logical bi-conditionals (IFF) from a Boolean formula.</span>
+
+<span class="sd">    All logical bi-conditional (IFF) operations are replaced by an equivalent logical operation.</span>
+<span class="sd">    By definition a bi-conditional is same as AND of two implications in both directions, i.e.</span>
+<span class="sd">    a IFF b = (a IMPLIES b) AND (b IMPLIES a)</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        expr: The expression to remove the IFFs from.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        An equivalent expression without IFF operations.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expr</span><span class="p">,</span> <span class="n">BinaryOperation</span><span class="p">):</span>
+        <span class="n">t1</span> <span class="o">=</span> <span class="n">iff_equivalence</span><span class="p">(</span><span class="n">expr</span><span class="o">.</span><span class="n">operand_1</span><span class="p">)</span><span class="o">.</span><span class="n">parse_tree</span>
+        <span class="n">t2</span> <span class="o">=</span> <span class="n">iff_equivalence</span><span class="p">(</span><span class="n">expr</span><span class="o">.</span><span class="n">operand_2</span><span class="p">)</span><span class="o">.</span><span class="n">parse_tree</span>
+        <span class="n">op</span> <span class="o">=</span> <span class="n">expr</span><span class="o">.</span><span class="n">operator</span>
+
+        <span class="k">if</span> <span class="n">op</span> <span class="o">==</span> <span class="n">Operators</span><span class="o">.</span><span class="n">IFF</span><span class="p">:</span>
+            <span class="n">tree_n</span> <span class="o">=</span> <span class="p">[</span><span class="n">Operators</span><span class="o">.</span><span class="n">AND</span><span class="p">,</span> <span class="p">[</span><span class="n">Operators</span><span class="o">.</span><span class="n">IMPLIES</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">],</span> <span class="p">[</span><span class="n">Operators</span><span class="o">.</span><span class="n">IMPLIES</span><span class="p">,</span> <span class="n">t2</span><span class="p">,</span> <span class="n">t1</span><span class="p">]]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">tree_n</span> <span class="o">=</span> <span class="p">[</span><span class="n">op</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">]</span>
+
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expr</span><span class="p">,</span> <span class="n">UnaryOperation</span><span class="p">):</span>
+        <span class="n">tree_n</span> <span class="o">=</span> <span class="p">[</span><span class="n">expr</span><span class="o">.</span><span class="n">operator</span><span class="p">,</span> <span class="n">iff_equivalence</span><span class="p">(</span><span class="n">expr</span><span class="o">.</span><span class="n">operand_1</span><span class="p">)</span><span class="o">.</span><span class="n">parse_tree</span><span class="p">]</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">tree_n</span> <span class="o">=</span> <span class="n">expr</span><span class="o">.</span><span class="n">parse_tree</span>
+
+    <span class="k">return</span> <span class="n">ExpressionBuilder</span><span class="o">.</span><span class="n">from_parse_tree</span><span class="p">(</span><span class="n">tree_n</span><span class="p">)</span>
+</pre>
+      </div>
+
+    </details>
+
+    <div class="docstring">
+      <p>Removes all logical bi-conditionals (IFF) from a Boolean formula.</p>
+
+      <p>All logical bi-conditional (IFF) operations are replaced by an equivalent logical operation.
+        By definition a bi-conditional is same as AND of two implications in both directions, i.e.
+        a IFF b = (a IMPLIES b) AND (b IMPLIES a)</p>
+
+      <p>Args:
+        expr: The expression to remove the IFFs from.</p>
+
+      <p>Returns:
+        An equivalent expression without IFF operations.</p>
+    </div>
+
+
+  </section>
+  <section id="implication_equivalence">
+    <div class="attr function"><a class="headerlink" href="#implication_equivalence">#&nbsp;&nbsp</a>
+
+
+      <span class="def">def</span>
+      <span class="name">implication_equivalence</span><span class="signature">(expr: <a href="../_logic/#Expression">bsat.logic._logic.Expression</a>) -&gt; <a href="../_logic/#Expression">bsat.logic._logic.Expression</a></span>:
+    </div>
+
+    <details>
+      <summary>View Source</summary>
+      <div class="codehilite">
+        <pre><span></span><span class="k">def</span> <span class="nf">implication_equivalence</span><span class="p">(</span><span class="n">expr</span><span class="p">:</span> <span class="n">Expression</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Expression</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Removes all logical implications (IMPLIES) from a Boolean formula.</span>
+
+<span class="sd">    All logical implication (IMPLIES) operations are replaced by an equivalent logical operation.</span>
+<span class="sd">    By definition an implication has the following equivalence: a IMPLIES b = NOT(a) OR b</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        expr: the expression to remove the IMPLIES operations from.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        An equivalent expression without IMPLIES operations.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expr</span><span class="p">,</span> <span class="n">BinaryOperation</span><span class="p">):</span>
+        <span class="n">t1</span> <span class="o">=</span> <span class="n">implication_equivalence</span><span class="p">(</span><span class="n">expr</span><span class="o">.</span><span class="n">operand_1</span><span class="p">)</span><span class="o">.</span><span class="n">parse_tree</span>
+        <span class="n">t2</span> <span class="o">=</span> <span class="n">implication_equivalence</span><span class="p">(</span><span class="n">expr</span><span class="o">.</span><span class="n">operand_2</span><span class="p">)</span><span class="o">.</span><span class="n">parse_tree</span>
+        <span class="n">op</span> <span class="o">=</span> <span class="n">expr</span><span class="o">.</span><span class="n">operator</span>
+
+        <span class="k">if</span> <span class="n">op</span> <span class="o">==</span> <span class="n">Operators</span><span class="o">.</span><span class="n">IMPLIES</span><span class="p">:</span>
+            <span class="n">tree_n</span> <span class="o">=</span> <span class="p">[</span><span class="n">Operators</span><span class="o">.</span><span class="n">OR</span><span class="p">,</span> <span class="p">[</span><span class="n">Operators</span><span class="o">.</span><span class="n">NOT</span><span class="p">,</span> <span class="n">t1</span><span class="p">],</span> <span class="n">t2</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">tree_n</span> <span class="o">=</span> <span class="p">[</span><span class="n">op</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">]</span>
+
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expr</span><span class="p">,</span> <span class="n">UnaryOperation</span><span class="p">):</span>
+        <span class="n">tree_n</span> <span class="o">=</span> <span class="p">[</span><span class="n">expr</span><span class="o">.</span><span class="n">operator</span><span class="p">,</span> <span class="n">implication_equivalence</span><span class="p">(</span><span class="n">expr</span><span class="o">.</span><span class="n">operand_1</span><span class="p">)</span><span class="o">.</span><span class="n">parse_tree</span><span class="p">]</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">tree_n</span> <span class="o">=</span> <span class="n">expr</span><span class="o">.</span><span class="n">parse_tree</span>
+
+    <span class="k">return</span> <span class="n">ExpressionBuilder</span><span class="o">.</span><span class="n">from_parse_tree</span><span class="p">(</span><span class="n">tree_n</span><span class="p">)</span>
+</pre>
+      </div>
+
+    </details>
+
+    <div class="docstring">
+      <p>Removes all logical implications (IMPLIES) from a Boolean formula.</p>
+
+      <p>All logical implication (IMPLIES) operations are replaced by an equivalent logical operation.
+        By definition an implication has the following equivalence: a IMPLIES b = NOT(a) OR b</p>
+
+      <p>Args:
+        expr: the expression to remove the IMPLIES operations from.</p>
+
+      <p>Returns:
+        An equivalent expression without IMPLIES operations.</p>
+    </div>
+
+
+  </section>
+  <section id="simplify_operators">
+    <div class="attr function"><a class="headerlink" href="#simplify_operators">#&nbsp;&nbsp</a>
+
+
+      <span class="def">def</span>
+      <span class="name">simplify_operators</span><span class="signature">(expr: <a href="../_logic/#Expression">bsat.logic._logic.Expression</a>) -&gt; <a href="../_logic/#Expression">bsat.logic._logic.Expression</a></span>:
+    </div>
+
+    <details>
+      <summary>View Source</summary>
+      <div class="codehilite">
+        <pre><span></span><span class="k">def</span> <span class="nf">simplify_operators</span><span class="p">(</span><span class="n">expr</span><span class="p">:</span> <span class="n">Expression</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Expression</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Simplifies an expression by reducing all logical operators to AND, OR and NOT.</span>
+
+<span class="sd">    Boolean identities are applied to systematically replace all exclusive OR, implication</span>
+<span class="sd">    and logical bi-conditional operators with the three basic logic operators, AND, OR and</span>
+<span class="sd">    NOT.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        expr: The expression to simplify.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        An equivalent expression with no complex logical operators.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">expr</span> <span class="o">=</span> <span class="n">xor_equivalence</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
+    <span class="n">expr</span> <span class="o">=</span> <span class="n">iff_equivalence</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">implication_equivalence</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
+</pre>
+      </div>
+
+    </details>
+
+    <div class="docstring">
+      <p>Simplifies an expression by reducing all logical operators to AND, OR and NOT.</p>
+
+      <p>Boolean identities are applied to systematically replace all exclusive OR, implication
+        and logical bi-conditional operators with the three basic logic operators, AND, OR and
+        NOT.</p>
+
+      <p>Args:
+        expr: The expression to simplify.</p>
+
+      <p>Returns:
+        An equivalent expression with no complex logical operators.</p>
+    </div>
+
+
+  </section>
+</div>
+
+<aside class="col-md-4">
+  <!-- Table of Contents -->
+  <section>
+
+
+    <h2>API Documentation</h2>
+    <ul class="memberlist">
+      <li>
+        <a class="function" href="#xor_equivalence">xor_equivalence</a>
+      </li>
+      <li>
+        <a class="function" href="#iff_equivalence">iff_equivalence</a>
+      </li>
+      <li>
+        <a class="function" href="#implication_equivalence">implication_equivalence</a>
+      </li>
+      <li>
+        <a class="function" href="#simplify_operators">simplify_operators</a>
+      </li>
+    </ul>
+
+  </section>
+
+  <!-- Feedback -->
+  <section class="mdc-card mdc-card--outlined">
+    <div class="mdc-card__content">
+      <p>
+        This page is maintained by <a href="https://github.com/saifkhichi96/">saifkhichi96</a> on GitHub under the GNU General Public License.
+      </p>
+      <p>
+        Is there a problem? You can <a href="https://github.com/saifkhichi96/basic-sat/issues/" target="_blank">submit an issue</a> or help us <a href="https://github.com/saifkhichi96/basic-sat/edit/main/" target="_blank">improve this
+          page</a>.
+      </p>
+    </div>
+  </section>
+</aside>

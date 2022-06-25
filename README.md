@@ -4,10 +4,11 @@
 
 [![GitHub followers](https://img.shields.io/github/followers/saifkhichi96.svg?style=social&label=Follow&maxAge=2592000)](https://github.com/saifkhichi96?tab=followers)
 
-![Android Developer and AI Researcher](https://readme-typing-svg.herokuapp.com/?lines=Android+Developer+and+AI+Researcher+...&color=212c58)
+![Android Developer and AI Researcher](https://readme-typing-svg.herokuapp.com/?lines=Android+Developer+and+AI+Researcher+...&color=979797)
 
 [![Visit Homepage](https://img.shields.io/badge/-Visit%20Homepage-212c58?style=for-the-badge)](https://www.saifkhichi.com/) [![Contact Me](https://img.shields.io/badge/-Contact%20Me-7e8eb8?style=for-the-badge)](https://www.saifkhichi.com/contact/)
 
 ---
 
-[![GitHub Streak](https://github-readme-streak-stats.herokuapp.com?user=saifkhichi96&hide_border=true)](https://skyline.github.com/saifkhichi96/)
+[![GitHub Streak](https://github-readme-streak-stats.herokuapp.com?user=saifkhichi96&hide_border=true)](https://skyline.github.com/saifkhichi96/#gh-light-mode-only)
+[![GitHub Streak](https://github-readme-streak-stats.herokuapp.com?user=saifkhichi96&hide_border=true&theme=dark)](https://skyline.github.com/saifkhichi96/#gh-dark-mode-only)

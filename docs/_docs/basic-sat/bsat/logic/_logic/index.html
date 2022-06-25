@@ -1,0 +1,516 @@
+---
+layout: doc
+title: _logic
+permalink: /basic-sat/bsat/logic/_logic/
+---
+
+<div class="pdoc">
+  <div class="docstring">
+    <p>Defines the core members of the 'logic' package.</p>
+
+    <p>This is the internal definition of the package, with all the public and private classes defined here. Only the public classes are exported for external use.</p>
+  </div>
+
+
+  <section id="Expression">
+    <div class="attr class">
+      <a class="headerlink" href="#Expression">#&nbsp;&nbsp</a>
+
+
+      <span class="def">class</span>
+      <span class="name">Expression</span><wbr>(<span class="base">abc.ABC</span>):
+    </div>
+
+    <details>
+      <summary>View Source</summary>
+      <div class="codehilite">
+        <pre><span></span><span class="k">class</span> <span class="nc">Expression</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Abstract representation of a single Boolean logic operation.</span>
+
+<span class="sd">    Operations are saved as recursive trees, where all operands in the operation may themselves</span>
+<span class="sd">    be other Boolean operations.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        operator: The logical operator in this operation (if any).</span>
+<span class="sd">        operand_1: The first operand in the operation (if any).</span>
+<span class="sd">        operand_2: The second operand in the operation (if any).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">operator</span><span class="p">:</span> <span class="n">Operators</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operator</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">operand_1</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">operand_2</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates a new Boolean operation.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            operator: The logical operator in this operation (if any).</span>
+<span class="sd">            operand_1: The first operand in the operation (if any).</span>
+<span class="sd">            operand_2: The second operand in the operation (if any).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">operator</span> <span class="o">=</span> <span class="n">operator</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">operand_1</span> <span class="o">=</span> <span class="n">operand_1</span> <span class="k">if</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">operand_2</span> <span class="o">=</span> <span class="n">operand_2</span> <span class="k">if</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">literals</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;List of unique literals in the recursive formula tree.&quot;&quot;&quot;</span>
+        <span class="n">literals</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">operand_1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">operand_2</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">op</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="n">Literal</span><span class="p">):</span>
+                    <span class="n">literals</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">op</span><span class="p">))</span>
+                <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="n">Expression</span><span class="p">):</span>
+                    <span class="n">literals</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">literals</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">literals</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">parse_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Parse tree of the recursive Boolean operation as a preorder, nested list.&quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Checks equality of the two Boolean operations.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">Expression</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span><span class="o">.</span><span class="n">parse_tree</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_tree</span>
+</pre>
+      </div>
+
+    </details>
+
+    <div class="docstring">
+      <p>Abstract representation of a single Boolean logic operation.</p>
+
+      <p>Operations are saved as recursive trees, where all operands in the operation may themselves
+        be other Boolean operations.</p>
+
+      <p>Attributes:
+        operator: The logical operator in this operation (if any).
+        operand_1: The first operand in the operation (if any).
+        operand_2: The second operand in the operation (if any).</p>
+    </div>
+
+
+    <div id="Expression.__init__" class="classattr">
+      <div class="attr function"><a class="headerlink" href="#Expression.__init__">#&nbsp;&nbsp</a>
+
+
+        <span class="name">Expression</span><span class="signature">(operator=None, operand_1=None, operand_2=None)</span>
+      </div>
+
+      <details>
+        <summary>View Source</summary>
+        <div class="codehilite">
+          <pre><span></span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operator</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">operand_1</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">operand_2</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates a new Boolean operation.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            operator: The logical operator in this operation (if any).</span>
+<span class="sd">            operand_1: The first operand in the operation (if any).</span>
+<span class="sd">            operand_2: The second operand in the operation (if any).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">operator</span> <span class="o">=</span> <span class="n">operator</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">operand_1</span> <span class="o">=</span> <span class="n">operand_1</span> <span class="k">if</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">operand_2</span> <span class="o">=</span> <span class="n">operand_2</span> <span class="k">if</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+</pre>
+        </div>
+
+      </details>
+
+      <div class="docstring">
+        <p>Creates a new Boolean operation.</p>
+
+        <p>Args:
+          operator: The logical operator in this operation (if any).
+          operand_1: The first operand in the operation (if any).
+          operand_2: The second operand in the operation (if any).</p>
+      </div>
+
+
+    </div>
+    <div id="Expression.literals" class="classattr">
+      <div class="attr variable"><a class="headerlink" href="#Expression.literals">#&nbsp;&nbsp</a>
+
+        <span class="name">literals</span><span class="annotation">: List[Any]</span>
+      </div>
+
+      <div class="docstring">
+        <p>List of unique literals in the recursive formula tree.</p>
+      </div>
+
+
+    </div>
+    <div id="Expression.parse_tree" class="classattr">
+      <div class="attr variable"><a class="headerlink" href="#Expression.parse_tree">#&nbsp;&nbsp</a>
+
+        <span class="name">parse_tree</span><span class="annotation">: List[Any]</span>
+      </div>
+
+      <div class="docstring">
+        <p>Parse tree of the recursive Boolean operation as a preorder, nested list.</p>
+      </div>
+
+
+    </div>
+  </section>
+  <section id="Literal">
+    <div class="attr class">
+      <a class="headerlink" href="#Literal">#&nbsp;&nbsp</a>
+
+
+      <span class="def">class</span>
+      <span class="name">Literal</span><wbr>(<span class="base"><a href="#Expression">Expression</a></span>):
+    </div>
+
+    <details>
+      <summary>View Source</summary>
+      <div class="codehilite">
+        <pre><span></span><span class="k">class</span> <span class="nc">Literal</span><span class="p">(</span><span class="n">Expression</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A literal is a single variable with no operations.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates a new literal.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            value: Value of the variable.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Expression</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operand_1</span><span class="o">=</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">parse_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;See base class.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">operand_1</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns a printable representation of the literal.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">operand_1</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">TRUE</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">operand_1</span> <span class="k">else</span> <span class="n">FALSE</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">operand_1</span><span class="p">)</span>
+</pre>
+      </div>
+
+    </details>
+
+    <div class="docstring">
+      <p>A literal is a single variable with no operations.</p>
+    </div>
+
+
+    <div id="Literal.__init__" class="classattr">
+      <div class="attr function"><a class="headerlink" href="#Literal.__init__">#&nbsp;&nbsp</a>
+
+
+        <span class="name">Literal</span><span class="signature">(value)</span>
+      </div>
+
+      <details>
+        <summary>View Source</summary>
+        <div class="codehilite">
+          <pre><span></span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates a new literal.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            value: Value of the variable.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Expression</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operand_1</span><span class="o">=</span><span class="n">value</span><span class="p">)</span>
+</pre>
+        </div>
+
+      </details>
+
+      <div class="docstring">
+        <p>Creates a new literal.</p>
+
+        <p>Args:
+          value: Value of the variable.</p>
+      </div>
+
+
+    </div>
+    <div id="Literal.parse_tree" class="classattr">
+      <div class="attr variable"><a class="headerlink" href="#Literal.parse_tree">#&nbsp;&nbsp</a>
+
+        <span class="name">parse_tree</span>
+      </div>
+
+      <div class="docstring">
+        <p>See base class.</p>
+      </div>
+
+
+    </div>
+    <div class="inherited">
+      <h5>Inherited Members</h5>
+      <dl>
+        <div><dt><a href="#Expression">Expression</a></dt>
+          <dd id="Literal.literals" class="variable"><a href="#Expression.literals">literals</a></dd>
+
+        </div>
+      </dl>
+    </div>
+  </section>
+  <section id="UnaryOperation">
+    <div class="attr class">
+      <a class="headerlink" href="#UnaryOperation">#&nbsp;&nbsp</a>
+
+
+      <span class="def">class</span>
+      <span class="name">UnaryOperation</span><wbr>(<span class="base"><a href="#Expression">Expression</a></span>):
+    </div>
+
+    <details>
+      <summary>View Source</summary>
+      <div class="codehilite">
+        <pre><span></span><span class="k">class</span> <span class="nc">UnaryOperation</span><span class="p">(</span><span class="n">Expression</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A unary operation consists of a unary operator applied on a single operand.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operator</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Expression</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates a new unary operation.&quot;&quot;&quot;</span>
+        <span class="n">Expression</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operator</span><span class="o">=</span><span class="n">operator</span><span class="p">,</span> <span class="n">operand_1</span><span class="o">=</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">parse_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;See base class.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">operator</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">operand_1</span><span class="o">.</span><span class="n">parse_tree</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Returns a printable representation of the operation.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">operand_1</span><span class="p">,</span> <span class="n">UnaryOperation</span><span class="p">):</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">operator</span><span class="si">}</span><span class="s1">(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">operand_1</span><span class="si">}</span><span class="s1">)&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">operator</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">operand_1</span><span class="si">}</span><span class="s1">&#39;</span>
+</pre>
+      </div>
+
+    </details>
+
+    <div class="docstring">
+      <p>A unary operation consists of a unary operator applied on a single operand.</p>
+    </div>
+
+
+    <div id="UnaryOperation.__init__" class="classattr">
+      <div class="attr function"><a class="headerlink" href="#UnaryOperation.__init__">#&nbsp;&nbsp</a>
+
+
+        <span class="name">UnaryOperation</span><span class="signature">(operator: str, value: <a href="#Expression">bsat.logic._logic.Expression</a>)</span>
+      </div>
+
+      <details>
+        <summary>View Source</summary>
+        <div class="codehilite">
+          <pre><span></span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operator</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Expression</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates a new unary operation.&quot;&quot;&quot;</span>
+        <span class="n">Expression</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operator</span><span class="o">=</span><span class="n">operator</span><span class="p">,</span> <span class="n">operand_1</span><span class="o">=</span><span class="n">value</span><span class="p">)</span>
+</pre>
+        </div>
+
+      </details>
+
+      <div class="docstring">
+        <p>Creates a new unary operation.</p>
+      </div>
+
+
+    </div>
+    <div id="UnaryOperation.parse_tree" class="classattr">
+      <div class="attr variable"><a class="headerlink" href="#UnaryOperation.parse_tree">#&nbsp;&nbsp</a>
+
+        <span class="name">parse_tree</span><span class="annotation">: List[Any]</span>
+      </div>
+
+      <div class="docstring">
+        <p>See base class.</p>
+      </div>
+
+
+    </div>
+    <div class="inherited">
+      <h5>Inherited Members</h5>
+      <dl>
+        <div><dt><a href="#Expression">Expression</a></dt>
+          <dd id="UnaryOperation.literals" class="variable"><a href="#Expression.literals">literals</a></dd>
+
+        </div>
+      </dl>
+    </div>
+  </section>
+  <section id="BinaryOperation">
+    <div class="attr class">
+      <a class="headerlink" href="#BinaryOperation">#&nbsp;&nbsp</a>
+
+
+      <span class="def">class</span>
+      <span class="name">BinaryOperation</span><wbr>(<span class="base"><a href="#Expression">Expression</a></span>):
+    </div>
+
+    <details>
+      <summary>View Source</summary>
+      <div class="codehilite">
+        <pre><span></span><span class="k">class</span> <span class="nc">BinaryOperation</span><span class="p">(</span><span class="n">Expression</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A binary operation consists of a binary operator applied to two different operands.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operator</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">operand_1</span><span class="p">:</span> <span class="n">Expression</span><span class="p">,</span> <span class="n">operand_2</span><span class="p">:</span> <span class="n">Expression</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates a new binary operation.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            operator: The logical operator in this operation.</span>
+<span class="sd">            operand_1: The first operand in the operation.</span>
+<span class="sd">            operand_2: The second operand in the operation.&quot;&quot;&quot;</span>
+        <span class="n">Expression</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operator</span><span class="p">,</span> <span class="n">operand_1</span><span class="p">,</span> <span class="n">operand_2</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">parse_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;See base class.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">operator</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">operand_1</span><span class="o">.</span><span class="n">parse_tree</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">operand_2</span><span class="o">.</span><span class="n">parse_tree</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Returns a printable representation of the operation.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">operand_1</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">operator</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">operand_2</span><span class="si">}</span><span class="s1">)&#39;</span>
+</pre>
+      </div>
+
+    </details>
+
+    <div class="docstring">
+      <p>A binary operation consists of a binary operator applied to two different operands.</p>
+    </div>
+
+
+    <div id="BinaryOperation.__init__" class="classattr">
+      <div class="attr function"><a class="headerlink" href="#BinaryOperation.__init__">#&nbsp;&nbsp</a>
+
+
+        <span class="name">BinaryOperation</span><span class="signature">(
+          operator: str,
+          operand_1: <a href="#Expression">bsat.logic._logic.Expression</a>,
+          operand_2: <a href="#Expression">bsat.logic._logic.Expression</a>
+          )</span>
+      </div>
+
+      <details>
+        <summary>View Source</summary>
+        <div class="codehilite">
+          <pre><span></span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operator</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">operand_1</span><span class="p">:</span> <span class="n">Expression</span><span class="p">,</span> <span class="n">operand_2</span><span class="p">:</span> <span class="n">Expression</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates a new binary operation.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            operator: The logical operator in this operation.</span>
+<span class="sd">            operand_1: The first operand in the operation.</span>
+<span class="sd">            operand_2: The second operand in the operation.&quot;&quot;&quot;</span>
+        <span class="n">Expression</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operator</span><span class="p">,</span> <span class="n">operand_1</span><span class="p">,</span> <span class="n">operand_2</span><span class="p">)</span>
+</pre>
+        </div>
+
+      </details>
+
+      <div class="docstring">
+        <p>Creates a new binary operation.</p>
+
+        <p>Args:
+          operator: The logical operator in this operation.
+          operand_1: The first operand in the operation.
+          operand_2: The second operand in the operation.</p>
+      </div>
+
+
+    </div>
+    <div id="BinaryOperation.parse_tree" class="classattr">
+      <div class="attr variable"><a class="headerlink" href="#BinaryOperation.parse_tree">#&nbsp;&nbsp</a>
+
+        <span class="name">parse_tree</span><span class="annotation">: List[Any]</span>
+      </div>
+
+      <div class="docstring">
+        <p>See base class.</p>
+      </div>
+
+
+    </div>
+    <div class="inherited">
+      <h5>Inherited Members</h5>
+      <dl>
+        <div><dt><a href="#Expression">Expression</a></dt>
+          <dd id="BinaryOperation.literals" class="variable"><a href="#Expression.literals">literals</a></dd>
+
+        </div>
+      </dl>
+    </div>
+  </section>
+</div>
+
+<aside class="col-md-4">
+  <!-- Table of Contents -->
+  <section>
+
+
+    <h2>API Documentation</h2>
+    <ul class="memberlist">
+      <li>
+        <a class="class" href="#Expression">Expression</a>
+        <ul class="memberlist">
+          <li>
+            <a class="function" href="#Expression.__init__">Expression</a>
+          </li>
+          <li>
+            <a class="variable" href="#Expression.literals">literals</a>
+          </li>
+          <li>
+            <a class="variable" href="#Expression.parse_tree">parse_tree</a>
+          </li>
+        </ul>
+
+      </li>
+      <li>
+        <a class="class" href="#Literal">Literal</a>
+        <ul class="memberlist">
+          <li>
+            <a class="function" href="#Literal.__init__">Literal</a>
+          </li>
+          <li>
+            <a class="variable" href="#Literal.parse_tree">parse_tree</a>
+          </li>
+        </ul>
+
+      </li>
+      <li>
+        <a class="class" href="#UnaryOperation">UnaryOperation</a>
+        <ul class="memberlist">
+          <li>
+            <a class="function" href="#UnaryOperation.__init__">UnaryOperation</a>
+          </li>
+          <li>
+            <a class="variable" href="#UnaryOperation.parse_tree">parse_tree</a>
+          </li>
+        </ul>
+
+      </li>
+      <li>
+        <a class="class" href="#BinaryOperation">BinaryOperation</a>
+        <ul class="memberlist">
+          <li>
+            <a class="function" href="#BinaryOperation.__init__">BinaryOperation</a>
+          </li>
+          <li>
+            <a class="variable" href="#BinaryOperation.parse_tree">parse_tree</a>
+          </li>
+        </ul>
+
+      </li>
+    </ul>
+
+  </section>
+
+  <!-- Feedback -->
+  <section class="mdc-card mdc-card--outlined">
+    <div class="mdc-card__content">
+      <p>
+        This page is maintained by <a href="https://github.com/saifkhichi96/">saifkhichi96</a> on GitHub under the MIT License.
+      </p>
+      <p>
+        Is there a problem? You can <a href="https://github.com/saifkhichi96/basic-sat/issues/" target="_blank">submit an issue</a> or help us <a href="https://github.com/saifkhichi96/basic-sat/edit/main/" target="_blank">improve this
+          page</a>.
+      </p>
+    </div>
+  </section>
+</aside>

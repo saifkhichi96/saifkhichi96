@@ -1,5 +1,5 @@
 remote_theme:                saifkhichi96/simple-material
-title:                       API Documentation | Saif Khan
+title:                       Saif Khan
 url:                         https://docs.saifkhichi.com/
 
 favicon:                     https://www.saifkhichi.com/favicon.ico
@@ -15,22 +15,19 @@ google_adsense:              ca-pub-4333877529904422
 menu_main:
   - title:                   Home
     icon:                    roofing
-    url:                     /
-  - title:                   About Me
-    icon:                    contact_page
-    url:                     /resume/
-  - title:                   My Services
-    icon:                    design_services
-    url:                     /services/
-  - title:                   Coding Projects
-    icon:                    cases
-    url:                     /projects/
-  - title:                   Research Work
-    icon:                    science
-    url:                     /research/
-  - title:
-  - title:                   Contact
-    url:                     /contact/
+    url:                     https://www.saifkhichi.com/
+  - title:                   Blog
+    icon:                    feed
+    url:                     https://www.saifkhichi.com/blog/
+  - title:                   Projects
+    icon:                    webhook
+    url:                     https://www.saifkhichi.com/projects/
+  - title:                   Research
+    icon:                    api
+    url:                     https://www.saifkhichi.com/research/
+  - title:                   CV
+    icon:                    approval
+    url:                     https://www.saifkhichi.com/resume/
 
 menu_social:
   email:                     saifkhichi96@gmail.com

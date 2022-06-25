@@ -1,0 +1,237 @@
+---
+layout: doc
+title: _parser
+permalink: /basic-sat/bsat/logic/grammar/_parser
+---
+
+<div class="pdoc">
+  <div class="docstring">
+    <p>Creates a parser for propositional logic expressions.</p>
+
+    <p>Defines the grammar of the propositional logic language, which can then be
+      used to parse propositional boolean logic formulas.</p>
+  </div>
+
+
+  <section id="Parser">
+    <div class="attr class">
+      <a class="headerlink" href="#Parser">#&nbsp;&nbsp</a>
+
+
+      <span class="def">class</span>
+      <span class="name">Parser</span>:
+    </div>
+
+    <details>
+      <summary>View Source</summary>
+      <div class="codehilite">
+        <pre><span></span><span class="k">class</span> <span class="nc">Parser</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">operations</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">Operators</span><span class="o">.</span><span class="n">IFF</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iff</span><span class="p">,</span>
+            <span class="n">Operators</span><span class="o">.</span><span class="n">XOR</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xor</span><span class="p">,</span>
+            <span class="n">Operators</span><span class="o">.</span><span class="n">IMPLIES</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_implies</span><span class="p">,</span>
+            <span class="n">Operators</span><span class="o">.</span><span class="n">OR</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_or</span><span class="p">,</span>
+            <span class="n">Operators</span><span class="o">.</span><span class="n">AND</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_and</span><span class="p">,</span>
+            <span class="n">Operators</span><span class="o">.</span><span class="n">NOT</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_not</span><span class="p">,</span>
+        <span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">_implies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="ow">and</span> <span class="n">p</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">q</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">p</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="ow">and</span> <span class="n">q</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="k">def</span> <span class="nf">_xor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_not</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_iff</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_iff</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_and</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_implies</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_implies</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">p</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_and</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="ow">and</span> <span class="n">p</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">q</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">p</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="ow">and</span> <span class="n">q</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">p</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">q</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="nf">_or</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="ow">and</span> <span class="n">p</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">p</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">q</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="ow">and</span> <span class="n">q</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">q</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">p</span>
+
+    <span class="k">def</span> <span class="nf">_not</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+            <span class="k">return</span> <span class="ow">not</span> <span class="n">p</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">p_expr_paren</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;expr : LPAR expr RPAR&quot;&quot;&quot;</span>
+            <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+        <span class="k">def</span> <span class="nf">p_expr_unary</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;expr : NOT expr           %prec NOT&quot;&quot;&quot;</span>
+            <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">p</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span>
+
+        <span class="k">def</span> <span class="nf">p_expr_binop</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;expr : expr IMPLIES expr  %prec IMPLIES</span>
+<span class="sd">                    | expr IFF expr      %prec IFF</span>
+<span class="sd">                    | expr XOR expr      %prec XOR</span>
+<span class="sd">                    | expr OR expr       %prec OR</span>
+<span class="sd">                    | expr AND expr      %prec AND</span>
+<span class="sd">                    &quot;&quot;&quot;</span>
+            <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">p</span><span class="p">[</span><span class="mi">3</span><span class="p">]]</span>
+
+        <span class="k">def</span> <span class="nf">p_expr_literal</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;expr : literal&quot;&quot;&quot;</span>
+            <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="k">def</span> <span class="nf">p_literal</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;literal : FALSE</span>
+<span class="sd">                       | TRUE</span>
+<span class="sd">                       | LITERAL&quot;&quot;&quot;</span>
+            <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="c1"># Error rule for syntax errors</span>
+        <span class="k">def</span> <span class="nf">p_error</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">yacc</span><span class="o">.</span><span class="n">yacc</span><span class="p">()</span>
+</pre>
+      </div>
+
+    </details>
+
+
+
+    <div id="Parser.__init__" class="classattr">
+      <div class="attr function"><a class="headerlink" href="#Parser.__init__">#&nbsp;&nbsp</a>
+
+
+        <span class="name">Parser</span><span class="signature">()</span>
+      </div>
+
+      <details>
+        <summary>View Source</summary>
+        <div class="codehilite">
+          <pre><span></span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">operations</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">Operators</span><span class="o">.</span><span class="n">IFF</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iff</span><span class="p">,</span>
+            <span class="n">Operators</span><span class="o">.</span><span class="n">XOR</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xor</span><span class="p">,</span>
+            <span class="n">Operators</span><span class="o">.</span><span class="n">IMPLIES</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_implies</span><span class="p">,</span>
+            <span class="n">Operators</span><span class="o">.</span><span class="n">OR</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_or</span><span class="p">,</span>
+            <span class="n">Operators</span><span class="o">.</span><span class="n">AND</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_and</span><span class="p">,</span>
+            <span class="n">Operators</span><span class="o">.</span><span class="n">NOT</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_not</span><span class="p">,</span>
+        <span class="p">}</span>
+</pre>
+        </div>
+
+      </details>
+
+
+
+    </div>
+    <div id="Parser.build" class="classattr">
+      <div class="attr function"><a class="headerlink" href="#Parser.build">#&nbsp;&nbsp</a>
+
+        <div class="decorator">@classmethod</div>
+
+        <span class="def">def</span>
+        <span class="name">build</span><span class="signature">(cls)</span>:
+      </div>
+
+      <details>
+        <summary>View Source</summary>
+        <div class="codehilite">
+          <pre><span></span>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">p_expr_paren</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;expr : LPAR expr RPAR&quot;&quot;&quot;</span>
+            <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+        <span class="k">def</span> <span class="nf">p_expr_unary</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;expr : NOT expr           %prec NOT&quot;&quot;&quot;</span>
+            <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">p</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span>
+
+        <span class="k">def</span> <span class="nf">p_expr_binop</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;expr : expr IMPLIES expr  %prec IMPLIES</span>
+<span class="sd">                    | expr IFF expr      %prec IFF</span>
+<span class="sd">                    | expr XOR expr      %prec XOR</span>
+<span class="sd">                    | expr OR expr       %prec OR</span>
+<span class="sd">                    | expr AND expr      %prec AND</span>
+<span class="sd">                    &quot;&quot;&quot;</span>
+            <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">p</span><span class="p">[</span><span class="mi">3</span><span class="p">]]</span>
+
+        <span class="k">def</span> <span class="nf">p_expr_literal</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;expr : literal&quot;&quot;&quot;</span>
+            <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="k">def</span> <span class="nf">p_literal</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;literal : FALSE</span>
+<span class="sd">                       | TRUE</span>
+<span class="sd">                       | LITERAL&quot;&quot;&quot;</span>
+            <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="c1"># Error rule for syntax errors</span>
+        <span class="k">def</span> <span class="nf">p_error</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">yacc</span><span class="o">.</span><span class="n">yacc</span><span class="p">()</span>
+</pre>
+        </div>
+
+      </details>
+
+
+
+    </div>
+  </section>
+</div>
+
+<aside class="col-md-4">
+  <!-- Table of Contents -->
+  <section>
+
+
+    <h2>API Documentation</h2>
+    <ul class="memberlist">
+      <li>
+        <a class="class" href="#Parser">Parser</a>
+        <ul class="memberlist">
+          <li>
+            <a class="function" href="#Parser.__init__">Parser</a>
+          </li>
+          <li>
+            <a class="function" href="#Parser.build">build</a>
+          </li>
+        </ul>
+
+      </li>
+    </ul>
+
+  </section>
+
+  <!-- Feedback -->
+  <section class="mdc-card mdc-card--outlined">
+    <div class="mdc-card__content">
+      <p>
+        This page is maintained by <a href="https://github.com/saifkhichi96/">saifkhichi96</a> on GitHub under the GNU General Public License.
+      </p>
+      <p>
+        Is there a problem? You can <a href="https://github.com/saifkhichi96/basic-sat/issues/" target="_blank">submit an issue</a> or help us <a href="https://github.com/saifkhichi96/basic-sat/edit/main/" target="_blank">improve this
+          page</a>.
+      </p>
+    </div>
+  </section>
+</aside>

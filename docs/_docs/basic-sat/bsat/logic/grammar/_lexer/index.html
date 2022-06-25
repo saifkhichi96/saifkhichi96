@@ -1,0 +1,379 @@
+---
+layout: doc
+title: _lexer
+permalink: /basic-sat/bsat/logic/grammar/_lexer/
+---
+
+<div class="pdoc">
+  <div class="docstring">
+    <p>Builds a tokenizer for propositional logic expressions.</p>
+
+    <p>Defines a vocabulary for writing propositional logic expressions, and builds
+      a lexer which tokenizes the input text according to defined vocabulary.</p>
+
+    <pre><code>Typical usage example:
+
+lexer = <a href="#Lexer.build">Lexer.build()</a>
+</code></pre>
+  </div>
+
+
+  <section id="Operators">
+    <div class="attr class">
+      <a class="headerlink" href="#Operators">#&nbsp;&nbsp</a>
+
+
+      <span class="def">class</span>
+      <span class="name">Operators</span><wbr>(<span class="base"><a href="#_AutoName">_AutoName</a></span>):
+    </div>
+
+    <details>
+      <summary>View Source</summary>
+      <div class="codehilite">
+        <pre><span></span><span class="k">class</span> <span class="nc">Operators</span><span class="p">(</span><span class="n">_AutoName</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;An enumeration listing all permitted logical operations.&quot;&quot;&quot;</span>
+    <span class="n">OR</span> <span class="o">=</span> <span class="s1">&#39;|&#39;</span>
+    <span class="n">AND</span> <span class="o">=</span> <span class="s1">&#39;&amp;&#39;</span>
+    <span class="n">NOT</span> <span class="o">=</span> <span class="s1">&#39;~&#39;</span>
+    <span class="n">XOR</span> <span class="o">=</span> <span class="s1">&#39;+&#39;</span>
+    <span class="n">IFF</span> <span class="o">=</span> <span class="s1">&#39;&lt;-&gt;&#39;</span>
+    <span class="n">IMPLIES</span> <span class="o">=</span> <span class="s1">&#39;-&gt;&#39;</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Checks equality of two operators.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">==</span> <span class="nb">str</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns hashcode of the operator.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns a printable representation of the operator.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+</pre>
+      </div>
+
+    </details>
+
+    <div class="docstring">
+      <p>An enumeration listing all permitted logical operations.</p>
+    </div>
+
+
+    <div id="Operators.OR" class="classattr">
+      <div class="attr variable"><a class="headerlink" href="#Operators.OR">#&nbsp;&nbsp</a>
+
+        <span class="name">OR</span><span class="default_value"> = &lt;<a href="#Operators.OR">Operators.OR</a>: &#39;|&#39;&gt;</span>
+      </div>
+
+
+
+    </div>
+    <div id="Operators.AND" class="classattr">
+      <div class="attr variable"><a class="headerlink" href="#Operators.AND">#&nbsp;&nbsp</a>
+
+        <span class="name">AND</span><span class="default_value"> = &lt;<a href="#Operators.AND">Operators.AND</a>: &#39;&amp;&#39;&gt;</span>
+      </div>
+
+
+
+    </div>
+    <div id="Operators.NOT" class="classattr">
+      <div class="attr variable"><a class="headerlink" href="#Operators.NOT">#&nbsp;&nbsp</a>
+
+        <span class="name">NOT</span><span class="default_value"> = &lt;<a href="#Operators.NOT">Operators.NOT</a>: &#39;~&#39;&gt;</span>
+      </div>
+
+
+
+    </div>
+    <div id="Operators.XOR" class="classattr">
+      <div class="attr variable"><a class="headerlink" href="#Operators.XOR">#&nbsp;&nbsp</a>
+
+        <span class="name">XOR</span><span class="default_value"> = &lt;<a href="#Operators.XOR">Operators.XOR</a>: &#39;+&#39;&gt;</span>
+      </div>
+
+
+
+    </div>
+    <div id="Operators.IFF" class="classattr">
+      <div class="attr variable"><a class="headerlink" href="#Operators.IFF">#&nbsp;&nbsp</a>
+
+        <span class="name">IFF</span><span class="default_value"> = &lt;<a href="#Operators.IFF">Operators.IFF</a>: &#39;&lt;-&gt;&#39;&gt;</span>
+      </div>
+
+
+
+    </div>
+    <div id="Operators.IMPLIES" class="classattr">
+      <div class="attr variable"><a class="headerlink" href="#Operators.IMPLIES">#&nbsp;&nbsp</a>
+
+        <span class="name">IMPLIES</span><span class="default_value"> = &lt;<a href="#Operators.IMPLIES">Operators.IMPLIES</a>: &#39;-&gt;&#39;&gt;</span>
+      </div>
+
+
+
+    </div>
+    <div class="inherited">
+      <h5>Inherited Members</h5>
+      <dl>
+        <div><dt>enum.Enum</dt>
+          <dd id="Operators.name" class="variable">name</dd>
+          <dd id="Operators.value" class="variable">value</dd>
+
+        </div>
+      </dl>
+    </div>
+  </section>
+  <section id="OR">
+    <div class="attr variable"><a class="headerlink" href="#OR">#&nbsp;&nbsp</a>
+
+      <span class="name">OR</span><span class="default_value"> = &lt;<a href="#Operators.OR">Operators.OR</a>: &#39;|&#39;&gt;</span>
+    </div>
+
+
+
+  </section>
+  <section id="AND">
+    <div class="attr variable"><a class="headerlink" href="#AND">#&nbsp;&nbsp</a>
+
+      <span class="name">AND</span><span class="default_value"> = &lt;<a href="#Operators.AND">Operators.AND</a>: &#39;&amp;&#39;&gt;</span>
+    </div>
+
+
+
+  </section>
+  <section id="NOT">
+    <div class="attr variable"><a class="headerlink" href="#NOT">#&nbsp;&nbsp</a>
+
+      <span class="name">NOT</span><span class="default_value"> = &lt;<a href="#Operators.NOT">Operators.NOT</a>: &#39;~&#39;&gt;</span>
+    </div>
+
+
+
+  </section>
+  <section id="XOR">
+    <div class="attr variable"><a class="headerlink" href="#XOR">#&nbsp;&nbsp</a>
+
+      <span class="name">XOR</span><span class="default_value"> = &lt;<a href="#Operators.XOR">Operators.XOR</a>: &#39;+&#39;&gt;</span>
+    </div>
+
+
+
+  </section>
+  <section id="IFF">
+    <div class="attr variable"><a class="headerlink" href="#IFF">#&nbsp;&nbsp</a>
+
+      <span class="name">IFF</span><span class="default_value"> = &lt;<a href="#Operators.IFF">Operators.IFF</a>: &#39;&lt;-&gt;&#39;&gt;</span>
+    </div>
+
+
+
+  </section>
+  <section id="IMPLIES">
+    <div class="attr variable"><a class="headerlink" href="#IMPLIES">#&nbsp;&nbsp</a>
+
+      <span class="name">IMPLIES</span><span class="default_value"> = &lt;<a href="#Operators.IMPLIES">Operators.IMPLIES</a>: &#39;-&gt;&#39;&gt;</span>
+    </div>
+
+
+
+  </section>
+  <section id="Lexer">
+    <div class="attr class">
+      <a class="headerlink" href="#Lexer">#&nbsp;&nbsp</a>
+
+
+      <span class="def">class</span>
+      <span class="name">Lexer</span>:
+    </div>
+
+    <details>
+      <summary>View Source</summary>
+      <div class="codehilite">
+        <pre><span></span><span class="k">class</span> <span class="nc">Lexer</span><span class="p">:</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="c1"># Regular expression rules for simple tokens</span>
+        <span class="n">t_LITERAL</span> <span class="o">=</span> <span class="s1">&#39;[a-zA-Z]+&#39;</span>
+        <span class="n">t_IFF</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;&lt;-&gt;&#39;</span>
+        <span class="n">t_XOR</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;\+&#39;</span>
+        <span class="n">t_IMPLIES</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;-&gt;&#39;</span>
+        <span class="n">t_OR</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;\|&#39;</span>
+        <span class="n">t_AND</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;&amp;&#39;</span>
+        <span class="n">t_NOT</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;~&#39;</span>
+        <span class="n">t_LPAR</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;\(&#39;</span>
+        <span class="n">t_RPAR</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;\)&#39;</span>
+
+        <span class="c1"># Rule for the special literal FALSE</span>
+        <span class="k">def</span> <span class="nf">t_FALSE</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+            <span class="sa">r</span><span class="s1">&#39;0&#39;</span>
+            <span class="n">t</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="n">t</span>
+
+        <span class="c1"># Rule for the special literal TRUE</span>
+        <span class="k">def</span> <span class="nf">t_TRUE</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+            <span class="sa">r</span><span class="s1">&#39;1&#39;</span>
+            <span class="n">t</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">return</span> <span class="n">t</span>
+
+        <span class="c1"># Rule for ignoring whitespaces</span>
+        <span class="n">t_ignore</span> <span class="o">=</span> <span class="s1">&#39; </span><span class="se">\t\n</span><span class="s1">&#39;</span>
+
+        <span class="c1"># Rule for error handling</span>
+        <span class="k">def</span> <span class="nf">t_error</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Illegal character &#39;</span><span class="si">%s</span><span class="s2">&#39; at </span><span class="si">%d</span><span class="s2">:</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">t</span><span class="o">.</span><span class="n">lineno</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">lexpos</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">lex</span><span class="o">.</span><span class="n">lex</span><span class="p">()</span>
+</pre>
+      </div>
+
+    </details>
+
+
+
+    <div id="Lexer.__init__" class="classattr">
+      <div class="attr function"><a class="headerlink" href="#Lexer.__init__">#&nbsp;&nbsp</a>
+
+
+        <span class="name">Lexer</span><span class="signature">()</span>
+      </div>
+
+
+
+
+    </div>
+    <div id="Lexer.build" class="classattr">
+      <div class="attr function"><a class="headerlink" href="#Lexer.build">#&nbsp;&nbsp</a>
+
+        <div class="decorator">@classmethod</div>
+
+        <span class="def">def</span>
+        <span class="name">build</span><span class="signature">(cls)</span>:
+      </div>
+
+      <details>
+        <summary>View Source</summary>
+        <div class="codehilite">
+          <pre><span></span>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="c1"># Regular expression rules for simple tokens</span>
+        <span class="n">t_LITERAL</span> <span class="o">=</span> <span class="s1">&#39;[a-zA-Z]+&#39;</span>
+        <span class="n">t_IFF</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;&lt;-&gt;&#39;</span>
+        <span class="n">t_XOR</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;\+&#39;</span>
+        <span class="n">t_IMPLIES</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;-&gt;&#39;</span>
+        <span class="n">t_OR</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;\|&#39;</span>
+        <span class="n">t_AND</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;&amp;&#39;</span>
+        <span class="n">t_NOT</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;~&#39;</span>
+        <span class="n">t_LPAR</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;\(&#39;</span>
+        <span class="n">t_RPAR</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;\)&#39;</span>
+
+        <span class="c1"># Rule for the special literal FALSE</span>
+        <span class="k">def</span> <span class="nf">t_FALSE</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+            <span class="sa">r</span><span class="s1">&#39;0&#39;</span>
+            <span class="n">t</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="n">t</span>
+
+        <span class="c1"># Rule for the special literal TRUE</span>
+        <span class="k">def</span> <span class="nf">t_TRUE</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+            <span class="sa">r</span><span class="s1">&#39;1&#39;</span>
+            <span class="n">t</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">return</span> <span class="n">t</span>
+
+        <span class="c1"># Rule for ignoring whitespaces</span>
+        <span class="n">t_ignore</span> <span class="o">=</span> <span class="s1">&#39; </span><span class="se">\t\n</span><span class="s1">&#39;</span>
+
+        <span class="c1"># Rule for error handling</span>
+        <span class="k">def</span> <span class="nf">t_error</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Illegal character &#39;</span><span class="si">%s</span><span class="s2">&#39; at </span><span class="si">%d</span><span class="s2">:</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">t</span><span class="o">.</span><span class="n">lineno</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">lexpos</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">lex</span><span class="o">.</span><span class="n">lex</span><span class="p">()</span>
+</pre>
+        </div>
+
+      </details>
+
+
+
+    </div>
+  </section>
+</div>
+
+<aside class="col-md-4">
+  <!-- Table of Contents -->
+  <section>
+
+
+    <h2>API Documentation</h2>
+    <ul class="memberlist">
+      <li>
+        <a class="class" href="#Operators">Operators</a>
+        <ul class="memberlist">
+          <li>
+            <a class="variable" href="#Operators.OR">OR</a>
+          </li>
+          <li>
+            <a class="variable" href="#Operators.AND">AND</a>
+          </li>
+          <li>
+            <a class="variable" href="#Operators.NOT">NOT</a>
+          </li>
+          <li>
+            <a class="variable" href="#Operators.XOR">XOR</a>
+          </li>
+          <li>
+            <a class="variable" href="#Operators.IFF">IFF</a>
+          </li>
+          <li>
+            <a class="variable" href="#Operators.IMPLIES">IMPLIES</a>
+          </li>
+        </ul>
+
+      </li>
+      <li>
+        <a class="variable" href="#OR">OR</a>
+      </li>
+      <li>
+        <a class="variable" href="#AND">AND</a>
+      </li>
+      <li>
+        <a class="variable" href="#NOT">NOT</a>
+      </li>
+      <li>
+        <a class="variable" href="#XOR">XOR</a>
+      </li>
+      <li>
+        <a class="variable" href="#IFF">IFF</a>
+      </li>
+      <li>
+        <a class="variable" href="#IMPLIES">IMPLIES</a>
+      </li>
+      <li>
+        <a class="class" href="#Lexer">Lexer</a>
+        <ul class="memberlist">
+          <li>
+            <a class="function" href="#Lexer.__init__">Lexer</a>
+          </li>
+          <li>
+            <a class="function" href="#Lexer.build">build</a>
+          </li>
+        </ul>
+
+      </li>
+    </ul>
+
+  </section>
+
+  <!-- Feedback -->
+  <section class="mdc-card mdc-card--outlined">
+    <div class="mdc-card__content">
+      <p>
+        This page is maintained by <a href="https://github.com/saifkhichi96/">saifkhichi96</a> on GitHub under the GNU General Public License.
+      </p>
+      <p>
+        Is there a problem? You can <a href="https://github.com/saifkhichi96/basic-sat/issues/" target="_blank">submit an issue</a> or help us <a href="https://github.com/saifkhichi96/basic-sat/edit/main/" target="_blank">improve this
+          page</a>.
+      </p>
+    </div>
+  </section>
+</aside>
