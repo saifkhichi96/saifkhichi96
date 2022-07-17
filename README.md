@@ -3,6 +3,7 @@
 ![Hello, I am Saif Khan](./header.png)
 
 [![GitHub followers](https://img.shields.io/github/followers/saifkhichi96.svg?style=social&label=Follow&maxAge=2592000)](https://github.com/saifkhichi96?tab=followers)
+![Visit counter](https://komarev.com/ghpvc/?username=saifkhichi96&style=flat-square&color=grey)
 
 ![Android Developer and AI Researcher](https://readme-typing-svg.herokuapp.com/?lines=Android+Developer+and+AI+Researcher+...&color=979797)
 
