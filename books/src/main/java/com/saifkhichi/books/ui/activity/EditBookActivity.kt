@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.saifkhichi.books.R
 import com.saifkhichi.books.data.repo.BooksRepository
+import com.saifkhichi.books.data.source.GoogleBooksAPI
 import com.saifkhichi.books.databinding.ActivityEditBookBinding
 import com.saifkhichi.books.model.Book
 import com.saifkhichi.books.model.Book.Companion.toByteArray
@@ -123,6 +124,20 @@ class EditBookActivity : AppCompatActivity() {
                     saveEdits()
                     item.isEnabled = true
                     setResult(RESULT_OK)
+                }
+                true
+            }
+            R.id.action_scan -> {
+                val isbn13 = binding.bookIsbn.text?.toString() ?: ""
+                if (isbn13.length == 13) {
+                    Thread {
+                        GoogleBooksAPI.findByISBN(isbn13).firstOrNull()?.let {
+                            runOnUiThread {
+                                book.updateWith(it)
+                                updateUI()
+                            }
+                        }
+                    }.start()
                 }
                 true
             }

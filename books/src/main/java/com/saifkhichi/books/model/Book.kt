@@ -1,6 +1,7 @@
 package com.saifkhichi.books.model
 
 import android.graphics.Bitmap
+import android.text.Html
 import android.widget.ImageView
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
@@ -11,12 +12,15 @@ import com.android.volley.toolbox.ImageRequest
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.bumptech.glide.Glide
+import com.google.api.services.books.v1.model.Volume
+import com.google.api.services.books.v1.model.Volume.VolumeInfo
 import com.saifkhichi.books.R
 import com.saifkhichi.storage.CloudFileStorage
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.Serializable
+import java.util.*
 
 data class Book(
     var id: String = "",
@@ -54,6 +58,24 @@ data class Book(
         } else {
             isbn
         }
+    }
+
+    /**
+     * Fill in missing details from Google Books.
+     *
+     * @param volume The volume to update with.
+     */
+    fun updateWith(volume: Volume) {
+        val volumeInfo: VolumeInfo? = volume.volumeInfo
+
+        if (isbn.isBlank()) isbn = volumeInfo?.industryIdentifiers?.find { it.type == "ISBN_13" }?.identifier ?: ""
+        if (title.isBlank()) title = volumeInfo?.title ?: ""
+        if (authors.isBlank()) authors = volumeInfo?.authors?.joinToString(", ") ?: ""
+        if (publishedBy.isBlank()) publishedBy = volumeInfo?.publisher ?: ""
+        if (publishedOn <= 0) publishedOn = Integer.parseInt(volumeInfo?.publishedDate?.split("-")?.first() ?: "0")
+        if (pageCount <= 0) pageCount = volumeInfo?.pageCount ?: 0
+        if (lang.isBlank()) lang = Locale(volumeInfo?.language ?: "en").displayLanguage
+        if (excerpt.isBlank()) excerpt = Html.fromHtml(volume.searchInfo?.textSnippet ?: "" , Html.FROM_HTML_MODE_LEGACY).toString()
     }
 
     /**

@@ -3,6 +3,7 @@ package com.saifkhichi.books.data.source
 
 import com.google.api.client.extensions.android.json.AndroidJsonFactory
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport
+import com.google.api.client.googleapis.json.GoogleJsonResponseException
 import com.google.api.services.books.v1.Books
 import com.google.api.services.books.v1.model.Volume
 
@@ -12,7 +13,7 @@ import com.google.api.services.books.v1.model.Volume
  */
 object GoogleBooksAPI {
 
-    val api = Books.Builder(
+    private val api: Books = Books.Builder(
         GoogleNetHttpTransport.newTrustedTransport(),
         AndroidJsonFactory.getDefaultInstance(),
         null
@@ -22,7 +23,11 @@ object GoogleBooksAPI {
      * Query the API for a list of books matching the given ISBN.
      */
     fun findByISBN(isbn: String): List<Volume> {
-        return api.volumes().list("isbn:$isbn").execute().items?.toList().orEmpty()
+        return try {
+            api.volumes().list("isbn:$isbn").execute().items?.toList().orEmpty()
+        } catch (ex: GoogleJsonResponseException) {
+            emptyList()
+        }
     }
 
 }

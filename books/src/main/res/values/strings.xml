@@ -29,6 +29,7 @@
     <!-- Menu actions -->
     <string name="action_edit">Edit</string>
     <string name="action_save">Save</string>
+    <string name="action_scan">Scan Book</string>
     <string name="action_search">Search</string>
 
     <!-- Input hints -->
