@@ -9,6 +9,7 @@
 .idea/**/dictionaries
 .idea/**/shelf
 .idea/**/misc.xml
+.idea/jsLibraryMappings.xml
 
 # Generated files
 .idea/**/contentModel.xml
@@ -188,3 +189,4 @@ Temporary Items
 
 # API Secrets
 secret.properties
+github.properties

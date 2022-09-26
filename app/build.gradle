@@ -11,11 +11,11 @@ def secretProperties = new Properties()
 secretProperties.load(new FileInputStream(secretPropertiesFile))
 
 android {
-    compileSdkVersion 32
+    compileSdkVersion 33
     defaultConfig {
         applicationId "com.saifkhichi.app"
         minSdkVersion 24
-        targetSdkVersion 32
+        targetSdkVersion 33
         versionCode 1
         versionName "1.0.0"
 
@@ -63,20 +63,20 @@ configurations {
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation "androidx.activity:activity-ktx:1.4.0"  // for 'by viewModels'
-    implementation "androidx.appcompat:appcompat:1.4.1"
+    implementation "androidx.activity:activity-ktx:1.6.0"  // for 'by viewModels'
+    implementation "androidx.appcompat:appcompat:1.5.1"
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
-    implementation "com.google.android.material:material:1.5.0"
+    implementation "com.google.android.material:material:1.6.1"
 
     // Kotlin language
     implementation "androidx.core:core-ktx:$kotlin_version"
 
     // Kotlin coroutines
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.0-native-mt"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.4"
 
     // Lifecycle-aware components
-    def lifecycle_version = "2.4.0"
+    def lifecycle_version = "2.5.1"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version" // for 'LifecycleScope'
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
@@ -87,18 +87,18 @@ dependencies {
     implementation "com.google.firebase:firebase-auth-ktx"
 
     // Dependency injection with Hilt
-    implementation "com.google.dagger:hilt-android:2.40.5"
-    kapt "com.google.dagger:hilt-android-compiler:2.40.5"
+    implementation "com.google.dagger:hilt-android:2.43.2"
+    kapt 'com.google.dagger:hilt-android-compiler:2.43.2'
 
     // SharedPreferences management with Hawk
     implementation "com.orhanobut:hawk:2.0.1"
 
     // Stripe Android SDK for Payments
-    implementation 'com.stripe:stripe-java:20.98.0'
-    implementation 'com.stripe:stripe-android:19.1.0'
+    implementation "com.stripe:stripe-java:21.8.0"
+    implementation "com.stripe:stripe-android:20.13.0"
 
     // Simple JavaMail API
-    implementation "org.simplejavamail:simple-java-mail:7.1.0"
+    implementation 'org.simplejavamail:simple-java-mail:7.5.0'
 
     implementation project(path: ':books')
     implementation project(path: ':database')
