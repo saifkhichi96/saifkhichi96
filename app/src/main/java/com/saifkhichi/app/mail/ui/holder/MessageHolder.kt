@@ -15,12 +15,19 @@ class MessageHolder(binding: ViewMessageBinding) : RecyclerView.ViewHolder(bindi
     val messageTimestamp: TextView = binding.messageTimestamp
     val messageContents: TextView = binding.messageContent
     val replyButton: MaterialButton = binding.replyButton
+    val deleteButton: MaterialButton = binding.deleteButton
 
     var onItemClicked: ((message: Message) -> Unit)? = null
+
+    var onItemDeleteClicked: ((message: Message) -> Unit)? = null
 
     init {
         binding.replyButton.setOnClickListener {
             message?.let { onItemClicked?.invoke(it) }
+        }
+
+        binding.deleteButton.setOnClickListener {
+            message?.let { onItemDeleteClicked?.invoke(it) }
         }
     }
 }

@@ -41,6 +41,7 @@ class ThreadActivity : AppCompatActivity() {
 
         threadAdapter = ThreadAdapter(thread)
         threadAdapter.setOnItemClickListener { acknowledgeReceipt(it) }
+        threadAdapter.setOnItemDeleteClickListener { deleteMessage(it) }
         supportActionBar?.title = thread.senderName
 
         binding.messagesList.adapter = threadAdapter
@@ -90,6 +91,22 @@ class ThreadActivity : AppCompatActivity() {
                 else -> "Emailed an acknowledgement to ${email.recipients.joinToString(", ") { it.address }}"
             }, Snackbar.LENGTH_LONG
         ).show()
+    }
+
+    private fun deleteMessage(message: Message) {
+        // Ask for confirmation
+        Snackbar.make(
+            binding.root,
+            "Are you sure you want to delete this message?",
+            Snackbar.LENGTH_LONG
+        ).setAction("Delete") {
+            // Delete message
+            lifecycleScope.launch {
+                repository.deleteMessage(message)
+                runOnUiThread(threadAdapter::notifyDataSetChanged)
+                finish()
+            }
+        }.show()
     }
 
 }

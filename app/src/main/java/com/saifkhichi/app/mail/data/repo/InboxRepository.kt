@@ -4,6 +4,7 @@ import com.orhanobut.hawk.Hawk
 import com.saifkhichi.app.core.model.Result
 import com.saifkhichi.app.mail.data.source.InboxDataSource
 import com.saifkhichi.app.mail.model.Inbox
+import com.saifkhichi.app.mail.model.Message
 import javax.inject.Inject
 
 /**
@@ -32,6 +33,17 @@ class InboxRepository @Inject constructor(var dataSource: InboxDataSource) {
         }
 
         return result
+    }
+
+    suspend fun deleteMessage(message: Message) {
+        // Delete from remote data source
+        dataSource.delete(message)
+
+        // Delete from local cache
+        messages?.let {
+            it.remove(message)
+            setInboxData(it)
+        }
     }
 
     suspend fun markAsRead(messageId: String) {

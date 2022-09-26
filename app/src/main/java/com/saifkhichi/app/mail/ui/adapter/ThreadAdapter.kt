@@ -16,8 +16,14 @@ class ThreadAdapter(private val thread: Thread) : RecyclerView.Adapter<MessageHo
 
     private var onItemClicked: ((Message) -> Unit)? = null
 
+    private var onItemDeleteClicked: ((Message) -> Unit)? = null
+
     fun setOnItemClickListener(listener: ((Message) -> Unit)) {
         onItemClicked = listener
+    }
+
+    fun setOnItemDeleteClickListener(listener: ((Message) -> Unit)) {
+        onItemDeleteClicked = listener
     }
 
     /**
@@ -64,6 +70,7 @@ class ThreadAdapter(private val thread: Thread) : RecyclerView.Adapter<MessageHo
         holder.replyButton.isEnabled = !message.read
         holder.replyButton.text = if (message.read) "Read" else "Mark as Read"
         holder.onItemClicked = onItemClicked
+        holder.onItemDeleteClicked = onItemDeleteClicked
     }
 
     /**

@@ -88,15 +88,35 @@
             android:autoLink="all"
             tools:text="@tools:sample/lorem/random" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/reply_button"
-            style="@style/Widget.Material3.Button.OutlinedButton"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_gravity="end"
-            android:text="Mark as Read"
-            app:cornerRadius="16dp" />
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/delete_button"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:minWidth="0dp"
+                android:paddingHorizontal="8dp"
+                android:layout_marginEnd="8dp"
+                app:icon="@drawable/ic_action_delete"
+                app:iconSize="24dp"
+                app:iconTint="@color/colorError"
+                app:cornerRadius="16dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/reply_button"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mark as Read"
+                app:cornerRadius="16dp" />
+
+        </LinearLayout>
 
         <com.google.android.material.divider.MaterialDivider
             android:layout_width="match_parent"

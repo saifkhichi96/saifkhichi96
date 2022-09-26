@@ -31,4 +31,8 @@ class InboxDataSource @Inject constructor(var db: RemoteDatabase) {
         db.update("messages/${message.id}/read", true)
     }
 
+    suspend fun delete(message: Message) {
+        db.remove("messages/${message.id}")
+    }
+
 }
