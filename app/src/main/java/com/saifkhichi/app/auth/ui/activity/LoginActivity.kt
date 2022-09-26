@@ -4,10 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import com.google.android.material.snackbar.Snackbar
 import com.saifkhichi.app.R
 import com.saifkhichi.app.auth.model.User
 import com.saifkhichi.app.auth.ui.viewmodel.LoginViewModel
@@ -19,7 +19,7 @@ import com.saifkhichi.app.databinding.ActivityLoginBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
- * Login screen of the app allows a user to sign into their account.
+ * Login screen of the app allows a user to sign in to their account.
  *
  * @author saifkhichi96
  * @since 1.0.0
@@ -110,8 +110,7 @@ class LoginActivity : AppCompatActivity() {
      * Starts the login task in a coroutine.
      */
     private fun login() {
-        binding.loading.visibility = View.VISIBLE
-        binding.signInButton.visibility = View.GONE
+        disableSignInButton()
         viewModel.login(
             binding.emailField.text.toString(),
             binding.passwordField.text.toString()
@@ -143,11 +142,25 @@ class LoginActivity : AppCompatActivity() {
      * @param error The Exception which caused the failure.
      */
     private fun onLoginFailed(error: Exception) {
-        Toast.makeText(
-            applicationContext,
+        Snackbar.make(
+            binding.root,
             error.message ?: getString(R.string.login_failed),
-            Toast.LENGTH_LONG
+            Snackbar.LENGTH_LONG
         ).show()
+
+        enableSignInButton()
+    }
+
+    private fun disableSignInButton() {
+        binding.signInButton.isEnabled = false
+        binding.signInButton.text = ""
+        binding.loading.visibility = View.VISIBLE
+    }
+
+    private fun enableSignInButton() {
+        binding.signInButton.isEnabled = true
+        binding.signInButton.text = getString(R.string.action_sign_in)
+        binding.loading.visibility = View.GONE
     }
 
 }

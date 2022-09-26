@@ -17,6 +17,7 @@
   <string name="invalid_password">Password must be >5 characters</string>
 
   <string name="action_sign_in">Sign in</string>
+  <string name="action_sign_out">Sign Out</string>
   <string name="login_failed">"Login failed"</string>
 
   <string name="action_inbox">Inbox</string>
