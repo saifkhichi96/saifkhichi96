@@ -14,21 +14,27 @@ import androidx.lifecycle.Observer
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback
 import com.saifkhichi.books.R
+import com.saifkhichi.books.data.repo.BooksRepository
 import com.saifkhichi.books.databinding.ActivityBooksListBinding
 import com.saifkhichi.books.model.Book
 import com.saifkhichi.books.ui.activity.BookDetailsActivity.Companion.EXTRA_BOOK
-import com.saifkhichi.books.ui.adapter.BooksAdapter
+import com.saifkhichi.books.ui.activity.BookDetailsActivity.Companion.EXTRA_USER_ID
+import com.saifkhichi.books.ui.adapter.LibraryAdapter
 import com.saifkhichi.books.ui.viewmodel.BooksViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class BooksListActivity : AppCompatActivity() {
 
-    private lateinit var booksAdapter: BooksAdapter
-    private val library = ArrayList<BooksAdapter.LibraryListItem<out Any>>()
+    private lateinit var booksAdapter: LibraryAdapter
+    private val library = ArrayList<LibraryAdapter.LibraryListItem<out Any>>()
 
     private var categoryFilter: String? = null
     private var subCategoryFilter: String? = null
+
+    @Inject
+    lateinit var repo: BooksRepository
 
     /**
      * View bindings for the activity.
@@ -46,6 +52,8 @@ class BooksListActivity : AppCompatActivity() {
     private val onRefreshListener = SwipeRefreshLayout.OnRefreshListener {
         viewModel.getAllBooks()
     }
+
+    lateinit var currentUserId: String
 
     /**
      * Observes the result of the refresh operation.
@@ -70,12 +78,14 @@ class BooksListActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        currentUserId = intent.getStringExtra(EXTRA_USER_ID) ?: return finish()
+
         categoryFilter = intent.getStringExtra(EXTRA_CATEGORY)
         subCategoryFilter = intent.getStringExtra(EXTRA_SUBCATEGORY)
         supportActionBar?.title = subCategoryFilter ?: categoryFilter ?: getString(R.string.title_activity_library)
         if (subCategoryFilter == "Uncategorized") subCategoryFilter = ""
 
-        booksAdapter = BooksAdapter(this, library, grid = subCategoryFilter != null)
+        booksAdapter = LibraryAdapter(this, library, grid = subCategoryFilter != null)
         booksAdapter.setOnItemClickListener { book, view -> openBookDetails(book, view) }
         booksAdapter.setOnCategoryClickListener { openLibrary(it) }
 
@@ -135,6 +145,7 @@ class BooksListActivity : AppCompatActivity() {
             "open_book_details" // The transition name to be matched in Activity B.
         )
         i.putExtra(EXTRA_BOOK, book)
+        i.putExtra(EXTRA_USER_ID, currentUserId)
 
         startActivity(i, options.toBundle())
     }
@@ -146,6 +157,7 @@ class BooksListActivity : AppCompatActivity() {
         val i = Intent(this, BooksListActivity::class.java)
         i.putExtra(EXTRA_CATEGORY, categoryFilter)
         i.putExtra(EXTRA_SUBCATEGORY, subCategory)
+        i.putExtra(EXTRA_USER_ID, currentUserId)
 
         startActivity(i)
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
@@ -171,18 +183,18 @@ class BooksListActivity : AppCompatActivity() {
             categories[categoryFilter]
                 ?.filter { it.subCategory == subCategoryFilter }
                 ?.let { books ->
-                    library += BooksAdapter.LibraryBook(books)
+                    library += LibraryAdapter.LibraryBook(books)
                 }
         } else {
             categories.forEach { group ->
                 val category = group.key
                 if (categoryFilter == null || category == categoryFilter) {
-                    if (category != categoryFilter) library += BooksAdapter.CategoryName(category)
+                    if (category != categoryFilter) library += LibraryAdapter.CategoryName(category)
 
                     val subCategories = group.value.groupBy { it.subCategory }.toSortedMap()
                     subCategories.forEach { item ->
                         val subCategory = item.key.ifBlank { getString(R.string.book_category_none) }
-                        library += BooksAdapter.SubCategoryName(
+                        library += LibraryAdapter.SubCategoryName(
                             if (category == categoryFilter) subCategory
                             else getString(R.string.book_category).format(category, subCategory)
                         )
@@ -191,7 +203,7 @@ class BooksListActivity : AppCompatActivity() {
                             .sortedBy { it.title }
                             .sortedBy { it.publishedOn }
                             .sortedBy { it.authors }
-                        library += BooksAdapter.LibraryBook(subCategoryBooks)
+                        library += LibraryAdapter.LibraryBook(subCategoryBooks)
                     }
                 }
             }

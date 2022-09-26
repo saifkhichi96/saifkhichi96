@@ -69,6 +69,18 @@ class BooksRepository @Inject constructor(var dataSource: BooksDataSource) {
             }
     }
 
+    suspend fun markAsRead(bookId: String, readerId: String) {
+        dataSource.markAsRead(bookId, readerId)
+    }
+
+    suspend fun markAsUnread(bookId: String, readerId: String) {
+        dataSource.markAsUnread(bookId, readerId)
+    }
+
+    suspend fun isRead(bookId: String, readerId: String): Boolean {
+        return dataSource.isRead(bookId, readerId)
+    }
+
     private fun setLibraryData(books: ArrayList<Book>) {
         this.books = books
         Hawk.put(KEY, books)

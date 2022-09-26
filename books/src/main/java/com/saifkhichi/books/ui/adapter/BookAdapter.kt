@@ -12,7 +12,7 @@ import kotlin.math.roundToInt
 
 class BookAdapter(
     private val context: AppCompatActivity,
-    private val dataset: List<Book>,
+    private val dataset: List<Pair<Book, Boolean>>,
     private val itemWidth: Int
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -49,7 +49,8 @@ class BookAdapter(
      * @param position The position of new content in the dataset
      */
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val book = dataset[position]
+        val book = dataset[position].first
+        val isRead = dataset[position].second
 
         val bookHolder = holder as BookHolder
 

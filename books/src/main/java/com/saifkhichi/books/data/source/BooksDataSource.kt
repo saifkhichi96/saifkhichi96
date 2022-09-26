@@ -52,4 +52,16 @@ class BooksDataSource @Inject constructor(var db: RemoteDatabase) {
         }
     }
 
+    suspend fun markAsRead(bookId: String, readerId: String) {
+        db.update("users/${readerId}/books_read/${bookId}", true)
+    }
+
+    suspend fun markAsUnread(bookId: String, readerId: String) {
+        db.remove("users/${readerId}/books_read/${bookId}")
+    }
+
+    suspend fun isRead(bookId: String, readerId: String): Boolean {
+        return db.getOrNull("users/${readerId}/books_read/${bookId}") ?: false
+    }
+
 }

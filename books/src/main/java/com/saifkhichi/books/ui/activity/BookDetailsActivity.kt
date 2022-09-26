@@ -10,6 +10,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.platform.MaterialContainerTransform
 import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback
 import com.google.zxing.BarcodeFormat
@@ -32,7 +33,14 @@ class BookDetailsActivity : AppCompatActivity() {
 
     private lateinit var bookStorage: CloudFileStorage
     private lateinit var book: Book
+    private var bookIsRead = false
 
+    private lateinit var readButton: MenuItem
+    private lateinit var unreadButton: MenuItem
+
+    private lateinit var currentUserId: String
+
+    // fixme: replace with repository
     @Inject
     lateinit var repo: BooksDataSource
 
@@ -58,6 +66,7 @@ class BookDetailsActivity : AppCompatActivity() {
 
         bookStorage = CloudFileStorage(this, "library")
         book = intent.getSerializableExtra(EXTRA_BOOK) as Book? ?: return finish()
+        currentUserId = intent.getStringExtra(EXTRA_USER_ID) ?: return finish()
         updateUI()
     }
 
@@ -75,6 +84,8 @@ class BookDetailsActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_book_details, menu)
+        readButton = menu.findItem(R.id.action_read)
+        unreadButton = menu.findItem(R.id.action_unread)
         return true
     }
 
@@ -82,6 +93,14 @@ class BookDetailsActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.action_edit -> {
                 editBook()
+                true
+            }
+            R.id.action_read -> {
+                markAsRead()
+                true
+            }
+            R.id.action_unread -> {
+                markAsUnread()
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -100,7 +119,42 @@ class BookDetailsActivity : AppCompatActivity() {
         startActivityForResult(i, RC_EDIT_BOOK)
     }
 
+    private fun setReadStatus(read: Boolean) {
+        bookIsRead = read
+        if (read) {
+            readButton.isVisible = false
+            unreadButton.isVisible = true
+        } else {
+            readButton.isVisible = true
+            unreadButton.isVisible = false
+        }
+    }
+
+    private fun markAsRead() {
+        Snackbar.make(binding.root, "Do you really want to mark this book as read?", Snackbar.LENGTH_LONG)
+            .setAction(android.R.string.ok) {
+                lifecycleScope.launch {
+                    repo.markAsRead(book.id, currentUserId)
+                    setReadStatus(true)
+                }
+            }.show()
+    }
+
+    private fun markAsUnread() {
+        Snackbar.make(binding.root, "Do you really want to mark this book as unread?", Snackbar.LENGTH_LONG)
+            .setAction(android.R.string.ok) {
+                lifecycleScope.launch {
+                    repo.markAsUnread(book.id, currentUserId)
+                    setReadStatus(false)
+                }
+            }.show()
+    }
+
     private fun updateUI() {
+        lifecycleScope.launch {
+            setReadStatus(repo.isRead(book.id, currentUserId))
+        }
+
         book.getBookCover(this, binding.bookCover)
         binding.bookTitle.text = book.title
         binding.bookAuthors.text = book.authors
@@ -160,6 +214,7 @@ class BookDetailsActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_BOOK = "book"
+        const val EXTRA_USER_ID = "user_id"
         const val RC_EDIT_BOOK = 100
     }
 

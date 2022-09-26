@@ -8,4 +8,17 @@
         android:title="@string/action_edit"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/action_read"
+        android:icon="@drawable/ic_action_pending"
+        android:title="Mark as Read"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_unread"
+        android:icon="@drawable/ic_action_done"
+        android:title="Mark as Unread"
+        android:visible="false"
+        app:showAsAction="ifRoom" />
+
 </menu>

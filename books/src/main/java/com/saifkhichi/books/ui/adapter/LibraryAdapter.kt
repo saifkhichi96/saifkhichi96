@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
-import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -13,13 +13,15 @@ import com.saifkhichi.books.R
 import com.saifkhichi.books.databinding.ViewBookCategoryBinding
 import com.saifkhichi.books.databinding.ViewBookListBinding
 import com.saifkhichi.books.model.Book
-import com.saifkhichi.books.ui.holder.BookCategoryHolder
+import com.saifkhichi.books.ui.activity.BooksListActivity
+import com.saifkhichi.books.ui.holder.BookGenreLabelHolder
 import com.saifkhichi.books.ui.holder.BookListHolder
+import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 
-class BooksAdapter(
-    private val context: AppCompatActivity,
+class LibraryAdapter(
+    private val context: BooksListActivity,
     private val dataset: ArrayList<LibraryListItem<out Any>>,
     private val grid: Boolean = false
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Filterable {
@@ -57,7 +59,7 @@ class BooksAdapter(
                     parent,
                     false
                 )
-                BookCategoryHolder(view)
+                BookGenreLabelHolder(view)
             }
             TYPE_SUB_CATEGORY -> {
                 val view = ViewBookCategoryBinding.inflate(
@@ -65,7 +67,7 @@ class BooksAdapter(
                     parent,
                     false
                 )
-                BookCategoryHolder(view)
+                BookGenreLabelHolder(view)
             }
             else -> {
                 val view = ViewBookListBinding.inflate(
@@ -108,22 +110,24 @@ class BooksAdapter(
                             0
                         }
                     }
-
-                    val adapter = BookAdapter(
-                        context,
-                        item.value
-                            .sortedBy { it.title }
-                            .sortedBy { it.publishedOn }
-                            .sortedBy { it.authors },
-                        colWidthCalc
-                    )
-                    adapter.setOnItemClickListener { book, view -> onItemClicked?.invoke(book, view) }
-                    holder.bookList.adapter = adapter
-                    adapter.notifyDataSetChanged()
+                    context.lifecycleScope.launch {
+                        val adapter = BookAdapter(
+                            context,
+                            item.value
+                                .sortedBy { it.title }
+                                .sortedBy { it.publishedOn }
+                                .sortedBy { it.authors }
+                                .map { Pair(it, context.repo.isRead(it.id, context.currentUserId)) },
+                            colWidthCalc
+                        )
+                        adapter.setOnItemClickListener { book, view -> onItemClicked?.invoke(book, view) }
+                        holder.bookList.adapter = adapter
+                        adapter.notifyDataSetChanged()
+                    }
                 }
             }
             is CategoryName -> {
-                if (holder is BookCategoryHolder) {
+                if (holder is BookGenreLabelHolder) {
                     val category = item.value
                     holder.category = category
                     holder.bookCategory.text = category
@@ -131,7 +135,7 @@ class BooksAdapter(
                 }
             }
             is SubCategoryName -> {
-                if (holder is BookCategoryHolder) {
+                if (holder is BookGenreLabelHolder) {
                     val subCategory = item.value
                     holder.category = subCategory
                     holder.bookCategory.text = subCategory

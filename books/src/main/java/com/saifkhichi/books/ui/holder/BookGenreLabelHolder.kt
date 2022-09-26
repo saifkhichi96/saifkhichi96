@@ -4,7 +4,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.saifkhichi.books.databinding.ViewBookCategoryBinding
 
-class BookCategoryHolder(binding: ViewBookCategoryBinding) : RecyclerView.ViewHolder(binding.root) {
+class BookGenreLabelHolder(binding: ViewBookCategoryBinding) : RecyclerView.ViewHolder(binding.root) {
 
     var category: String? = null
     val bookCategory: TextView = binding.bookCategory
