@@ -49,6 +49,7 @@ android {
     }
 
     packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
         exclude 'META-INF/LICENSE.md'
         exclude 'META-INF/NOTICE.md'
         exclude 'LICENSE-2.0.txt'

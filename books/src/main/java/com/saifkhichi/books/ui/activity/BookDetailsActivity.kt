@@ -2,6 +2,7 @@ package com.saifkhichi.books.ui.activity
 
 import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.Menu
@@ -14,14 +15,17 @@ import com.google.android.material.transition.platform.MaterialContainerTransfor
 import com.google.zxing.BarcodeFormat
 import com.saifkhichi.books.R
 import com.saifkhichi.books.data.source.BooksDataSource
+import com.saifkhichi.books.data.source.GoogleBooksAPI
 import com.saifkhichi.books.databinding.ActivityBookDetailsBinding
 import com.saifkhichi.books.model.Book
 import com.saifkhichi.books.util.BarcodeEncoder
 import com.saifkhichi.storage.CloudFileStorage
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
+@AndroidEntryPoint
 class BookDetailsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityBookDetailsBinding
@@ -117,17 +121,40 @@ class BookDetailsActivity : AppCompatActivity() {
         binding.bookIsbn.text = book.isbn
         binding.bookDescription.text = book.excerpt.ifBlank { getString(R.string.book_description_none) }
 
-        try {
-            val barcodeEncoder = BarcodeEncoder()
+        // if isbn is available
+        val isbn = book.isbn13()
+        if (isbn.isNotBlank()) {
+            try {
+                val barcodeEncoder = BarcodeEncoder()
 
-            val qrColor = TypedValue()
-            theme.resolveAttribute(R.attr.colorOnSurface, qrColor, true)
-            barcodeEncoder.setForegroundColor(qrColor.data)
-            barcodeEncoder.setBackgroundColor(Color.TRANSPARENT)
-            val bitmap = barcodeEncoder.encodeBitmap(book.isbn13(), BarcodeFormat.EAN_13, 512, 128)
-            binding.bookBarcode.setImageBitmap(bitmap)
-        } catch (e: Exception) {
-            e.printStackTrace()
+                val qrColor = TypedValue()
+                theme.resolveAttribute(R.attr.colorOnSurface, qrColor, true)
+                barcodeEncoder.setForegroundColor(qrColor.data)
+                barcodeEncoder.setBackgroundColor(Color.TRANSPARENT)
+                val bitmap = barcodeEncoder.encodeBitmap(book.isbn13(), BarcodeFormat.EAN_13, 512, 128)
+                binding.bookBarcode.setImageBitmap(bitmap)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+
+            Thread {
+                GoogleBooksAPI.findByISBN(isbn).firstOrNull()?.let { book ->
+                    runOnUiThread {
+                        binding.previewButton.visibility = View.VISIBLE
+                        binding.previewButton.setOnClickListener {
+                            val i = Intent(Intent.ACTION_VIEW)
+                            i.data = Uri.parse(
+                                book.volumeInfo.canonicalVolumeLink
+                                    .replace(".html?hl=&id=", "/")
+                                    .replace("books/about/", "books/edition/")
+                                    .replace("books.google", "google")
+                            )
+                            startActivity(i)
+                        }
+                    }
+                }
+            }.start()
+
         }
     }
 

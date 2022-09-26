@@ -43,6 +43,8 @@ dependencies {
 
     // Accessing the Google Books API with Volley
     implementation "com.android.volley:volley:1.2.1"
+    implementation "com.google.apis:google-api-services-books:v1-rev20220318-2.0.0"
+    implementation "com.google.http-client:google-http-client-android:1.42.2"
 
     // Dependency injection with Hilt
     implementation "com.google.dagger:hilt-android:2.40.5"
